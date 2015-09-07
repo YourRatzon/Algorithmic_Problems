@@ -1,0 +1,170 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+
+/*
+ID: jamerz1
+PROG: race3
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<int, ii> iii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+typedef vector<ull> vull;
+typedef vector<ll> vll;
+
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const int MAX_N = 51;
+const int INF = INT_MAX;
+
+
+vector<std::unordered_set<int>> AdjList(MAX_N);
+vector<std::unordered_set<int>> IncomingEdges(MAX_N);
+vector <int> visited;
+int N;
+
+void DFS(int u) {
+	visited[u] = 1;
+	for (int v : AdjList[u]) {
+		if (!visited[v])
+			DFS(v);
+	}
+}
+
+bool splitting;
+void DFS2(int u) {
+	visited[u] = 2;
+	for (int v : AdjList[u]) {
+		if (!visited[v])
+			DFS2(v);
+		else if (visited[v] == 1) {
+			splitting = false;
+			return;
+		}
+	}
+}
+
+bool is_splitting(int candidate,
+	std::unordered_set<int> out_edge_set) {
+	splitting = true;
+	visited.assign(N, 0);
+	DFS(0);
+	visited[candidate] = 0;
+	for (int x : out_edge_set) {
+		if (visited[x] == 1)
+			return false;
+		DFS2(x);
+		if (!splitting)
+			return false;
+	}
+
+	return splitting; 
+}
+
+
+bool reach_start_finish() {
+	visited.assign(N, 0);
+	DFS(0);
+	return visited[N - 1];
+}
+
+int main(int argc, char *argv[]) {
+	//std::ios::sync_with_stdio(false);
+	//cin.tie(0);
+	ifstream fin("race3.in");
+	int v;
+	for (int u = 0;; ++u) {
+		while (fin >> v && v != -2 && v != -1) {
+			AdjList[u].insert(v);
+			IncomingEdges[v].insert(u);
+		}
+		if (v == -1) {
+			N = u;
+			break;
+		}
+	}
+	fin.close();
+
+	vi articulation_pts, splitting_pts;
+	std::unordered_set<int> save_out;
+	for (int u = 1; u < N - 1; ++u) {
+		save_out = AdjList[u];
+		AdjList[u].clear();
+		for (int t : IncomingEdges[u]) {
+			AdjList[t].erase(u);
+		}
+
+		if (!reach_start_finish()) {
+			articulation_pts.push_back(u);
+			if (is_splitting(u, save_out))
+				splitting_pts.push_back(u);
+		}
+
+		AdjList[u] = save_out;
+		for (int t : IncomingEdges[u]) {
+			AdjList[t].insert(u);
+		}
+	}
+
+	sort(articulation_pts.begin(), articulation_pts.end());
+	sort(splitting_pts.begin(), splitting_pts.end());
+
+	ofstream fout("race3.out");
+	fout << articulation_pts.size();
+	for (int x : articulation_pts)
+		fout << ' ' << x;
+	fout << '\n';
+	fout << splitting_pts.size();
+	for (int x : splitting_pts)
+		fout << ' ' << x;
+	fout << '\n';
+	fout.close();
+	return 0;
+
+}

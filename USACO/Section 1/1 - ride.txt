@@ -1,0 +1,36 @@
+
+/*
+ID: jamerz1
+PROG: ride
+LANG: C++
+*/
+
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+int main()
+{
+	ifstream fin ("ride.in");
+	ofstream fout ("ride.out");
+
+	string comet, group;
+	getline(fin, comet);
+	getline(fin, group);
+
+	int cometProd = 1, groupProd = 1;
+
+	for (int i = 0; i < comet.length(); i ++)
+		cometProd *= comet[i] - 'A' + 1;
+	for (int i = 0; i < group.length(); i ++)
+		groupProd *= group[i] - 'A' +1;
+
+	if (groupProd % 47 == cometProd % 47)
+		fout<<"GO"<<endl;
+	else
+		fout<<"STAY"<<endl;
+
+
+}

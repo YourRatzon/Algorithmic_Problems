@@ -1,0 +1,96 @@
+// HackerRank - Cut The Tree
+
+// Each vertix in the graph has a value.
+// The graph vertices serve as a DP table.
+// Using DFS, the table is filled, with each vertix being set to the value equal to the sum of the vertix's subtree.
+// EVERY edge that is removed splits the graph into two trees.
+// Then, we go through each edge, and calculate the difference in value between the two trees that the edge connects.
+
+
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <array>
+#include <math.h> 
+#include <iomanip>
+#include <queue> 
+#include <random>
+#include <chrono>
+#include <stdlib.h>    
+#include <time.h> 
+#include <stack>
+#include <queue>
+#include <unordered_map>
+#include <unordered_set>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <tuple>
+#include <stdio.h>
+
+#include <iostream>
+using namespace std;
+
+typedef pair<int,vector<int>> ivi;
+typedef pair<int, int> ii;
+
+int DFS(vector<ivi> &AdjList, int v)
+{
+	static vector<int> DFS_Visit(AdjList.size(), 0);
+	DFS_Visit[v] = 1;
+	int subTreeSum = 0;
+	for (int i = 0; i < AdjList[v].second.size(); ++i)
+	{
+		int u = AdjList[v].second[i];
+		if (DFS_Visit[u] == 0)
+			subTreeSum += DFS(AdjList, u);
+	}
+
+	AdjList[v].first += subTreeSum;
+	return AdjList[v].first;
+}
+
+int main() 
+{
+	vector<ivi> AdjList;
+	int N;
+	cin >> N;
+	AdjList.assign(N, ivi()); // quick way to initialize AdjList with N entries of ivi
+	int total = 0;
+
+	for (int i = 0; i < N; ++i)
+	{
+		cin >> AdjList[i].first;
+		total += AdjList[i].first;
+	}
+	
+	int vert, neighbor;
+	vector<ii> edges;
+	for (int i = 0; i < N - 1; ++i)
+	{
+		cin >> vert >> neighbor;
+		edges.push_back({ vert - 1, neighbor - 1 });
+		AdjList[vert - 1].second.push_back(neighbor - 1);
+		AdjList[neighbor - 1].second.push_back(vert - 1);
+
+	}
+	int root = 0;
+	while (AdjList[root].second.size() > 1) root++;
+
+	DFS(AdjList, root);
+
+	int tree_diff = 2e9;
+	for (int i = 0; i < edges.size(); ++i)
+	{	
+		tree_diff = min(tree_diff,
+			abs( AdjList[edges[i].second].first -
+			(total - AdjList[edges[i].second].first)) );
+	}
+	cout << tree_diff << endl;
+	
+	
+	return 0;
+}

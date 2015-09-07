@@ -1,0 +1,83 @@
+
+/*
+ID: jamerz1
+PROG: gift1
+LANG: C++
+*/
+
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+int main()
+{
+	ifstream fin ("gift1.in");
+	ofstream fout ("gift1.out");
+
+	string dump;
+	int num;
+	fin>>num;
+	getline(fin, dump);
+
+
+	string* names;
+	names = new string[num];
+	int * moneyStart, * moneyEnd;
+	moneyStart = new int[num];
+	moneyEnd = new int[num];
+
+	for (int i=0; i<num; i++)
+	{
+		getline(fin, names[i]);
+		moneyStart[i] = 0;
+		moneyEnd[i] = 0;
+	}
+
+	string giver, getter;
+	int giveTo;
+	int m;
+
+	for (int i = 0; i < num; i++)
+	{
+		getline(fin, giver);
+
+		for (m = 0; m < num; m++)
+		{
+			if (names[m] == giver)
+			{
+				fin>>moneyStart[m];
+				break;
+			}
+		}
+
+		fin>>giveTo;
+		getline(fin, dump);
+
+		for (int k = giveTo; k > 0; k--)
+		{
+			getline(fin, getter);
+			for (int j = 0; j < num; j++)
+			{
+				if (getter == names[j])
+				{
+					moneyEnd[j] += moneyStart[m] / giveTo;
+					break;
+				}
+			}
+		}
+		if (giveTo)
+			moneyEnd[m] += moneyStart[m] - (( moneyStart[m] / giveTo ) * giveTo);
+		else
+			moneyEnd[m] += moneyStart[m];
+
+	}
+
+	for (int i = 0; i < num; i ++)
+	{
+		fout<<names[i]<<' '<<moneyEnd[i] - moneyStart[i]<<endl;
+	}
+
+	delete[] names, moneyStart, moneyEnd;
+}

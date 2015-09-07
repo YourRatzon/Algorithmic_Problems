@@ -1,0 +1,51 @@
+// HackerRank - 101 Hack Ferbruary
+// Sherlock and Pairs
+
+#include <iostream>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <unordered_map>
+
+using std::cout;
+using std::cin;
+using std::string;
+using std::endl;
+
+typedef long long unsigned arrValue;
+typedef long long unsigned valCount;
+
+
+int main(int arg, char* argv[])
+{
+	long long unsigned T, N, val, result;
+	cin >> T;
+	
+	std::unordered_map<arrValue, valCount> intCountMap;
+	std::unordered_map<arrValue, valCount>::iterator mapIt;
+
+	for (long long unsigned i = 0; i < T; ++i)
+	{
+		cin >> N;
+		for (long long unsigned j = 0; j < N; ++j)
+		{
+			cin >> val;
+			if (intCountMap.count(val) == 0)
+				intCountMap[val] = 1;
+			else
+				intCountMap[val]++;
+		}
+		
+		result = 0;
+		for (mapIt = intCountMap.begin(); mapIt != intCountMap.end(); ++mapIt)
+			result += mapIt->second * (mapIt->second - 1);
+		cout << result << endl;
+
+		intCountMap.clear();
+		
+	}
+
+	system("pause");
+	return 0;
+}

@@ -1,0 +1,72 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+/*
+ID: jamerz1
+PROG: milk
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const int MAX = 5001;
+ii priceAndGalons[MAX];
+
+int main()
+{
+	ifstream fin("milk.in");
+	ofstream fout("milk.out");
+
+	int N, M;
+	fin >> N >> M;
+	for (int i = 0; i < M; ++i)
+	{
+		fin >> priceAndGalons[i].first;
+		fin >> priceAndGalons[i].second;
+	}
+	sort(priceAndGalons, priceAndGalons + M);
+	
+	ull totalPrice = 0;
+	for (int i = 0; N > 0; ++i)
+	{
+		totalPrice += priceAndGalons[i].first * min(N, priceAndGalons[i].second);
+		N -= priceAndGalons[i].second;
+	}
+	fout << totalPrice <<'\n';
+	return 0;
+}

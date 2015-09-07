@@ -1,0 +1,108 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+/*
+ID: jamerz1
+PROG: skidesign
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int,  int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const unsigned int MAX = 1000;
+int heights[MAX + 1];
+
+int main()
+{
+	ifstream fin("skidesign.in");
+	ofstream fout("skidesign.out");
+
+	int N;
+	fin >> N;
+	for (int i = 0; i < N; ++i) {
+		fin >> heights[i];
+	}
+	fin.close();
+	sort(heights, heights + N);
+
+	int diff = heights[N - 1] - heights[0];
+	
+	if (diff <= 17) {
+		fout << 0 << '\n';
+		fout.close();
+		return 0;
+	}
+
+	ull min_result = 2000000000;
+	ull curr_result = 0;
+	int max_up = diff - 17;
+	int tallest_height;
+	for (int i = 1; i <= max_up; ++i) {
+		curr_result = i*i;
+		int tallest_down = heights[N - 1] - heights[0] - 17 - i;
+		if (tallest_down > 0) {
+			curr_result += tallest_down*tallest_down;
+			tallest_height = heights[N - 1] - tallest_down;
+		}
+		else
+			tallest_height = heights[N - 1];
+		
+		for (int j = 1; j < N - 1; ++j) {
+			int curr_change = 0;
+			// Do we need to lift this hill?
+			if (heights[j] + 17 < tallest_height) {
+				curr_change = tallest_height - heights[j] - 17;
+			}
+			// Or Do we need to lower it?
+			else if (heights[j] > tallest_height) {
+				curr_change = heights[j] - tallest_height;
+			}
+			if (curr_change > 0)
+				curr_result += curr_change*curr_change;
+		}
+		min_result = min(min_result, curr_result);
+	}
+	fout << min_result << '\n';
+	fout.close();
+
+
+	return 0;
+}

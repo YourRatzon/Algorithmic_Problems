@@ -1,0 +1,124 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: butter
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const int INF = LONG_MAX;
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const int MAX_N = 1e6 + 1;
+
+vector<vii> AdjList;
+vector<int> cows;
+vi dist;
+priority_queue<ii, vector<ii>, std::greater<ii>> pq;
+int source;
+ll curr_mst_cost;
+
+int main(){
+	std::ios::sync_with_stdio(false);
+	cin.tie(0);
+	
+	ifstream fin("butter.in");
+	int ncows, nodes, edges;
+	fin >> ncows >> nodes >> edges;
+	cows.resize(ncows + 1);
+	for (int i = 0; i < ncows; ++i) {
+		fin >> cows[i];
+	}
+	
+	AdjList.assign(nodes + 1, vii());
+	int u, v, w;
+	for (int i = 0; i < edges; ++i) {
+		fin >> u >> v >> w;
+		AdjList[u].push_back({ v, w});
+		AdjList[v].push_back({ u, w });
+	}
+
+	ll min_res = INF;
+	for (int i = 1; i <= nodes; ++i) { //try placing cube on each pasture and computing shortest path to each cow using Dijkstra (w/ minheap)
+		source = i;
+		dist.assign(nodes + 1, INF);
+		dist[source] = 0;
+		pq.push({ 0, source });
+		while (!pq.empty()) {
+			ii top = pq.top();
+			pq.pop();
+			int u = top.second;
+			int d = top.first;
+			if (d == dist[u]) {
+				for (int j = 0; j < AdjList[u].size(); ++j) {
+					// relax
+					ii v = AdjList[u][j];
+					if (dist[v.first] > dist[u] + v.second) {
+						dist[v.first] = dist[u] + v.second;
+						pq.push({dist[v.first], v.first});
+					}
+				}
+			}
+		}
+
+		curr_mst_cost = 0;
+		for (int j = 0; j < ncows; ++j) {
+			curr_mst_cost += dist[cows[j]];
+		}
+		min_res = min(min_res, curr_mst_cost);
+	}
+
+	ofstream fout("butter.out");
+	fout << min_res << '\n';
+	fout.close();
+
+	return 0;
+}

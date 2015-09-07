@@ -1,0 +1,157 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+
+/*
+ID: jamerz1
+PROG: snail
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+
+#define F first
+#define S second
+
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<int, ii> iii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+typedef vector<ull> vull;
+typedef vector<ll> vll;
+
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const int INF = INT_MAX;
+double EPS = 1e-10;
+const int MAX_N = 123;
+std::map<char, int> d_ix = { { 'N', 0 }, { 'S', 1 }, { 'W', 2 }, { 'E', 3 } };
+std::unordered_map<char, ii> next_move_map = {
+	{ 'N', { -1,0 } }, { 'S', {1, 0} }, { 'W', {0, -1} }, { 'E', {0, 1} }
+};
+std::unordered_map<char, pair<char,char>> turn_dirs_map = {
+	{ 'N', {'E','W'} }, { 'S', { 'E', 'W'} },
+	{ 'W', { 'S', 'N' } }, { 'E', { 'S', 'N' } }
+};
+int N, B;
+char grid[MAX_N][MAX_N];
+vector<bool> visited[MAX_N][MAX_N];
+
+ii operator+(const ii & lhs, const ii & rhs) {
+	return make_pair(lhs.first + rhs.first, lhs.second + rhs.second);
+}
+
+int DFS(ii u, char dir) {
+	int ix = d_ix[dir];
+
+	ii next_move = u + next_move_map[dir];
+	char next_cell = grid[next_move.F][next_move.S];
+	if (next_cell == '.') {
+		grid[u.F][u.S] = 'X';
+		int res = DFS(next_move, dir);
+		grid[u.F][u.S] = '.';
+		return 1 + res;
+	}
+	else if (next_cell == '#') {
+		int ix = d_ix[dir];
+		if (!visited[u.F][u.S][ix]) {
+			grid[u.F][u.S] = 'X';
+			visited[u.F][u.S][ix] = true;
+			pair<char, char> next_dirs = turn_dirs_map[dir];
+			vector<pair<ii, char>> next_visited;
+			int res1 = DFS(u, next_dirs.F);
+			int res2 = DFS(u, next_dirs.S);
+			
+			//backtrack
+			grid[u.F][u.S] = '.';
+			visited[u.F][u.S][ix] = false;
+			return max(res1, res2);
+		}
+		else {
+			return 0;
+		}
+	}
+	else { // next_cell == 'X'
+		return 1;
+	}
+}
+
+int main(int argc, char *argv[]) {
+	//std::ios::sync_with_stdio(false);
+	//cin.tie(0);
+	ifstream fin("snail.in");
+	fin >> N >> B;
+	memset(grid, '.', sizeof(grid));
+	//grid[0][0] = 'X'; // visited (always)
+	for (int i = 0; i < MAX_N; ++i) {
+		for (int j = 0; j < MAX_N; ++j) {
+			visited[i][j] = vector<bool>(4, false);
+		}
+	}
+
+	char col_name;
+	int row, col;
+	for (int i = 0; i < N + 2; ++i) {
+		grid[0][i] = '#';
+		grid[N + 1][i] = '#';
+		grid[i][0] = '#';
+		grid[i][N + 1] = '#';
+	}
+	for (int i = 0; i < B; ++i) {
+		fin >> col_name;
+		fin >> row;
+		col = 1 + col_name - 'A';
+		grid[row][col] = '#';
+	}
+	fin.close();
+	int res = DFS({ 1, 1 }, 'E');
+	res = max(res, DFS({ 1, 1 }, 'S'));
+
+	ofstream fout("snail.out");
+	fout << res << '\n';
+	fout.close();
+	
+	return 0;
+}

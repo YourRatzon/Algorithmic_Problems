@@ -1,0 +1,153 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: ttwo
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+// 100 places on board, 4 directions, so there are maximum of 400*400 
+// different states before we get into a cycle
+const unsigned int MAX = 160001;
+
+struct triple {
+	triple() {}
+	triple(int I, int J, char DIR) : i(I), j(J), dir(DIR) {}
+	int i, j;
+	char dir;
+};
+
+struct Cell {
+	Cell() : open(true) {}
+	triple N, E, S, W;
+	bool open;
+}; 
+
+
+Cell graph[10][10];
+
+int main()
+{
+	ifstream fin("ttwo.in");
+	triple cows, farmer;
+	char c;
+	// read input
+	for (int i = 0; i < 10; ++i) {
+		for (int j = 0; j < 10; ++j) {
+			fin >> c;
+			if (c == 'C')
+				cows = triple( i, j,'N');
+			if (c == 'F')
+				farmer = triple( i, j,'N');
+			if (c == '*') 
+				graph[i][j].open = false;
+		}
+	}
+	fin.close();
+	
+	// build graph
+	triple N, E, S, W;
+	for (int i = 0; i < 10; ++i) {
+		for (int j = 0; j < 10; ++j) {
+			// make edges N,E,S,W
+			// N
+			if (i - 1 >= 0 && graph[i - 1][j].open)
+				N = triple(i - 1, j, 'N');
+			else
+				N = triple(i, j, 'E');
+			// E
+			if (j + 1 < 10 && graph[i][j + 1].open)
+				E = triple(i, j + 1, 'E');
+			else
+				E = triple(i, j, 'S');
+			// S
+			if (i + 1 < 10 && graph[i + 1][j].open)
+				S = triple(i + 1, j, 'S');
+			else
+				S = triple(i, j, 'W');
+			// W
+			if (j - 1 >= 0 && graph[i][j - 1].open)
+				W = triple(i, j - 1, 'W');
+			else
+				W = triple(i, j, 'N');
+
+			graph[i][j].N = N;
+			graph[i][j].E = E;
+			graph[i][j].S = S;
+			graph[i][j].W = W;
+		}
+	}
+
+	ofstream fout("ttwo.out");
+	// begin search, up to 20k steps
+	for (int i = 1; i <= MAX; ++i) {
+		if (cows.dir == 'E')
+			cows = graph[cows.i][cows.j].E;
+		else if (cows.dir == 'N')
+			cows = graph[cows.i][cows.j].N;
+		else if (cows.dir == 'S')
+			cows = graph[cows.i][cows.j].S;
+		else // cows.dir == 'W'
+			cows = graph[cows.i][cows.j].W;
+
+		if (farmer.dir == 'E')
+			farmer = graph[farmer.i][farmer.j].E;
+		else if (farmer.dir == 'N')
+			farmer = graph[farmer.i][farmer.j].N;
+		else if (farmer.dir == 'S')
+			farmer = graph[farmer.i][farmer.j].S;
+		else // cows.dir == 'W'
+			farmer = graph[farmer.i][farmer.j].W;
+		
+		if (farmer.i == cows.i && farmer.j == cows.j) {
+			fout << i << '\n';
+			fout.close();
+			return 0;
+		}
+	}
+	
+	fout << "0\n";
+	fout.close();
+	return 0;
+}

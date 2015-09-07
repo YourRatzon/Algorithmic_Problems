@@ -1,0 +1,98 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: concom
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const unsigned int MAX = 101;
+
+vector<vii> graph(MAX);
+
+int main()
+{
+	ifstream fin("concom.in");
+	int N;
+	fin >> N;
+	int u, v, w;
+	for (int i = 0; i < N; ++i) {
+		fin >> u >> v >> w;
+		graph[u].push_back({ v, w });
+	}
+	fin.close();
+	int p[101];
+	set<ii> res;
+	for (int i = 1; i <= 100; ++i) {
+		memset(p, 0, 101 * sizeof(int));
+		queue<int> q;
+		q.push(i);
+		while (!q.empty()) {
+			int u = q.front();
+			q.pop();
+			for (int j = 0; j < graph[u].size(); ++j) {
+				ii v = graph[u][j];
+				if (v.first == i) continue;
+				if (v.second > 50 &&
+					res.find({ i, v.first }) == res.end()) {
+					q.push(v.first);
+					res.insert({ i, v.first });
+				}
+				else {
+					p[v.first] += v.second;
+					if (p[v.first] > 50 && 
+						res.find({ i, v.first }) == res.end()) {
+						q.push(v.first);
+						res.insert({ i, v.first });
+					}
+				}
+			}
+		}
+	}
+
+	ofstream fout("concom.out");
+	for (ii r : res) fout << r.first << ' ' << r.second << '\n';
+	fout.close();
+	return 0;
+}

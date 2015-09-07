@@ -1,0 +1,161 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: msquare
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const int INF = LONG_MAX;
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const int MAX_N = 1e6 + 1;
+int min_length = INF;
+std::unordered_map<string, bool> visited;
+std::unordered_map<string, int> lengths;
+std::unordered_map<string, string> paths;
+
+string transformA(string state) {
+	string res(8, ' ');
+	for (int i = 0; i < state.size(); ++i) {
+		res[7 - i] = state[i];
+	}
+	return res;
+}
+
+string transformB(string state) {
+	string res(8, ' ');
+	res[0] = state[3];
+	res[1] = state[0];
+	res[2] = state[1];
+	res[3] = state[2];
+	res[4] = state[5];
+	res[5] = state[6];
+	res[6] = state[7];
+	res[7] = state[4];
+	return res;
+}
+string transformC(string state) {
+	string res(8, ' ');
+	res[0] = state[0];
+	res[1] = state[6];
+	res[2] = state[1];
+	res[3] = state[3];
+	res[4] = state[4];
+	res[5] = state[2];
+	res[6] = state[5];
+	res[7] = state[7];
+	return res;
+}
+
+string shortest_path(string start_state, string target_state) {
+	string curr_path = "", next_state, curr_state;
+	int curr_length = 0;
+	queue<string> q;
+	paths[start_state] = "";
+	lengths[start_state] = 0;
+	q.push(start_state);
+
+	while(!q.empty()){
+		curr_state = q.front();
+		q.pop();
+		visited[curr_state] = true;
+		curr_length = lengths[curr_state];
+		curr_path = paths[curr_state];
+
+		if (curr_state == target_state) {
+			min_length = curr_length;
+			return curr_path;
+		}
+		else {
+			next_state = transformA(curr_state);
+			if (!visited[next_state]) {
+				q.push(next_state);
+				visited[next_state] = true;
+				lengths[next_state] = curr_length + 1;
+				paths[next_state] = curr_path + "A";
+			}
+			next_state = transformB(curr_state);
+			if (!visited[next_state]) {
+				q.push(next_state);
+				visited[next_state] = true;
+				lengths[next_state] = curr_length + 1;
+				paths[next_state] = curr_path + "B";
+			}
+			next_state = transformC(curr_state);
+			if (!visited[next_state]) {
+				q.push(next_state);
+				visited[next_state] = true;
+				lengths[next_state] = curr_length + 1;
+				paths[next_state] = curr_path + "C";
+			}
+		}
+	}
+	return "NO PATH FOUND";
+}
+
+int main(){
+	std::ios::sync_with_stdio(false);
+	cin.tie(0);
+	
+	ifstream fin("msquare.in");
+	string curr_state = "12345678", target_state(8, ' ');
+	for (int i = 0; i < 8; ++i) 
+		fin >> target_state[i];
+	
+	fin.close();
+	string res = shortest_path(curr_state, target_state);
+	ofstream fout("msquare.out");
+	fout << min_length << '\n' << res << '\n';
+	fout.close();
+
+	return 0;
+}

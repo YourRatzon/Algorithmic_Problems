@@ -1,0 +1,198 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+
+/*
+ID: jamerz1
+PROG: lgame
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<int, ii> iii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+typedef vector<ull> vull;
+typedef vector<ll> vll;
+
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const int MAX_N = 51;
+const int INF = INT_MAX;
+
+int let_vals[] = { 2, 5, 4, 4, 1, 6, 5, 5, 1, 7, 6, 3, 5, 2, 3, 5, 7, 2, 1, 2, 4, 6, 6, 7, 5, 7 };
+
+std::unordered_map<string,int> dict;
+std::unordered_set<string> ans;
+
+bool let_comp(const char & lhs, const char & rhs) {
+	if (lhs == ' ')
+		return false;
+	else if (rhs == ' ')
+		return true;
+	else
+		return lhs < rhs;
+}
+
+bool str_comp(const string & lhs, const string & rhs) {
+	int min_sz = min(lhs.size(), rhs.size());
+	for (int i = 0; i < min_sz; ++i) {
+		if (lhs[i] == rhs[i])
+			continue;
+		else if (lhs[i] == ' ')
+			return false;
+		else if (rhs[i] == ' ')
+			return true;
+		else
+			return lhs < rhs;
+	}
+
+	if (lhs.size() < rhs.size())
+		return true;
+	else
+		return false;
+}
+
+int get_score(string word) {
+	int score = 0;
+	int let_idx;
+	for (int i = 0; i < word.size(); ++i) {
+		let_idx = word[i] - 'a';
+		score += let_vals[let_idx];
+	}
+	return score;
+}
+
+int main(int argc, char *argv[]) {
+	//std::ios::sync_with_stdio(false);
+	//cin.tie(0);
+	ifstream fin("lgame.in");
+	string in_str;
+	fin >> in_str;
+
+	fin.close();
+	fin.open("lgame.dict");
+	string word;
+	int score;
+	while (fin >> word && word != ".") {
+		score = get_score(word);
+		dict[word] = score;
+	}
+	fin.close();
+
+	int idx;
+	string word1, word2;
+	int best = 0;
+	int curr = 0;
+	int let_idx;
+
+	string letters = in_str + "  ";
+	sort(letters.begin(), letters.end(), let_comp);
+
+	do {
+		idx = 0;
+		word1 = "", word2 = "";
+		while (idx < letters.size() && letters[idx] != ' ') {
+			word1.push_back(letters[idx]);
+			idx++;
+		}
+		idx++;
+		while (idx < letters.size() && letters[idx] != ' ') {
+			word2.push_back(letters[idx]);
+			idx++;
+		}
+
+		if (word1 == "") {
+			word1 = word2;
+			word2 = "";
+		}
+
+		if (word1 != "" && word2 != "") {
+			//insure word1 is always smaller than word2 ( to avoid identical entries )
+			if (word1 > word2) {
+				string temp = word1;
+				word1 = word2;
+				word2 = temp;
+			}
+		}
+
+		curr = 0;
+		if (dict.count(word1) != 0)
+			curr += dict[word1];
+		else
+			continue;
+
+		if (word2 != "" && dict.count(word2) != 0)
+			curr += dict[word2];
+
+		if (curr == best) {
+			string res = word1;
+			if (word != "" && dict.count(word2) != 0)
+				res += " " + word2;
+			ans.insert(res);
+		}
+		else if (curr > best) {
+			ans.clear();
+			string res = word1;
+			if (word != "" && dict.count(word2) != 0)
+				res += " " + word2;
+			ans.insert(res);
+
+			best = curr;
+		}
+
+	} while (std::next_permutation(letters.begin(), letters.end()));
+
+	ofstream fout("lgame.out");
+	fout << best << '\n';
+	std::vector<string> result(ans.begin(), ans.end());
+	sort(result.begin(), result.end(), str_comp);
+	for (string x : result)
+		fout << x << '\n';
+	fout.close();
+	return 0;
+
+}

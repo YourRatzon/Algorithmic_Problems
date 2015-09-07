@@ -1,0 +1,247 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: job
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<int, ii> iii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+typedef vector<ull> vull;
+typedef vector<ll> vll;
+
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const int MAX_N = 37000;
+const double INF = 2e9 + 1;
+
+std::unordered_set<ull> row_set, col_set;
+
+struct machine {
+	int id;
+	int jobs;
+	int job_time;
+	int time_till_free;
+};
+
+struct machine_compare {
+	bool operator()(const machine & lhs, const machine & rhs) {
+		if (lhs.time_till_free + lhs.job_time == rhs.time_till_free + rhs.job_time)
+			return lhs.jobs < rhs.jobs;
+		else
+			return lhs.time_till_free + lhs.job_time > 
+			    rhs.time_till_free + rhs.job_time;
+	}
+};
+
+priority_queue<machine, vector<machine>, machine_compare> pq_A, pq_B;
+vi A_end_times;
+vi B_id_to_job_time;
+
+int N, N_A, N_B;
+
+int main(int argc, char *argv[]) {
+	std::ios::sync_with_stdio(false);
+	cin.tie(0);
+
+	ifstream fin("job.in");
+	fin >> N >> N_A >> N_B;
+	int x;
+	int max_time_A = 0;
+	B_id_to_job_time.resize(N_B);
+	for (int i = 0; i < N_A; ++i) {
+		fin >> x;
+		pq_A.push({ i, 0, x, 0 });
+	}
+	for (int i = 0; i < N_B; ++i) {
+		fin >> x;
+		B_id_to_job_time[i] = x;
+		pq_B.push({ i, 0, x, 0 });
+	}
+	fin.close();
+
+	for (int i = 0; i < N; ++i) {
+		machine curr_m = pq_A.top();
+		pq_A.pop();
+		curr_m.jobs++;
+		curr_m.time_till_free += curr_m.job_time;
+
+		max_time_A = max(max_time_A, curr_m.time_till_free);
+		pq_A.push(curr_m);
+	}
+
+	priority_queue<machine, vector<machine>, machine_compare> pq_A_tmp;
+	int A_jobs_running = N;
+
+	int time = 0;
+
+	while (A_jobs_running > 0) {
+		time++;
+		priority_queue<machine, vector<machine>, machine_compare> pq_A_tmp;
+		while (!pq_A.empty()) {
+			machine curr_A = pq_A.top();
+			pq_A.pop();
+			if (curr_A.jobs > 0) {
+				curr_A.time_till_free--;
+				if (curr_A.time_till_free % curr_A.job_time == 0) {
+					curr_A.jobs--;
+					A_jobs_running--;
+					A_end_times.push_back(time);
+					if (A_jobs_running == 0)
+						break;
+				}
+			}
+			pq_A_tmp.push(curr_A);
+		}
+		pq_A = pq_A_tmp;
+	}
+
+	vii B_sched(N);
+	int B_time = 0;
+	for (int i = 0; i < N; ++i) {
+		machine curr_m = pq_B.top();
+		pq_B.pop();
+		curr_m.jobs++;
+		B_sched[i] = { curr_m.time_till_free, curr_m.id };
+		curr_m.time_till_free += curr_m.job_time;
+
+		B_time = max(B_time, curr_m.time_till_free);
+		pq_B.push(curr_m);
+	}
+
+	int max_b_end = 0;
+	int last_b_id = 0;
+	int max_job_time = 0;
+	int curr_job_time = 0;
+	int curr_end_time = 0;
+	vi b_end_times(N_B);
+	int curr_b_id;
+	// find latest B machine end time and id
+	for (int i = 0; i < B_sched.size(); ++i) {
+		curr_b_id = B_sched[i].second;
+		curr_job_time = B_id_to_job_time[curr_b_id];
+		curr_end_time = B_sched[i].first + curr_job_time;
+		b_end_times[curr_b_id] = max(b_end_times[curr_b_id],curr_end_time);
+		if (curr_end_time > max_b_end) {
+			max_b_end = curr_end_time;
+			last_b_id = curr_b_id;
+		}
+	}
+	
+	vi b_inc_times(N_B, 0);
+	for (int i = 0; i < B_sched.size(); ++i) {
+		curr_b_id = B_sched[i].second;
+		b_inc_times[curr_b_id] = max(b_inc_times[curr_b_id],
+								     max_b_end - b_end_times[curr_b_id]);
+	}
+
+	for (int i = 0; i < B_sched.size(); ++i) {
+		curr_b_id = B_sched[i].second;
+		B_sched[i].first += b_inc_times[curr_b_id];
+	}
+
+	sort(B_sched.begin(), B_sched.end());
+	int last_A_start_time = B_sched.back().first;
+	vi finish(last_A_start_time + 1, 0);
+	int last = B_sched[0].first;
+	finish[last]++;
+	// finish(i) - min. number of items that need to be finished at time i
+	for (int i = 1; i < B_sched.size(); ++i) {
+		int curr = B_sched[i].first;
+		if (curr == last)
+			finish[last]++;
+		else {
+			for (int j = last+1; j < curr; ++j)
+				finish[j] = finish[j - 1];
+			finish[curr] = finish[curr-1] + 1;
+		}
+		last = curr;
+	}
+
+	//for each 0 <= B_start_time <= A_end_times.back() set how many
+	//items are finshed before then
+	vi table(A_end_times.back() + 1, 0);
+	table[0] = 0;
+	int a_idx = 0;
+	for (int bs = 1; bs <= A_end_times.back(); ++bs) {
+		int a_done_count = table[bs-1];
+		while (a_idx < A_end_times.size() && A_end_times[a_idx] <= bs) {
+			a_done_count++;
+			a_idx++;
+		}
+		table[bs] = a_done_count;
+	}
+
+	int max_time_B;
+	int B_start_time = A_end_times.back();
+	bool possible;
+	for (; B_start_time >= 0; --B_start_time) {
+		possible = true;
+		for (int i = 0; i <= last_A_start_time; ++i) {
+			int need = finish[i];
+			int table_idx = min(table.size() - 1, unsigned(B_start_time + i));
+			int have = table[table_idx];
+			if (need > have) {
+				possible = false;
+				break;
+			}
+		}
+		if (!possible)
+			break;
+	}
+
+	max_time_B = B_start_time + 1 + B_time;
+
+	ofstream fout("job.out");
+	fout << max_time_A << ' ' << max_time_B << '\n';
+
+	return 0;
+
+}

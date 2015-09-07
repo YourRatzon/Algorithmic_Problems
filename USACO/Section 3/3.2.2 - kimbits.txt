@@ -1,0 +1,161 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: kimbits
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const int INF = LONG_MAX;
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+vi coin_types;
+vector<vi> pascal_triangle;
+void build_pascal(int last_row) {
+	pascal_triangle.assign(max(2,last_row), vi());
+	pascal_triangle[0].push_back(1);
+	pascal_triangle[1].push_back(1);
+	int left, right, curr;
+	for (int i = 2; i < last_row; ++i) {
+		for (int j = 0; j <= pascal_triangle[i - 1].size(); ++j) {
+			if (j == 0 || j == pascal_triangle[i - 1].size())
+				curr = 1;
+			else 
+				curr = pascal_triangle[i - 1][j - 1] + pascal_triangle[i-1][j];
+
+			pascal_triangle[i].push_back(curr);
+		}
+	}
+}
+
+int num_of_ones(unsigned int n) {
+	int count = 0;
+	for (int i = 0; i < 32; ++i) {
+		if (n & (1 << i)) count++;
+	}
+	return count;
+}
+
+int N_bits, upto_bits;
+unsigned int num;
+
+string get_bin_str(unsigned num) {
+	string res;
+	for (int i = N_bits-1; i >= 0; --i) 
+		res.push_back( '0'+ ((num & (1<<i)) != 0)  );
+	return res;
+}
+unsigned int final_res = 0;
+
+unsigned int solve(int N_bits, int upto_bits, unsigned int res) {
+	if (upto_bits == 0 || N_bits == 0 || res >= num)
+		return res;
+
+	int i = 1, row_ix = 0;
+	unsigned int save_res;
+	for (; i <= N_bits; ++i) {
+		vi curr_row = pascal_triangle[i];
+		save_res = res;
+		row_ix = 0;
+		for (; row_ix < curr_row.size() && row_ix < upto_bits; ++row_ix) {
+			res += curr_row[row_ix];
+		}
+		if (res >= num) {
+			res = save_res;
+			break;
+		}
+	}
+
+	final_res += pow(2, i-1);
+
+	// left to find the pascal_triangle[N_bits][upto_bits]'th number with
+	// upto_bits-1 one's out of N_bits-1 last bits. 
+	return solve(N_bits - 1, upto_bits - 1, res+1);
+}
+int main(){
+	std::ios::sync_with_stdio(false);
+	cin.tie(0);
+	
+	ifstream fin("kimbits.in");
+	fin >> N_bits >> upto_bits >> num;
+	fin.close();
+
+	/*map<int, int> digit_counts;
+	for (int exp = 0; exp < 10; ++exp) {
+		digit_counts.clear();
+		for (int i = pow(2,exp); i < pow(2, exp+1); ++i)
+			digit_counts[num_of_ones(i)]++;
+		for (auto entry : digit_counts)
+			cout << entry.first << ": " << entry.second << " times.\n";
+		cout << '\n';
+	}*/
+	
+	int res = 0;
+	if (num != 1) {
+		build_pascal(N_bits + 1);
+		res = solve(N_bits, upto_bits, 1);
+	}
+	
+	/*cout << "RES: " << res << '\n';
+	cout << get_bin_str(final_res) << '\n';
+	
+	for (int i = 0; i < pascal_triangle.size(); ++i) {
+		for (int x : pascal_triangle[i])
+			cout << x << ' ';
+		cout << '\n';
+	}
+	cout << '\n';*/
+
+
+	ofstream fout("kimbits.out");
+	fout << get_bin_str(final_res) << '\n';
+	fout.close();
+	return 0;
+}

@@ -1,0 +1,107 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+/*
+ID: jamerz1
+PROG: hamming
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int,  int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const unsigned int MAX = 1001;
+const int INF = 16;
+int N, B, D;
+
+bool get_bit(int a, int bit) {
+	int mask = 1 << bit;
+	return (a & mask) != 0;
+}
+int hamming_dist(int a, int b) {
+	int dist = 0;
+	for (int i = 0; i < B; ++i)
+		if (get_bit(a, i) != get_bit(b, i))
+			dist++;
+	return dist;
+}
+int main()
+{
+	ifstream fin("hamming.in");
+	fin >> N >> B >> D;
+	fin.close();
+
+	ofstream fout("hamming.out");
+	int left_on_line = 9;
+	int last_num = 0;
+	fout << last_num << ' ';
+	vi numlist;
+	numlist.push_back(last_num);
+	for (int i = 1; i < N; ++i) {
+		int curr_num = last_num + 1;
+		while (true) {
+			int j = 0;
+			for (; j < numlist.size(); ++j)
+			{
+				if (hamming_dist(curr_num, numlist[j]) < D)
+					break;
+			}
+			if (j == numlist.size()){
+				numlist.push_back(curr_num);
+				break;
+			}
+			else
+				curr_num++;
+		}
+		fout << curr_num;
+		left_on_line--;
+		if (left_on_line == 0) {
+			fout << '\n';
+			left_on_line = 10;
+		}
+		else if (i < N - 1)
+			fout << ' ';
+		else fout << '\n';
+		last_num = curr_num;
+	}
+	fout.close();
+
+	return 0;
+}

@@ -1,0 +1,55 @@
+// HackerRank 20/20 Hack February 2014
+// Sherlock and Watson
+
+
+#include <algorithm>  
+#include <cctype>
+#include <climits>
+#include <cmath>
+#include <ctime>
+#include <fstream>
+#include <iostream>
+#include <istream>
+#include <iterator> 
+#include <list>
+#include <map>
+#include <queue>
+#include <set>
+#include <sstream>
+#include <stdlib.h> 
+#include <string>
+#include <utility>
+#include <vector>
+
+using namespace std;
+
+
+
+int main()
+{
+	int n, k, q, temp;
+	cin >> n >> k >> q;
+	cin.get();
+	list<int> numList;
+	for (int i = 0; i < n; ++ i)
+	{
+		cin >> temp;
+		numList.push_back(temp);
+	}
+	for (int i = 0; i < k; ++ i)
+	{
+		temp = numList.back();
+		numList.push_front(temp);
+		numList.pop_back();
+	}
+
+	vector<int> numVec;
+	numVec.reserve(n);
+	numVec.insert(numVec.begin(), numList.begin(), numList.end());
+
+	for (int i = 0; i < q; ++ i)
+	{
+		cin >> temp;
+		cout << numVec[temp] << endl;
+	}
+}

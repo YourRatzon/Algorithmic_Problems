@@ -1,0 +1,162 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: maze1
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const unsigned int MAX_H = 2*100+2;
+const unsigned int MAX_W = 2*38+2;
+
+char grid[MAX_H][MAX_W];
+
+int main()
+{
+	ifstream fin("maze1.in");
+	int W, H;
+	bool e1 = false;
+	ii exit1 = { -1, -1 }, exit2 = { -1, -1 };
+	fin >> W >> H;
+
+	// Read grid
+	string line;
+	fin.get();
+	for (int i = 0; i < 2 * H+1;++i) {
+		getline(fin, line);
+		for (int j = 0; j < 2 * W+1; ++j) {
+			grid[i][j] = line[j];
+			if ((j+1 == 2 * W + 1|| j == 0 ||i == 0 || i + 1 == 2*H+1) &&
+				(grid[i][j] == ' ')) {
+				if (!e1) {
+					exit1 = { (i - 1) / 2, (j - 1) / 2 };
+					e1 = true;
+				}
+				else
+					exit2 = { (i - 1) / 2, (j - 1) / 2 };
+			}
+		}
+	}
+	// possible that two exits were around the same square
+	if (exit2.first == -1) exit2 = exit1;
+
+	fin.close();
+	vii graph[101][39];
+	map<ii, int> mapper;
+	vii reverse_mapper(H*W);
+	// Make edges
+	for (int i = 0, k=0; i < H; ++i) {
+		for (int j = 0; j < W; ++j, ++k) {
+			// up edge
+			if (i - 1 >= 0 && grid[2 * i][2 * j + 1] == ' ')
+				graph[i][j].push_back({ i - 1, j });
+			// down edge
+			if (i + 1 < H && grid[2 * (i + 1)][2 * j + 1] == ' ')
+				graph[i][j].push_back({ i + 1, j });
+			// left edge
+			if (j - 1 >= 0 && grid[2 * i + 1][2 * j] == ' ')
+				graph[i][j].push_back({ i, j - 1 });
+			// right edge
+			if (j + 1 < W && grid[2 * i + 1][2 * (j + 1)] == ' ')
+				graph[i][j].push_back({ i, j + 1 });
+
+			mapper[{i, j}] = k;
+			reverse_mapper[k] = { i, j };
+		}
+	}
+	
+	// Run BFS from exit1 and record all path distances
+	queue<int> q;
+	q.push(mapper[exit1]);
+	map<int, int> dist;
+	dist[mapper[exit1]] = 0;
+	vi parent(H*W, -1);
+
+	while (!q.empty()) {
+		int u = q.front();
+		ii u_p = reverse_mapper[u];		
+		q.pop();
+		for (int i = 0; i < graph[u_p.first][u_p.second].size(); ++i) {
+			int v = mapper[graph[u_p.first][u_p.second][i]];
+			if (!dist.count(v)) {
+				dist[v] = dist[u] + 1;
+				parent[v] = u;
+				q.push(v);
+			}
+		}
+	}
+
+	// Run BFS from exit2 and record all path distances
+	queue<int> q2;
+	q2.push(mapper[exit2]);
+	map<int, int> dist2;
+	dist2[mapper[exit2]] = 0;
+	vi parent2(H*W, -1);
+
+	while (!q2.empty()) {
+		int u = q2.front();
+		ii u_p = reverse_mapper[u];
+		q2.pop();
+		for (int i = 0; i < graph[u_p.first][u_p.second].size(); ++i) {
+			int v = mapper[graph[u_p.first][u_p.second][i]];
+			if (!dist2.count(v)) {
+				dist2[v] = dist2[u] + 1;
+				parent2[v] = u;
+				q2.push(v);
+			}
+		}
+	}
+
+	int max_dist = 0;
+	for (int i = 0; i < H*W; ++i) {
+		if (dist[i] > max_dist && dist2[i] > max_dist) {
+			max_dist = min(dist[i], dist2[i]);
+		}
+	}
+
+	ofstream fout("maze1.out");
+	fout << max_dist + 1 << '\n';
+	fout.close();
+	return 0;
+}

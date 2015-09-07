@@ -1,0 +1,175 @@
+/*
+ID: jamerz1
+PROG: transform
+LANG: C++11
+*/
+
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <array>
+#include <math.h> 
+#include <iomanip>
+#include <queue> 
+#include <random>
+#include <chrono>
+#include <stdlib.h>    
+#include <time.h> 
+#include <stack>
+#include <queue>
+#include <unordered_map>
+#include <unordered_set>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <tuple>
+#include <stdio.h>
+
+#include<stdio.h>
+#include <iostream>
+using namespace std;
+
+
+void ninety(char gridSTART[][10], int n)
+{
+	int last = n - 1;
+	char gridCOPY[10][10];
+
+	for (int i = 0; i < n; ++i)
+	for (int j = 0; j < n; ++j)
+		gridCOPY[i][j] = gridSTART[i][j];
+
+	for (int i = 0; i < n; ++i)
+	{
+		for (int j = 0; j < n; ++j)
+			gridSTART[i][j] = gridCOPY[last - j][i];
+	}
+}
+
+void reflection(char gridSTART[][10], int n)
+{
+	int last = n - 1;
+	char gridCOPY[10][10];
+
+	for (int i = 0; i < n; ++i)
+		for (int j = 0; j < n; ++j)
+			gridCOPY[i][j] = gridSTART[i][j];
+
+	for (int i = 0; i < n; ++i)
+	{
+		for (int j = 0; j < n; ++j)
+			gridSTART[i][j] = gridCOPY[i][last - j];
+	}
+}
+
+bool equal(char gridSTART[][10], char gridTRANS[][10], int n)
+{
+	for (int i = 0; i < n; ++i)
+	{
+		for (int j = 0; j < n; ++j)
+		{
+			if (gridSTART[i][j] != gridTRANS[i][j])
+				return false;
+		}
+	}
+
+	return true;
+}
+
+
+int main()
+{
+	ifstream fin("transform.in");
+	ofstream fout("transform.out");
+
+	char gridSTART[10][10];
+	char gridTRANS[10][10];
+
+	int n;
+	fin >> n;
+	for (int i = 0; i < n; ++i)
+	for (int j = 0; j < n; ++j)
+		fin >> gridSTART[i][j];
+
+	for (int i = 0; i < n; ++i)
+	for (int j = 0; j < n; ++j)
+		fin >> gridTRANS[i][j];
+
+	bool equalBool = false;
+	if (equal(gridSTART, gridTRANS, n))
+		equalBool = true;
+
+	// 90 rotation
+	ninety(gridSTART, n);
+	if (equal(gridSTART, gridTRANS, n))
+	{
+		fout << 1;
+		fout << endl;
+		return 0;
+	}
+
+	// 180 rotation
+	ninety(gridSTART, n);
+	if (equal(gridSTART, gridTRANS, n))
+	{
+		fout << 2;
+		fout << endl;
+		return 0;
+	}
+
+	// 270 rotation
+	ninety(gridSTART, n);
+	if (equal(gridSTART, gridTRANS, n))
+	{
+		fout << 3;
+		fout << endl;
+		return 0;
+	}
+
+	// back to starting position and reflection
+	ninety(gridSTART, n);
+	reflection(gridSTART, n);
+	if (equal(gridSTART, gridTRANS, n))
+	{
+		fout << 4;
+		fout << endl;
+		return 0;
+	}
+
+	// reflection + 90 rotation
+	ninety(gridSTART, n);
+	if (equal(gridSTART, gridTRANS, n))
+	{
+		fout << 5;
+		fout << endl;
+		return 0;
+	}
+
+	// reflection + 180 rotation
+	ninety(gridSTART, n);
+	if (equal(gridSTART, gridTRANS, n))
+	{
+		fout << 5;
+		fout << endl;
+		return 0;
+	}
+
+	// reflection + 270 rotation
+	ninety(gridSTART, n);
+	if (equal(gridSTART, gridTRANS, n))
+	{
+		fout << 5;
+		fout << endl;
+		return 0;
+	}
+
+
+	if (equalBool) fout << 6;
+	else fout << 7;
+	fout << endl;
+
+	return 0;
+}

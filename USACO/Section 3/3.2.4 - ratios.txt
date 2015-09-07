@@ -1,0 +1,145 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: ratios
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const int INF = LONG_MAX;
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const int MAX_N = 1e6 + 1;
+
+vector<vi> mixtures(3, vi(3));
+vi target(3);
+
+vi get_try(int i, int j, int k) {
+	vi res(3);
+	for (int s = 0; s < 3; ++s) {
+		res[s] = i * mixtures[0][s] + j * mixtures[1][s] + k * mixtures[2][s];
+	}
+	return res;
+}
+
+
+int main(){
+	std::ios::sync_with_stdio(false);
+	cin.tie(0);
+	
+	ifstream fin("ratios.in");
+	fin >> target[0] >> target[1] >> target[2];
+	for (int i = 0; i < 3; ++i) {
+		fin >> mixtures[i][0] >> mixtures[i][1] >> mixtures[i][2];
+	}
+	fin.close();
+	ofstream fout("ratios.out");
+	if (target[0] == 0 && target[1] == 0 && target[2] == 0){
+		fout << "0 0 0 0\n";
+		return 0;
+	}
+
+	vi res(3,-1);
+	vi curr_try;
+	int min_res = INF;
+	int res_mult, mult;
+	for (int i = 0; i < 100; ++i) {
+		for (int j = 0; j < 100; ++j) {
+			for (int k = 0; k < 100; ++k) {
+				curr_try = get_try(i, j, k);
+
+				mult = -1;
+				for (int z = 0; z < 3; ++z) {
+					if (target[z] == 0) {
+						if (curr_try[z] != 0) {
+							break;
+						}
+					}
+					else if (curr_try[z] == 0) {
+						break;
+					}
+					else {
+						if (curr_try[z] < target[z] ||
+							curr_try[z] % target[z] != 0) {
+							break;
+						}
+
+						if (mult == -1)
+							mult = curr_try[z] / target[z];
+						else if (curr_try[z] / target[z] != mult) {
+							break;
+						}
+					}
+
+					if (z == 2) {
+						int curr_res = i + j + k;
+						if (res[0] == -1 || 
+							(res[0] != -1 && curr_res < min_res)) {
+							res[0] = i; res[1] = j; res[2] = k;
+							min_res = curr_res;
+							res_mult = mult;
+						}
+					}
+					
+				}	
+			}
+		}
+	}
+
+	if (min_res == INF) {
+		fout << "NONE\n";
+	}
+	else {
+		fout << res[0] << ' ' << res[1] << ' ' << res[2] << ' ' << res_mult << '\n';
+	}
+	fout.close();
+	return 0;
+}

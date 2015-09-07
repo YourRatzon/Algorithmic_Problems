@@ -1,0 +1,105 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+/*
+ID: jamerz1
+PROG: prefix
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const unsigned int MAX = 39;
+
+vector < vector<bool> > T;
+
+int main()
+{
+	ifstream fin("prefix.in");
+	vector<string> primitives;
+	string temp = "";
+	while (temp != ".") {
+		fin >> temp;
+		primitives.push_back(temp);
+	}
+	string seq = "";
+	while (fin >> temp)
+		seq += temp;
+
+	int prim_size = primitives.size();
+	int seq_size = seq.size();
+	int max_prefix = 0;
+
+	T.resize(seq_size);
+	for (int i = 0; i < seq_size; ++i) {
+		T[i].resize(prim_size);
+		for (int p = 0; p < prim_size; ++p) {
+			int m = primitives[p].size();
+			if (m > i + 1) {
+				T[i][p] = false;
+			}
+			else {
+				T[i][p] = false;
+				if (seq.substr(i - m + 1, m) == primitives[p]) {
+					if (i + 1 - m == 0){
+						T[i][p] = true;
+						max_prefix = i+1;
+					}
+					else {
+						for (int j = 0; j < prim_size; ++j) {
+							if (T[i - m][j]) {
+								T[i][p] = true;
+								max_prefix = i + 1;
+								break;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	ofstream fout("prefix.out");
+	fout << max_prefix << '\n';
+	fout.close();
+
+	return 0;
+}

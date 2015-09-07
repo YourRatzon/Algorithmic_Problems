@@ -1,0 +1,169 @@
+
+/*
+TopCoder SRM 197 Round 1, Div1, Level 1.
+GerneralChess
+*/
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <vector>
+using namespace std;
+
+class point
+{
+public:
+	int x, y;
+	point() 
+	{x = 0; y = 0;}
+	point(int a, int b) 
+	{ x = a; y = b; }
+
+	string toString()
+	{
+		stringstream ss;
+		ss<<x;
+		ss<<',';
+		ss<<y;
+		return ss.str();
+	}
+};
+
+bool operator ==(const point &a, const point &b)
+{
+	if (a.x == b.x && a.y == b.y)
+		return true;
+	else 
+		return false;
+}
+
+point operator +(const point &a, const point &b)
+{
+	return point(a.x + b.x, a.y + b.y);
+}
+
+class GeneralChess
+{
+public:
+	vector<string> attackPositions(vector <string> pieces)
+	{
+		int size = pieces.size();
+		point** attackedBy;
+		attackedBy = new point*[size];
+		for (int i = 0; i < size; i++)
+			attackedBy[i] = new point[8];
+
+		stringstream ss;
+		int x, y;
+
+		for (int m = 0 ; m < size; m++)
+		{
+			ss << pieces[m];
+			ss >> x;
+			ss.get();
+			ss>>y;
+			point p1(x, y);
+			ss.clear();
+
+			attackedBy[m] = getPos(p1);
+		}
+
+		for (int i = 0; i<size;i++)
+		{
+			for (int j = 0; j<8; j++)
+			{
+				cout<<attackedBy[i][j].toString()<<"  ";
+			}
+			cout<<endl;
+		}
+
+		vector<string> answer = intersection(attackedBy, size);
+
+		for (int i = 0; i<size;i++)
+				delete[] attackedBy[i];
+
+		return answer;
+	}
+
+	point* getPos(point p1)
+	{
+		
+		int a[8] = { -2, -2, -1, -1,  1, 1,  2, 2 };
+		int b[8] = { -1,  1, -2,  2, -2, 2, -1, 1 };
+
+		point * result = new point[8];
+
+		for (int i = 0; i<8; i++)
+		{
+			point p2(a[i],b[i]);
+			point newPt = p1 + p2;	
+
+			result[i] = newPt;
+		}
+
+		return result;
+	}
+
+	vector<string> intersection(point** attackedBy, int size)
+	{
+		string tempA[8];
+		bool equal = false;
+		int pr = 0;
+
+		for (int k = 0; k<8; k++)
+		{
+			equal = true;
+			for (int i = 1; i<size;i++)
+			{
+				for (int j = 0; j<8; j++)
+				{
+					equal = false;
+					if (attackedBy[0][k] == attackedBy[i][j])
+					{
+						equal = true;
+						break;
+					}
+				}
+
+				if (!equal)
+					break;
+			}
+			
+			if (equal)
+			{
+				tempA[pr] = attackedBy[0][k].toString();
+				pr++;
+			}
+		}
+
+		vector<string> answer;
+		if (pr)
+		{
+			for(int i = 0; i < pr; i ++)
+			{
+				answer.push_back(tempA[i]);
+			}
+		}
+		else
+			cout<<"No point threatens all these locations at the same time.\n";
+
+		return answer;
+	}
+
+} GC;
+
+int main()
+{
+	string temp[] = {"0,0"};
+
+	vector<string> pieces(temp, temp + sizeof(temp)/sizeof(string));
+
+	pieces = GC.attackPositions(pieces);
+
+	vector<string>::iterator it;
+	cout<<endl<<"Here are the points that threaten all of those locations: \n";
+	for (it = pieces.begin(); it != pieces.end(); it++)
+		cout<<(*it)<<endl;
+
+}

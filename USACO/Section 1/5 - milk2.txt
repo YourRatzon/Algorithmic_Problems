@@ -1,0 +1,99 @@
+
+/*
+ID: jamerz1
+PROG: milk2
+LANG: C++
+*/
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <vector>
+#include <utility>
+#include <list>
+#include <iterator> 
+#include <cctype>
+#include <istream>
+#include <ctime>
+#include <algorithm>  
+#include <vector>
+#include <cmath>
+#include <climits>
+#include <queue>
+#include <stdlib.h> 
+using namespace std;
+
+int LongestMilking(vector< pair<int, int> > times)
+{
+
+	int max = times[0].second - times[0].first;
+	int curr = times[0].second - times[0].first;
+
+	for (int i = 1; i < times.size(); i++)
+	{
+		if (times[i].first <= times[i-1].second)
+		{
+			curr += times[i].second - times[i-1].second;
+			if (curr > max)
+				max = curr;
+		}
+		else
+		{
+			curr = times[i].second - times[i].first;
+			if (curr > max)
+				max = curr;
+		}
+	}
+
+	return max;
+}
+
+int LongestNoMilk(vector< pair<int, int> > times)
+{
+	int max = 0;
+	int save;
+
+	for (int i = 1; i < times.size(); i++)
+	{
+		if (times[i].first - times[i-1].second > max)
+		{
+			max = times[i].first - times[i-1].second;
+		}
+	}
+
+	return max;
+}
+
+int main()
+{
+	ifstream fin("milk2.in");
+	ofstream fout("milk2.out");
+
+	int N;
+	fin >> N;
+	vector< pair<int, int> > times(N, pair<int,int>(0,0));
+	for (int i = 0; i < N; i++)
+	{
+		fin >> times[i].first;
+		fin >> times[i].second;
+	}
+
+	sort(times.begin(), times.end());
+
+	//erase times that are included within other times
+	for (int i = 0; i < times.size()-1; i++)
+	{
+		while (times.size() > i+1 && times[i].second >= times[i+1].second)
+		{
+			times.erase(times.begin() + i + 1);
+		}
+	}
+
+	fout << LongestMilking(times);
+	fout << ' ';
+	fout << LongestNoMilk(times);
+	fout << endl;
+
+	return 0;
+}

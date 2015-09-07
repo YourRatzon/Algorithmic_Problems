@@ -1,0 +1,104 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+/*
+ID: jamerz1
+PROG: barn1
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const int MAX = 201;
+int stallTable[MAX] = { 0 };
+
+int main()
+{
+	ifstream fin("barn1.in");
+	ofstream fout("barn1.out");
+	int maxBoards, stalls, cows;
+	fin >> maxBoards >> stalls >> cows;
+
+	int stallNum, minStall = MAX+1, maxStall = 0;
+
+	for (int i = 0; i < cows; ++i)
+	{
+		fin >> stallNum;
+		stallTable[stallNum] = 1;
+		
+		minStall = min(minStall, stallNum);
+		maxStall = max(maxStall, stallNum);
+	}
+
+
+	int stallsCovered = maxStall - minStall + 1;
+	int maxEmptySeg = 0, startMaxSeg, endMaxSeg;
+	int currEmptySeg = 0;
+	for (int i = 0; i < maxBoards-1; ++i)
+	{
+		maxEmptySeg = 0;
+		for (int j = minStall; j <= maxStall; ++j)
+		{
+			if (stallTable[j] == 0)
+			{
+				currEmptySeg++;
+				if (currEmptySeg > maxEmptySeg)
+				{
+					maxEmptySeg = currEmptySeg;
+					endMaxSeg = j;
+					startMaxSeg = j - maxEmptySeg + 1;
+				}
+			}
+			else
+				currEmptySeg = 0;
+		}
+
+		for (int j = startMaxSeg; j <= endMaxSeg; ++j)
+		{
+			stallTable[j] = -1;
+			stallsCovered--;
+			if (stallsCovered == cows)
+			{
+				fout << stallsCovered << '\n';
+				return 0;
+			}
+		}
+	}
+	fout << stallsCovered << '\n';
+	return 0;
+}

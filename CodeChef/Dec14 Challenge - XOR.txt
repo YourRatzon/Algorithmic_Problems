@@ -1,0 +1,160 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+/*
+ID: jamerz1
+PROG: packrec
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <streambuf>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<unsigned int, unsigned int> ii;
+typedef vector<ii> vii;
+typedef vector<unsigned int> vi;
+
+const unsigned int MAX = 1001;
+vector<unsigned int> A;
+
+bool get_bit(unsigned int n, unsigned int bit)
+{
+	unsigned int mask = 1 << bit;
+	return (n & mask) != 0;
+}
+
+bool one_in_curr_row(unsigned int col, unsigned int row)
+{
+	bool col_bit = get_bit(A[row], col);
+	if (col_bit) {
+		return 1;
+	}
+	else {
+		for (int i = row + 1; i < A.size(); ++i)
+		{
+			col_bit = get_bit(A[i], col);
+			if (col_bit)
+			{
+				unsigned int temp = A[row];
+				A[row] = A[i];
+				A[i] = temp;
+				return 1;
+			}
+		}
+		return 0;
+	}
+}
+
+void remove_zeros(unsigned int row)
+{
+	for (int i = row + 1; i < A.size();)
+	{
+		if (A[i] == 0)
+			A.erase(A.begin() + i);
+		else
+			++i;
+	}
+}
+void make_col_zeros(unsigned int col, unsigned int row)
+{
+	for (int i = row + 1; i < A.size(); ++i)
+	{
+		bool col_bit = get_bit(A[i], col);
+		if (col_bit)
+		{
+			A[i] = A[row] ^ A[i];
+		}
+	}
+	remove_zeros(row);
+}
+
+void make_base()
+{
+	int total_ones = 0;
+	for (unsigned int col = 0, row = 0; total_ones < A.size(); col++)
+	{
+		if (one_in_curr_row(col, row))
+		{
+			total_ones++;
+			make_col_zeros(col, row);	
+			row++;
+		}
+	}
+}
+
+unsigned int least_bit_set(unsigned int x)
+{
+	unsigned int mask = 1;
+	for (int i = 0; i < 32; ++i)
+	{
+		if ((x & mask) != 0)
+			return i;
+		mask <<= 1;
+	}
+	return -1;
+}
+
+bool is_spanned(unsigned int num)
+{
+	for (int i = 0; i < A.size(); ++i)
+	{
+		unsigned int least_power_2 = pow(2.0,least_bit_set(A[i]));
+		if ((least_power_2 & num) != 0)
+			num ^= A[i];
+	}
+	return num == 0;
+}
+
+int main()
+{
+	unsigned int T, N, K;
+	cin >> T;
+	for (unsigned int i = 0; i < T; ++i)
+	{
+		cin >> N >> K;
+		A = vector<unsigned int>(N);
+		for (unsigned int j = 0; j < N; ++j)
+			cin >> A[j];
+		make_base();
+		unsigned int max_xor = K;
+		for (int num = 1; num <= 1023; ++num)
+		{
+			if (is_spanned(num))
+				max_xor = max(max_xor, K ^ num);
+		}
+		cout << max_xor << '\n';
+	
+	}
+}

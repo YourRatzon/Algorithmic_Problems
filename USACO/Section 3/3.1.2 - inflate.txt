@@ -1,0 +1,92 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: inflate
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const int INF = 1e9;
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const int MAX = 1e4 + 5;
+
+vi points;
+vi minutes;
+vi DP;
+
+int main(){
+	std::ios::sync_with_stdio(false);
+	cin.tie(0);
+	
+	ifstream fin("inflate.in");
+	int mins, types;
+	fin >> mins >> types;
+	points.resize(types+1);
+	minutes.resize(types+1);
+	for (int i = 1; i <= types; ++i) {
+		fin >> points[i] >> minutes[i];
+	}
+	fin.close();
+
+	DP.assign(mins+1, 0);
+	for (int i = 1; i <= types; ++i) {
+		for (int j = 0; j <= mins; ++j) {
+			if (j < minutes[i])
+				continue;
+			else 
+				DP[j] = max(DP[j], DP[j-minutes[i]] + points[i]);
+		}
+	}
+
+	ofstream fout("inflate.out");
+	fout << DP[mins] << '\n';
+
+	return 0;
+}

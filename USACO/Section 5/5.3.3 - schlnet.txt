@@ -1,0 +1,175 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+
+/*
+ID: jamerz1
+PROG: schlnet
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <math.h>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+
+//#define F first
+//#define S second
+
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<int, ii> iii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+typedef vector<ull> vull;
+typedef vector<ll> vll;
+
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const double PI = 3.14159265;
+const int INF = INT_MAX;
+double EPS = 1e-10;
+const int MAX_N = 1e5 + 1;
+
+vector<vi> AdjList;
+vi dfs_num, dfs_low, st;
+vector<bool> visited;
+int dfs_num_counter = 0;
+int num_SCC = 0;
+const int UNVISITED = -1;
+vi node_idx_to_SCC;
+vector<std::unordered_set<int>> DAG_AdjList;
+std::set<ii> DAG_EdgeList;
+
+void tarjan_SCC(int u) {
+	++dfs_num_counter;
+	dfs_num[u] = dfs_num_counter;
+	dfs_low[u] = dfs_num_counter;
+	visited[u] = true;
+	st.push_back(u);
+	for (int i = 0; i < AdjList[u].size(); ++i) {
+		int v = AdjList[u][i];
+		if (dfs_num[v] == UNVISITED)
+			tarjan_SCC(v);
+		if (visited[v]) // only update if v is in current SCC
+			dfs_low[u] = min(dfs_low[u], dfs_low[v]);
+		else { // v is in the next SCC, so {u,v} crosses between SCCs
+			DAG_EdgeList.insert({ u, v });
+		}
+	}
+	if (dfs_low[u] == dfs_num[u]) {// this is root of SCC
+		while (true) {
+			int x = st.back();
+			st.pop_back();
+			visited[x] = false;
+			node_idx_to_SCC[x] = num_SCC;
+			if (x == u)
+				break;
+		}
+		++num_SCC;
+	}
+
+}
+
+int main(int argc, char *argv[]) {
+	std::ios::sync_with_stdio(false);
+	cin.tie(0);
+
+	ifstream fin("schlnet.in");
+	int N;
+	fin >> N;
+	AdjList.assign(N, vi());
+	int x;
+	for (int i = 0; i < N; ++i) {
+		while (fin >> x && x != 0) {
+			AdjList[i].push_back(x-1);
+		}
+	}
+	fin.close();
+
+	visited.assign(N, false);
+	dfs_num.assign(N, UNVISITED);
+	dfs_low.assign(N, 0);
+	node_idx_to_SCC.assign(N, 0);
+	for (int i = 0; i < N; ++i) {
+		if (dfs_num[i] == UNVISITED)
+			tarjan_SCC(i);
+	}
+
+	vector<bool> roots(num_SCC, true);
+	DAG_AdjList.assign(num_SCC, std::unordered_set<int>());
+	for (auto it = DAG_EdgeList.begin(); it != DAG_EdgeList.end(); ++it) {
+		ii p = *it;
+		int u = p.first;
+		int v = p.second;
+		int u_SCC = node_idx_to_SCC[u];
+		int v_SCC = node_idx_to_SCC[v];
+		roots[v_SCC] = false;
+		DAG_AdjList[u_SCC].insert(v_SCC);
+	}
+
+	int n_roots = 0;
+	for (int i = 0; i < num_SCC; ++i)
+		if (roots[i] == true)
+			n_roots++;
+	int res_A = n_roots;
+	int n_leaves = 0;
+	for (int i = 0; i < num_SCC; ++i) {
+		if (DAG_AdjList[i].size() == 0 )
+			n_leaves++;
+	}
+
+	int res_B;
+	if (n_roots > 1)
+		res_B = max(n_leaves, n_roots);
+	else if (n_leaves > 1)
+		res_B = max(0, n_leaves);
+	else if (num_SCC == 1)
+		res_B = 0;
+	else // n_roots == 1, n_leaves == 1, num_SCC > 1
+		res_B = 1;
+	ofstream fout("schlnet.out");
+	fout << res_A << '\n' << res_B << '\n';
+	fout.close();
+
+	return 0;
+}

@@ -1,0 +1,90 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+/*
+ID: jamerz1
+PROG: sort3
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int,  int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const unsigned int MAX = 1001;
+int A[MAX];
+
+int main()
+{
+	ifstream fin("sort3.in");
+	int N;
+	fin >> N;
+	int digit_count[4];
+	memset(digit_count, 0, 4*4);
+
+	for (int i = 0; i < N; ++i) {
+		fin >> A[i];
+		digit_count[A[i]]++;
+	}
+	fin.close();
+
+	int misplaced[4][4];
+	memset(misplaced, 0, 4 * 4 * 4);
+	int total_misplaced = 0;
+
+	for (int i = 1, k = 0; i <= 3; ++i) {
+		for (int j = 0; j < digit_count[i]; ++j, ++k) {
+			misplaced[A[k]][i]++;
+			if (A[k] != i)
+				total_misplaced++;
+		}
+	}
+	int res = 0;
+	res += min(misplaced[2][1], misplaced[1][2]);
+	res += min(misplaced[3][1], misplaced[1][3]);
+	res += min(misplaced[3][2], misplaced[2][3]);
+	res += ((total_misplaced - 2 * res) * 2) / 3;
+	
+
+	ofstream fout("sort3.out");
+	fout << res << '\n';
+	fout.close();
+
+	return 0;
+}

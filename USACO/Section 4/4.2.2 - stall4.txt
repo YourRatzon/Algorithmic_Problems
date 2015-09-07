@@ -1,0 +1,148 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: stall4
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<int, ii> iii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+typedef vector<ull> vull;
+typedef vector<ll> vll;
+
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const int MAX_N = 2097153;
+const double INF = 2000000000;
+
+const int MAX_V = 405;
+int res[MAX_V][MAX_V];
+vi dist, parent;
+int S, T;
+
+int augment(int u, int min_edge) {
+	if (u == S)
+		return min_edge;
+
+	else {
+		int curr_p = parent[u];
+		if (curr_p == -1)
+			return 0;
+		else if (res[curr_p][u] > 0) {
+			min_edge = min(min_edge, res[curr_p][u]);
+			int f = augment(curr_p, min_edge);
+			res[curr_p][u] -= f;
+			res[u][curr_p] += f;
+			
+			return f;
+		}
+	}
+}
+
+int main(int argc, char *argv[]) {
+	//std::ios::sync_with_stdio(false);
+	//cin.tie(0);
+	ifstream fin("stall4.in");
+	int cows, stalls;
+	fin >> cows >> stalls;
+	int verts = cows + stalls + 2;	
+	S = 0, T = verts - 1;
+
+	for (int i = 1; i <= cows; ++i) {
+		res[S][i] = 1;
+	}
+
+	int n;
+	int stall;
+	for (int i = 1; i <= cows; ++i) {
+		fin >> n;
+		for (int j = 0; j < n; ++j) {
+			fin >> stall;
+			res[i][stall + cows] = 1;
+		}
+	}
+	fin.close();
+
+	for (int i = cows + 1; i <= cows+stalls; ++i) {
+		res[i][T] = 1;
+	}
+
+	int mf = 0;
+	while (true) {
+		int f = 0;
+		dist.assign(verts, INF);
+		parent.assign(verts, -1);
+		queue<int> q;
+		q.push(S);
+		dist[S] = 0;
+		while (!q.empty()) {
+			int u = q.front();
+			q.pop();
+			for (int v = 0; v < verts; ++v) {
+				if (res[u][v] > 0 && dist[v] == INF) {
+					dist[v] = dist[u] + 1;
+					parent[v] = u;
+					q.push(v);
+				}
+			}
+		}
+		f = augment(T, INF);
+		if (f == 0)
+			break;
+		else
+			mf += f;
+	}
+
+	ofstream fout("stall4.out");
+	fout << mf << '\n';
+	fout.close();
+	return 0;
+
+}

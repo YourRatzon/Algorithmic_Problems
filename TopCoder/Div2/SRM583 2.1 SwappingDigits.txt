@@ -1,0 +1,63 @@
+
+/*
+
+*/
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <vector>
+#include <utility>
+#include <list>
+#include <iterator> 
+#include <cctype>
+#include <istream>
+#include <ctime>
+#include <algorithm>  
+#include <vector>
+#include <cmath>
+#include <climits>
+#include <queue>
+#include <stdlib.h> 
+using namespace std;
+
+class SwappingDigits
+{
+public:
+
+	string minNumber(string num)
+	{
+		bool swap = false;
+		int min = 0;
+		for (int curr = 0; curr < num.length(); curr++)
+		{
+			min = curr;
+			for (int i = 1; i < num.length(); i++)
+			{
+				if (num[i] == '0' && curr == 0)
+					continue;
+				if (num[i] <= num[min])
+				{
+					min = i;
+					swap = true;
+				}
+			}
+			if (swap)
+				{
+					int save = num[min];
+					num[min] = num[curr];
+					num[curr] = save;
+					return num;
+				}
+		}
+	}
+};
+
+
+int main()
+{
+	SwappingDigits SD;
+	cout<<SD.minNumber("19230")<<endl;
+
+}

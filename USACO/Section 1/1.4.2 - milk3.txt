@@ -1,0 +1,116 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+/*
+ID: jamerz1
+PROG: milk3
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int,  int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const unsigned int MAX = 1000;
+bool visited[21][21][21];
+int A, B, C;
+set<int> sol;
+
+void solve(int a, int b, int c)
+{
+	if (visited[a][b][c]) return;
+	else visited[a][b][c] = true;
+
+	if (a == 0) sol.insert(c);
+
+	int left_A = A - a;
+	int left_B = B - b;
+	int left_C = C - c;
+
+	// pour from a
+	if (a > 0) {
+		// to b
+		if (left_B)
+			solve(max(0, a-left_B), min(B, b + a), c);
+		// to c
+		if (left_C)
+			solve(max(0, a - left_C), b, min(C, c + a));
+	}
+	// pour from b
+	if (b > 0) {
+		// to a
+		if (left_A)
+			solve(min(A, a + b), max(0, b - left_A), c);
+		// to c
+		if (left_C)
+			solve(a, max(0, b - left_C), min(C, b + c));
+	}
+	// pour from c
+	if (c > 0) {
+		// to a
+		if (left_A)
+			solve(min(A, a + c), b, max(0, c - left_A));
+		// to b
+		if (left_B)
+			solve(a, min(B, c + b), max(0, c - left_B));
+	}
+}
+
+int main()
+{
+	ifstream fin("milk3.in");
+	ofstream fout("milk3.out");
+	fin >> A >> B >> C;
+	fin.close();
+	memset(visited, 0, 21 * 21 * 21);
+
+	solve(0,0,C);
+
+	set<int>::iterator it;
+	for (it = sol.begin(); it != sol.end();)
+	{
+		fout << (*it);
+		if (++it != sol.end())
+			fout << ' ';
+	}
+	fout << '\n';
+	fout.close();
+
+	return 0;
+}

@@ -1,0 +1,71 @@
+
+
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <array>
+#include <math.h> 
+#include <iomanip>
+#include <queue> 
+#include <random>
+#include <chrono>
+#include <stdlib.h>    
+#include <time.h> 
+#include <stack>
+#include <queue>
+#include <unordered_map>
+#include <unordered_set>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <tuple>
+#include <stdio.h>
+
+#include <iostream>
+using namespace std;
+
+int main() 
+{
+	
+	int T, n, a, b;
+	cin >> T;
+
+	for (int i = 0; i < T; ++i)
+	{
+		string line;
+		cin >> line;
+		//bracketStack.
+		int count = 0;
+		int finalCount = 0;
+		stack<char> bracketStack;
+
+		for (int j = 0; j < line.size(); ++j)
+		{
+			if ((bracketStack.empty() || bracketStack.top() == '<') && 
+				line[j] == '<')
+			{
+				bracketStack.push('<');
+			}
+			else if (!bracketStack.empty() && bracketStack.top() == '<' && line[j] == '>')
+			{
+				bracketStack.pop();
+				count += 2;
+				if (bracketStack.empty())
+				{
+					finalCount += count;
+					count = 0;
+				}
+			}
+
+			else if (bracketStack.empty() && line[j] == '>')
+				break;
+		}
+		cout << finalCount << endl;
+
+	}
+	
+	return 0;
+}

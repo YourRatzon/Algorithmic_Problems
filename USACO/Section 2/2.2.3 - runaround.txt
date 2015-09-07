@@ -1,0 +1,112 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+/*
+ID: jamerz1
+PROG: runround
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const unsigned int MAX = 39;
+const unsigned int MAX_SUM = (MAX * (MAX+1)) / 4;
+int N;
+
+int get_circle_idx(string M, int curr_idx) {
+	return (curr_idx += M[curr_idx]-'0') % M.size();
+}
+bool runaround(string M) {
+	vector<bool> visited(M.size());
+	int curr_idx = 0;
+	int count = 0;
+	while (true) {
+		visited[curr_idx] = true;
+		count++;
+		int next_idx = get_circle_idx(M, curr_idx);
+		if (!visited[next_idx]) {
+			curr_idx = next_idx;
+			continue;
+		}
+		else {
+			return next_idx == 0 && count == M.size();
+		}
+	}
+}
+
+string next_candidate(string M) {
+	ull num = stoull(M);
+	num++;
+	bool digits[10];
+	memset(digits, 0, 10);
+	ull n_num = num;
+	while (n_num) {
+		int curr_digit = n_num % 10;
+		n_num /= 10;
+		if (curr_digit == 0 || digits[curr_digit]) {
+			++num;
+			n_num = num;
+			memset(digits, 0, 10);
+			continue;
+		}
+		else {//if (!digits[curr_digit])
+			digits[curr_digit] = true;
+		}
+	}
+	return to_string(num);
+}
+
+int main()
+{
+	ifstream fin("runround.in");
+	string M;
+	fin >> M;
+	fin.close();
+	ofstream fout("runround.out");
+	M = next_candidate(M);
+	while (!runaround(M)) {
+		M = next_candidate(M);
+	}
+	fout << M << '\n';
+	fout.close();
+
+	return 0;
+}

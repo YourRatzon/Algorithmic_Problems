@@ -1,0 +1,200 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: camelot
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const int MAX_N = 1026;
+const int INF = 1e7;
+
+vector<vi> board;
+vii knights;
+ii king;
+vii moves = { {-2,-1}, {-2, 1}, {-1,-2}, {-1,2}, {1, -2}, {1, 2}, {2, -1}, {2,1} };
+int rows, cols;
+
+ii operator+(const ii &lhs, const ii &rhs) {
+	return{ lhs.first + rhs.first, lhs.second + rhs.second };
+}
+
+bool operator<(const ii &lhs, const ii &rhs) {
+	if (lhs.first != rhs.first)
+		return lhs.first < rhs.first;
+	else
+		return lhs.second < rhs.second;
+}
+
+
+vector<vi> BFS(ii cell) {
+	vector<vi> dist_vec(30, vi(26, INF));
+	queue<ii> st;
+	st.push(cell);
+	dist_vec[cell.first][cell.second] = 0;
+	while (!st.empty()) {
+		ii curr = st.front();
+		st.pop();
+		for (int i = 0; i < moves.size(); ++i) {
+			ii next_move = curr + moves[i];
+			if (next_move.first < 0 || next_move.first >= rows || next_move.second < 0 || next_move.second >= cols)
+				continue;
+			else {
+				if (dist_vec[next_move.first][next_move.second] == INF) {
+					st.push(next_move);
+					dist_vec[next_move.first][next_move.second] =
+						dist_vec[curr.first][curr.second] + 1;
+				}
+
+			}
+		}
+	}
+	return dist_vec;
+}
+
+vector<vi> dist[30][26];
+
+int main(int argc, char *argv[]) {
+	//std::ios::sync_with_stdio(false);
+	//cin.tie(0);
+	ifstream fin("camelot.in");
+	fin >> rows >> cols;
+	board.assign(rows, vi(cols, 0));
+	char let;
+	int row_num, col_num;
+	fin >> let >> row_num;
+	col_num = let - 'A';
+	king = { rows - row_num, col_num };
+	while (fin >> let >> row_num) {
+		col_num = let - 'A';
+		knights.push_back({ rows - row_num, col_num });
+	}
+	fin.close();
+
+	vector<pair<ii,int>> to_check;
+	to_check.push_back({ king, 0 });
+	dist[king.first][king.second] = BFS({ king.first, king.second });
+
+	for (int i = 2; i > 0; --i) {
+		int r1 = king.first - i;
+		int r2 = king.first + i;
+		for (int c = king.second - i; c <= king.second + i; ++c) {
+			if (!(r1 < 0 || c < 0 || r1 >= rows ||c >= cols)) {
+				dist[r1][c] = BFS({ r1, c });
+				to_check.push_back({ { r1, c }, i });
+			}
+			if (!(r2 < 0 || c < 0 || r2 >= rows || c >= cols)) {
+				dist[r2][c] = BFS({ r2, c });
+				to_check.push_back({ { r2, c }, i });
+			}
+		}
+
+		int c1 = king.second - i;
+		int c2 = king.second + i;
+		for (int r = king.first - i; r <= king.first + i; ++r) {
+			if (!(r < 0 || c1 < 0 || r >= rows || c1 >= cols)) {
+				dist[r][c1] = BFS({ r, c1 });
+				to_check.push_back({ { r, c1 }, i });
+			}
+			if (!(r < 0 || c2 < 0 || r >= rows || c2 >= cols)) {
+				dist[r][c2] = BFS({ r, c2 });
+				to_check.push_back({ { r, c2 }, i });
+			}
+
+		}
+		
+	}
+		
+	ofstream fout("camelot.out");
+	if (knights.size() == 0) {
+		fout << 0 << '\n';
+		return 0;
+	}
+	for (int k = 0; k < knights.size(); ++k) {
+		if (dist[knights[k].first][knights[k].second].size() == 0)
+			dist[knights[k].first][knights[k].second] = BFS(knights[k]);
+	}
+	int curr_dist = 0;
+	int min_dist = INF;
+	for (int i = 0; i < to_check.size(); ++i) {
+		ii curr_check = to_check[i].first;
+		int curr_add = to_check[i].second;
+		for (int r = 0; r < rows; ++r) {
+			for (int c = 0; c < cols; ++c) {
+				ii meet = { r, c };
+				curr_dist = 0;
+				for (int k = 0; k < knights.size(); ++k) {
+					curr_dist += dist[knights[k].first][knights[k].second][meet.first][meet.second];
+				}
+				for (int k = 0; k < knights.size(); ++k) {
+					curr_dist -= dist[knights[k].first][knights[k].second][meet.first][meet.second];
+					curr_dist += dist[knights[k].first][knights[k].second][curr_check.first][curr_check.second];
+					curr_dist += dist[curr_check.first][curr_check.second][meet.first][meet.second];
+
+					min_dist = min(curr_dist + curr_add, min_dist);
+
+					curr_dist += dist[knights[k].first][knights[k].second][meet.first][meet.second];
+					curr_dist -= dist[knights[k].first][knights[k].second][curr_check.first][curr_check.second];
+					curr_dist -= dist[curr_check.first][curr_check.second][meet.first][meet.second];
+
+				}
+
+			}
+		}
+	}
+
+
+	fout << min_dist << '\n';
+	
+	return 0;
+}

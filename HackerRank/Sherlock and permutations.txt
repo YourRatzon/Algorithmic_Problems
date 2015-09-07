@@ -1,0 +1,75 @@
+
+// C++03
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h> 
+#include <iomanip>
+#include <queue> 
+#include <stdlib.h>    
+#include <time.h> 
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+
+#include <iostream>
+using namespace std;
+
+long long unsigned modPow(long long unsigned a, long long unsigned x, long long unsigned p) {
+    //calculates a^x mod p in logarithmic time.
+    long long unsigned res = 1;
+    while(x > 0) {
+        if( x % 2 != 0) {
+            res = (res * a) % p;
+        }
+        a = (a * a) % p;
+        x /= 2;
+    }
+    return res;
+}
+
+long long unsigned modInverse(long long unsigned a, long long unsigned p) {
+    //calculates the modular multiplicative of a mod m.
+    //(assuming p is prime).
+    return modPow(a, p-2, p);
+}
+long long unsigned modBinomial(long long unsigned n, long long unsigned k, long long unsigned p) {
+// calculates C(n,k) mod p (assuming p is prime).
+
+    long long unsigned numerator = 1; // n * (n-1) * ... * (n-k+1)
+    for (int i=0; i<k; i++) {
+        numerator = (numerator * (n-i) ) % p;
+    }
+    
+    long long unsigned denominator = 1; // k!
+    for (int i=1; i<=k; i++) {
+        denominator = (denominator * i) % p;
+    }
+    
+    // numerator / denominator mod p.
+    return ( numerator * modInverse(denominator,p) ) % p;
+}
+
+int calculate(int n, int k) {
+    return (int)( modBinomial(n,k, 1000000007) );
+}
+
+ int  main()
+ {
+	int t, n, m;
+	scanf("%d", &t);
+
+	for (int i = 0; i < t; ++i)
+	{
+		scanf("%d%d", &n, &m);
+		printf("%d\n",  calculate(n + m - 1, n));
+	}
+	return 0;
+}

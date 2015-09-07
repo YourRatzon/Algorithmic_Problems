@@ -1,0 +1,184 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+
+/*
+ID: jamerz1
+PROG: fc
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<int, ii> iii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+typedef vector<ull> vull;
+typedef vector<ll> vll;
+
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+
+struct Point {
+	double x, y;
+	Point(double _x=0, double _y=0) :x(_x), y(_y){}
+};
+struct Vec {
+	double x, y;
+	Vec(double _x = 0, double _y = 0) :x(_x), y(_y){}
+};
+
+const int MAX_N = 1e4 + 5;
+double EPS = 1e-10;
+const int INF = INT_MAX;
+const int Y_MIN = -1e6 - 1;
+const int X_MAX = 1e6 + 1;
+int N;
+
+bool eq(const double & lhs, const double & rhs) {
+	return fabs(lhs - rhs) < EPS;
+}
+
+vector<Point> points;
+int get_pivot(const vector<Point> & points) {
+	int piv = 0;
+	for (int i = 1; i < points.size(); ++i) {
+		if (points[i].y < points[piv].y || (
+			points[i].y == points[piv].y && points[i].x > points[piv].x))
+			piv = i;
+	}
+	return piv;
+}
+
+double dist(const Point & a, const Point & b) {
+	return sqrt((b.x - a.x)*(b.x - a.x) + (b.y - a.y)*(b.y - a.y));
+}
+
+bool ang_comp(const Point & lhs, const Point & rhs) {
+	double lhs_angle = atan2(lhs.y - points[0].y, lhs.x - points[0].x);
+	double rhs_angle = atan2(rhs.y - points[0].y, rhs.x - points[0].x);
+
+	if (eq(lhs_angle, rhs_angle)) {
+		return dist(points[0], lhs) < dist(points[0], rhs);
+	}
+	else
+		return lhs_angle < rhs_angle;
+}
+
+double cross(Vec A, Vec B) {
+	return A.x*B.y - A.y*B.x;
+}
+
+Vec to_vec(Point a, Point b) {
+	return Vec(b.x - a.x, b.y - a.y);
+}
+
+bool ccw(Point a, Point b, Point c) {
+	return cross(to_vec(a, b), to_vec(a, c)) > 0;
+}
+
+vector<Point> convex_hull(vector<Point> & points) {
+	vector<Point> CH = {points[N-1],points[0],points[1]};
+	int i = 2;
+	while (i < N) {
+		int j = CH.size() - 1;
+		if (ccw(CH[j - 1], CH[j], points[i])) {
+			CH.push_back(points[i]);
+			i++;
+		}
+		else
+			CH.pop_back();
+	}
+	return CH;
+}
+
+double get_perimeter(const vector<Point> & CH) {
+	double perim = 0;
+	for (int i = 1; i < CH.size(); ++i) {
+		perim += dist(CH[i], CH[i - 1]);
+	}
+	return perim;
+}
+
+double convex_hull_perimeter(vector<Point> & points) {
+	if (points.size() < 2)
+		return 0.0;
+	else if (points.size() == 2)
+		return dist(points[0], points[1]);
+
+	int piv_idx = get_pivot(points);
+	// swap pivot into first spot in points
+	Point temp = points[0];
+	points[0] = points[piv_idx];
+	points[piv_idx] = temp;
+
+	sort(points.begin() + 1, points.end(), ang_comp);
+	vector <Point> CH = convex_hull(points);
+
+	return get_perimeter(CH);
+}
+
+int main(int argc, char *argv[]) {
+	//std::ios::sync_with_stdio(false);
+	//cin.tie(0);
+
+	ifstream fin("fc.in");
+	fin >> N;
+	points.resize(N);
+	double x, y;
+	for (int i = 0; i < N; ++i) {
+		fin >> x >> y;
+		points[i] = { x, y };
+	}
+	fin.close();
+	ofstream fout("fc.out");
+	fout << fixed;
+	fout << std::setprecision(2) << convex_hull_perimeter(points) << '\n';
+	fout.close();
+
+
+	return 0;
+
+}

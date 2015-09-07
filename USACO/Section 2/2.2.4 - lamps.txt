@@ -1,0 +1,138 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+/*
+ID: jamerz1
+PROG: lamps
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const unsigned int MAX = 39;
+
+ofstream fout("lamps.out");
+vector<string> result;
+string finish;
+unordered_set<string> visited;
+unordered_set<string> visited_res;
+
+void possible(string curr_lamps, int curr_c, int C) {
+	if (curr_c == C) {
+		for (int i = 1; i < curr_lamps.size(); ++i) {
+			if (finish[i] == 'X') continue;
+			else if (curr_lamps[i] == finish[i]) continue;
+			else return;
+		}
+		if (visited_res.find(curr_lamps) == visited_res.end()) {
+			result.push_back(curr_lamps);
+			visited_res.insert(curr_lamps);
+		}
+		return;
+	}
+	visited.insert(curr_lamps + to_string(curr_c));
+
+	// button 1;
+	string new_lamps = curr_lamps;
+	for (int i = 1; i < curr_lamps.size(); ++i) {
+		new_lamps[i] = (curr_lamps[i] == '0' ? '1' : '0');
+	}
+	if (visited.find(new_lamps + to_string(curr_c + 1)) == visited.end())
+		possible(new_lamps, curr_c + 1, C);
+	
+	// button 2;
+	new_lamps = curr_lamps;
+	for (int i = 1; i < curr_lamps.size(); i+=2) {
+		new_lamps[i] = (curr_lamps[i] == '0' ? '1' : '0');
+	}
+	if (visited.find(new_lamps + to_string(curr_c + 1)) == visited.end())
+		possible(new_lamps, curr_c + 1, C);
+
+	//button 3;
+	new_lamps = curr_lamps;
+	for (int i = 2; i < curr_lamps.size(); i += 2) {
+		new_lamps[i] = (curr_lamps[i] == '0' ? '1' : '0');
+	}
+	if (visited.find(new_lamps + to_string(curr_c + 1)) == visited.end())
+		possible(new_lamps, curr_c + 1, C);
+
+	//button 4;
+	new_lamps = curr_lamps;
+	for (int i = 1; i < curr_lamps.size(); i += 3) {
+		new_lamps[i] = (curr_lamps[i] == '0' ? '1' : '0');
+	}
+	if (visited.find(new_lamps + to_string(curr_c + 1)) == visited.end())
+		possible(new_lamps, curr_c + 1, C);
+
+	return;
+}
+
+int main()
+{
+	ifstream fin("lamps.in");
+	int N, C;
+	fin >> N >> C;
+	finish.assign(N + 1, 'X');
+	int lamp_num = 0;
+	while (true){
+		fin >> lamp_num;
+		if (lamp_num == -1) 
+			break;
+		else finish[lamp_num] = '1';
+	}
+	while (true) {
+		fin >> lamp_num;
+		if (lamp_num == -1)
+			break;
+		else finish[lamp_num] = '0';
+	}
+	fin.close();
+	string starting(N + 1, '1');
+	possible(starting, 0, C);
+	sort(result.begin(), result.end());
+	if (result.size() > 0)
+		for (string str : result) fout << str.substr(1) << '\n';
+	else
+		fout << "IMPOSSIBLE\n";
+	fout.close();
+
+	return 0;
+}

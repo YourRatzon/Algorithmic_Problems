@@ -1,0 +1,86 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+/*
+ID: jamerz1
+PROG: numtri
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int,  int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const unsigned int MAX = 1000;
+int A[MAX][MAX];
+int T[MAX][MAX];
+
+int main()
+{
+	ifstream fin("numtri.in");
+	ofstream fout("numtri.out");
+	int R;
+	fin >> R;
+	for (int i = 0; i < R; ++i) {
+		for (int j = 0; j <= i; ++j)
+			fin >> A[i][j];
+	}
+	fin.close();
+	T[0][0] = A[0][0];
+
+	for (int r = 1; r < R; ++r) {
+		for (int i = 0; i <= r; ++i) {
+			if (i == 0)
+				T[r][i] = T[r - 1][i] + A[r][i];
+			else if (i == r)
+				T[r][i] = T[r - 1][i - 1] + A[r][i];
+			else
+				T[r][i] = A[r][i] + max(T[r - 1][i - 1], T[r - 1][i]);
+		}
+	}
+
+	int result = 0;
+	for (int i = 0; i < R; ++i)
+		result = max(result, T[R - 1][i]);
+	
+	fout << result <<'\n';
+	fout.close();
+
+	return 0;
+}

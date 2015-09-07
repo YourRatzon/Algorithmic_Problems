@@ -1,0 +1,190 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+
+/*
+ID: jamerz1
+PROG: frameup
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<int, ii> iii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+typedef vector<ull> vull;
+typedef vector<ll> vll;
+
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const ll MAX_N = 34;
+const ll INF = INT_MAX;
+
+int rows, cols;
+vector<vector<char>> board;
+
+struct frame {
+	int W, E, N, S;
+};
+
+std::unordered_map<char, frame> let_frame_map;
+
+vii can_remove(char name) {
+	vii to_rem;
+
+	frame curr = let_frame_map[name];
+	for (int c = curr.W; c <= curr.E; ++c) {
+		if (board[curr.N][c] != name && board[curr.N][c] != '.')
+			return{};
+		if (board[curr.S][c] != name && board[curr.S][c] != '.')
+			return{};
+
+		if (board[curr.N][c] == name)
+			to_rem.push_back({ curr.N, c });
+		if (board[curr.S][c] == name)
+			to_rem.push_back({ curr.S, c });
+	}
+
+	for (int r = curr.N; r <= curr.S; ++r) {
+		if (board[r][curr.W] != name && board[r][curr.W] != '.')
+			return{};
+		if (board[r][curr.E] != name && board[r][curr.E] != '.')
+			return{};
+
+		if (board[r][curr.W] == name)
+			to_rem.push_back({ r, curr.W });
+		if (board[r][curr.E] == name)
+			to_rem.push_back({ r, curr.E });
+	}
+	return to_rem;
+}
+
+void remove(vii to_rem, char name) {
+	for (ii x : to_rem)
+		board[x.first][x.second] = '.';
+}
+
+void replace(vii to_rem, char name) {
+	for (ii x : to_rem)
+		board[x.first][x.second] = name;
+}
+
+vector<pair<char, bool>> active_frames;
+std::set<string> answer_set;
+ofstream fout("frameup.out");
+
+void solve(string rev_order) {
+	if (rev_order.size() == active_frames.size()) {
+		std::reverse(rev_order.begin(), rev_order.end());
+		answer_set.insert(rev_order);
+		return;
+	}
+
+	else {
+		for (int it = 0; it < active_frames.size(); ++it) {
+			if (active_frames[it].second == false)
+				continue;
+
+			char name = active_frames[it].first;
+			vii to_rem = can_remove(name);
+			if (to_rem.size()>0) {
+				remove(to_rem, name);
+				active_frames[it].second = false;
+				solve(rev_order + name);
+				active_frames[it].second = true;
+				replace(to_rem, name);
+			}
+		}
+	}
+}
+
+bool comp(const pair<char,bool> & lhs, const pair<char,bool> & rhs) {
+	return lhs.first > rhs.first;
+}
+
+int main(int argc, char *argv[]) {
+	//std::ios::sync_with_stdio(false);
+	//cin.tie(0);
+
+	ifstream fin("frameup.in");
+	fin >> rows >> cols;
+	board.assign(rows, vector<char>(cols));
+	char in;
+	for (int r = 0; r < rows; ++r) {
+		for (int c = 0; c < cols; ++c) {
+			fin >> in;
+			board[r][c] = in;
+
+			if (in != '.') {
+				if (let_frame_map.count(in) == 0) {
+					let_frame_map[in] = { c, c, r, r };
+					active_frames.push_back({ in, true });
+				}
+				else {
+					frame curr = let_frame_map[in];
+					curr.W = min(curr.W, c);
+					curr.E = max(curr.E, c);
+					curr.N = min(curr.N, r);
+					curr.S = max(curr.S, r);
+					let_frame_map[in] = curr;
+				}
+
+			}
+		}
+	}
+
+	//sort(active_frames.begin(), active_frames.end(), comp);
+	solve("");
+	
+	fin.close();
+
+	for (auto x : answer_set)
+		fout << x << '\n';
+	fout.close();
+
+	return 0;
+
+}

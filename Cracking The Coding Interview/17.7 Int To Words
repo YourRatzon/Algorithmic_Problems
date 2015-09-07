@@ -1,0 +1,92 @@
+// Cracking The Coding Interview - 17.7 Int To Words
+
+#include <iostream>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <array>
+#include <math.h> 
+#include <queue> 
+#include <random>
+#include <chrono>
+#include <stdlib.h>    
+#include <time.h> 
+#include <stack>
+#include <queue>
+#include <unordered_map>
+#include <unordered_set>
+#include <map>
+
+using std::cout;
+using std::cin;
+using std::string;
+using std::endl;
+using std::vector;
+
+string ThreeDigitsToWords(int val)
+{
+	vector<string> ones{ "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+		"eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen",
+		"eighteen", "nineteen" };
+	vector<string> tens{ "", "", "twenty", "thirty", "fourty", "fifty", "sixty", "seventy", "eighty", "ninety" };
+
+	int firstDigit = val / 100;
+	int lastTwoDigits = val % 100;
+	string result = "";
+
+	if (firstDigit) 
+		result += ones[firstDigit] + " hundred";
+	
+	if (lastTwoDigits > 19)
+	{
+		result += ' ' + tens[lastTwoDigits / 10];
+		if (lastTwoDigits % 10 != 0)
+			result += ' ' + ones[lastTwoDigits % 10];
+	}
+	else if (lastTwoDigits > 0)
+		result += ' ' + ones[lastTwoDigits];
+
+	return result;
+}
+
+string NumberToWords(int val)
+{
+	std::map<string, int> parts{ { "billion", 0 }, { "million", 0 }, { "thousand", 0 }, { "", 0 } };
+
+	parts["billion"] = val / 1000000000;
+	val = val % 1000000000;
+	parts["million"] = val / 1000000;
+	val = val % 1000000;
+	parts["thousand"] = val / 1000;
+	val = val % 1000;
+	parts[""] = val;
+
+
+	string result = "";
+	if (parts["billion"])
+		result += ThreeDigitsToWords(parts["billion"]) + " billion ";
+
+	if (parts["million"])
+		result += ThreeDigitsToWords(parts["million"]) + " million ";
+
+	if (parts["thousand"])
+		result += ThreeDigitsToWords(parts["thousand"]) + " thousand ";
+	
+	if (parts[""])
+		result += ThreeDigitsToWords(parts[""]);
+
+	if (result == "") result = "zero";
+
+	return result;
+}
+
+
+int main(int arg, char* argv[])
+{
+	cout << NumberToWords(INT_MAX) << endl;
+
+	system("pause");
+
+	return 0;
+}

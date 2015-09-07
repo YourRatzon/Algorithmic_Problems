@@ -1,0 +1,112 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+/*
+ID: jamerz1
+PROG: holstein
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int,  int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const unsigned int MAX = 1001;
+const int INF = 16;
+vi vitamins;
+vector<vi> feeds;
+int V, G;
+
+vector<int> solve(int feed, vi vitamins_left) {
+	vi new_vits_left(V);
+	bool done = true;
+	for (int i = 0; i < V; ++i) {
+		new_vits_left[i] = vitamins_left[i] - feeds[feed][i];
+		if (new_vits_left[i] > 0) done = false;
+	}
+	if (!done && feed == G - 1)
+		return vector<int>(INF);
+	else if (done) {
+		return { feed };
+	}
+	else {
+		vector<int> min_result(INF);
+		for (int i = feed+1; i < G; ++i) {
+			vector<int> curr_result = solve(i, new_vits_left);
+			if (curr_result.size() < min_result.size())
+				min_result = curr_result;
+		}
+		min_result.insert(min_result.begin(), feed);
+		return min_result;
+	}
+}
+
+int main()
+{
+	ifstream fin("holstein.in");
+	fin >> V;
+	vitamins.resize(V);
+	for (int i = 0; i < V; ++i)
+		fin >> vitamins[i];
+	fin >> G;
+	feeds.resize(G);
+	for (int i = 0; i < G; ++i) {
+		feeds[i].resize(V);
+		for (int j = 0; j < V; ++j)
+			fin >> feeds[i][j];
+	}
+	fin.close();
+
+	vector<int> min_result(INF);
+	for (int i = 0; i < G; ++i) {
+		vector<int> curr_result = solve(i, vitamins);
+		if (curr_result.size() < min_result.size())
+			min_result = curr_result;
+	}
+
+	ofstream fout("holstein.out");
+	int size = min_result.size();
+	fout << size << ' ';
+	for (int i = 0; i < size - 1; ++i)
+		fout << min_result[i] + 1 << ' ';
+	fout << min_result[size - 1] + 1<< '\n';
+	fout.close();
+
+	return 0;
+}

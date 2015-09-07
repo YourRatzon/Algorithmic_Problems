@@ -1,0 +1,124 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+/*
+ID: jamerz1
+PROG: combo
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int,  int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const unsigned int MAX = 21;
+
+int circle_add(int a, int b, int N)
+{
+	int res = (a + b) % N;
+	return (res != 0 ? res : N);
+}
+
+int circle_sub(int a, int b, int N)
+{
+	int res = a - b;
+	if (res <= 0) {
+		res += N;
+	}
+	return res;
+}
+
+int circle_dist(int a, int b, int N)
+{
+	return min(abs(a - b), N - max(a, b) + min(a, b));
+}
+
+bool opens_master(vector<int> combo, vector<int> master, int N)
+{
+
+	bool res[3];
+	for (int m = 0; m < 3; ++m) {
+		res[m] = circle_dist(combo[m], master[m], N) <= 2;
+	}
+	return res[0] && res[1] && res[2];
+}
+
+
+
+int main()
+{
+	ifstream fin("combo.in");
+	ofstream fout("combo.out");
+
+	int N;
+	vector<int> farmer(3);
+	vector<int> master(3);
+	fin >> N;
+	fin >> farmer[0] >> farmer[1] >> farmer[2];
+	fin >> master[0] >> master[1] >> master[2];
+	
+	if (N == 1) {
+		cout << "1\n";
+	}
+	else if (N == 2) {
+		cout << "8\n";
+	}
+	else if (N == 3) {
+
+	}
+	if (N < 6) {
+		fout << std::to_string(int(pow(N, 3))) << '\n';
+	}
+	else {
+		int total = 250;
+
+		// for each of 125 farmer combos, check if it opens master
+		// if yes, dec(total)
+		for (int i = circle_sub(farmer[0], 2, N), c1 = 0; c1 < 5; i = circle_add(i, 1, N), c1++) {
+			for (int j = circle_sub(farmer[1], 2, N), c2 = 0; c2 < 5; j = circle_add(j, 1, N), c2++) {
+				for (int k = circle_sub(farmer[2], 2, N), c3 = 0; c3< 5; k = circle_add(k, 1, N), c3++) {
+					if (opens_master({ i, j, k }, master, N))
+						total--;
+				}
+			}
+		}
+		fout << std::to_string(total) << '\n';
+	}
+	return 0;
+}

@@ -1,0 +1,203 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+/*
+ID: jamerz1
+PROG: packrec
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <streambuf>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const int MAX = 20001;
+
+bool rectComp(ii lhs, ii rhs)
+{
+	if (lhs.first == rhs.first)
+		return lhs.second < rhs.second;
+	else
+		return lhs.first < rhs.first;
+}
+
+int getBit(int num, int bit)
+{
+	return (num & (1 << bit)) != 0;
+}
+
+ii getDimensions(int type, vii R)
+{
+	switch (type)
+	{
+		// all 4 side-by-side
+	case(0) :
+	{
+		int maxHeight = 0;
+		int totalWidth = 0;
+		for (int i = 0; i < 4; ++i)
+		{
+			totalWidth += R[i].first;
+			maxHeight = max(maxHeight, R[i].second);
+		}
+		return {totalWidth, maxHeight};
+	}
+	case(1) :
+	{
+		int width = max(R[0].first,
+			R[1].first + R[2].first + R[3].first);
+		int height = R[0].second + max(R[1].second,
+			max(R[2].second, R[3].second));
+		return{ width, height };
+
+	}
+	case(2) :
+	{
+		int width = max(R[0].first + R[1].first,
+			R[1].first + R[2].first + R[3].first);
+		int height = max(R[1].second,
+			R[0].second + max(R[2].second, R[3].second));
+		return{ width, height };
+	}
+	case(3) :
+	{	
+		int width = max(R[0].first, R[1].first);
+			width += R[2].first + R[3].first;
+		int height = max(R[0].second + R[1].second,
+				max(R[2].second, R[3].second));
+		return{ width, height };
+	}
+	case(4) :
+	{
+		int width = 0;
+		int height = 0;
+		if (R[0].first >= R[2].first && R[0].second >= R[1].second)
+		{
+			width = max(R[0].first + R[1].first, R[0].first + R[3].first);
+			height = max(R[0].second + R[2].second, R[1].second + R[3].second);
+		}
+		else if (R[0].first < R[2].first && R[0].second >= R[1].second)
+		{
+			width = max(R[0].first + R[1].first, R[2].first + R[3].first);
+			height = max(R[0].second + R[2].second, R[1].second + R[3].second);
+		}
+		else if (R[0].first >= R[2].first && R[0].second < R[1].second)
+		{
+			width = max(R[0].first + R[1].first, R[2].first + R[3].first);
+			height = max(R[0].second + R[2].second, R[1].second + R[3].second);
+		}
+		else
+		{
+			if (R[2].second + R[0].second > R[1].second)
+			{
+				width = max(R[2].first + R[1].first, R[2].first + R[3].first);
+			}
+			else
+			{
+				width = max(R[2].first + R[1].first, R[3].first);
+			}
+			height = max(R[0].second + R[2].second, R[1].second + R[3].second);
+
+		}
+		return{ width, height };
+	}
+	default: break;
+	}
+}
+
+int main()
+{
+	ifstream fin("packrec.in");
+	ofstream fout("packrec.out");
+
+	vii rects(4);
+	int w, h;
+	for (int i = 0; i < 4; ++i)
+	{
+		fin >> w >> h;
+		rects[i] = { w, h };
+	}	
+	sort(rects.begin(), rects.end(), rectComp);
+
+	int minArea = 2e9;
+	set<ii> resultDimensions;
+
+	for (int type = 0; type < 5; ++type)
+	{
+		do 
+		{
+			for (int i = 0; i < 16; ++i)
+			{
+				vii R(4);
+				for (int j = 0; j < 4; ++j)
+				{
+					int currBit = getBit(i, j);
+					if (currBit)
+						R[j] = rects[j];
+					else
+					{
+						R[j].first = rects[j].second;
+						R[j].second = rects[j].first;
+					}
+				}
+
+				ii currDimensions = getDimensions(type, R);
+				int currArea = currDimensions.first * currDimensions.second;
+				if (currArea < minArea)
+				{
+					minArea = currArea;
+					resultDimensions.clear();
+					resultDimensions.insert({
+						min(currDimensions.first, currDimensions.second),
+						max(currDimensions.first, currDimensions.second) });
+				}
+				if (currArea == minArea)
+				{
+					resultDimensions.insert({
+						min(currDimensions.first, currDimensions.second),
+						max(currDimensions.first, currDimensions.second) });
+				}
+			}
+		} while (next_permutation(rects.begin(), rects.end()));
+	}
+
+	fout << minArea << '\n';
+	for (ii dim : resultDimensions)
+		fout << dim.first << ' ' << dim.second << '\n';
+	return 0;
+}

@@ -1,0 +1,84 @@
+/*
+ID: jamerz1
+PROG: transform
+LANG: C++11
+*/
+
+
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <array>
+#include <math.h> 
+#include <iomanip>
+#include <queue> 
+#include <random>
+#include <chrono>
+#include <stdlib.h>    
+#include <time.h> 
+#include <stack>
+#include <queue>
+#include <unordered_map>
+#include <unordered_set>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <tuple>
+#include <stdio.h>
+
+#include <iostream>
+using namespace std;
+
+/*
+A department is called diverse if no two employees in the department do the same type of work.Compute and return the number of diverse departments in Shiny's company.*/
+
+/*
+The department of employee x is formed by employee x and all the employees such that x is their boss */
+
+class GoodCompanyDivTwo
+{
+public:
+	int countGood(vector <int> superior, vector <int> workType)
+	{
+		int result = 0;
+
+		vector < vector<int> > departments (superior.size()) ;
+		departments[0].push_back(0);
+
+		for (int i = 1; i < superior.size(); ++i)
+		{
+			departments[i].push_back(i);
+			departments[superior[i]].push_back(i);
+		}
+
+
+		for (int i = 0; i < departments.size(); ++i)
+		{
+			bool diverse = true;
+			bool workTypeMap[100];
+			for (int j = 0; j < 100; ++j) workTypeMap[j] = 0;
+			for (int j = 0; j < departments[i].size(); ++j)
+			{
+				if (workTypeMap[workType[departments[i][j]]])
+				{
+					diverse = false;
+					break;
+				}
+				else
+					workTypeMap[workType[departments[i][j]]] = true;
+			}
+			if (diverse) result++;
+		}
+		return result;
+	}
+	
+};
+
+int main() 
+{
+
+	return 0;
+}

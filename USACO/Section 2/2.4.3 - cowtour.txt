@@ -1,0 +1,204 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: cowtour
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const unsigned int MAX_CITIES = 1001;
+ull INF = ull(1e19);
+int N;
+vector < vector<double> > graph;
+vector<vector<double>> FW;
+vector<vector<double>> FW_temp;
+
+
+double floyd_washall() {
+	FW.assign(graph.size(), vector<double>(N+1));
+
+	for (int i = 1; i < graph.size(); ++i) {
+		for (int j = 1; j < graph.size(); ++j) {
+			FW[i][j] = graph[i][j];
+		}
+	}
+
+	for (int k = 1; k < graph.size(); ++k) {
+		for (int i = 1; i < graph.size(); ++i) {
+			for (int j = 1; j < graph.size(); ++j) {
+				FW[i][j] = min(FW[i][j], FW[i][k] + FW[k][j]);
+			}
+		}
+	}
+
+	double max_path = 0;
+	for (int i = 0; i < graph.size(); ++i) {
+		for (int j = 0; j < graph.size(); ++j) {
+			if (FW[i][j] < INF - 1)
+				max_path = max(max_path, FW[i][j]);
+		}
+	}
+
+	return max_path;
+
+}
+
+vector<vi> CC;
+vector<bool> visited;
+std::unordered_map<int, int> vertex_CC_map;
+
+void DFS(int v, int curr_CC) {
+	CC[curr_CC].push_back(v);
+	vertex_CC_map[v] = curr_CC;
+	visited[v] = true;
+	for (int i = 1; i < graph.size(); ++i) {
+		if (graph[v][i] < INF-1 && !visited[i]) {
+			DFS(i,curr_CC);
+		}
+	}
+}
+
+double get_dist(ii u, ii v) {
+
+	double delta_x_sq = (u.first - v.first) *
+		(u.first - v.first);
+	double delta_y_sq = (u.second - v.second) *
+		(u.second - v.second);
+	double dist = sqrt(delta_x_sq + delta_y_sq);
+	
+	return dist;
+}
+
+int main()
+{
+	ifstream fin("cowtour.in");
+	fin >> N;
+	graph.assign(N + 1, vector<double>(N+1));
+	vii verticies(N + 1);
+	int x, y;
+	for (int i = 1; i <= N; ++i) {
+		fin >> x >> y;
+		verticies[i] = { x, y };
+	}
+	char temp;
+	double delta_x_sq, delta_y_sq, dist;
+	for (int i = 1; i <= N; ++i) {
+		for (int j = 1; j <= N; ++j) {
+			fin >> temp;
+			if (j < i + 1) continue;
+			double dist = get_dist(verticies[i], verticies[j]);
+			if (temp != '1')
+				dist = INF;
+
+			graph[i][j] = dist;
+			graph[j][i] = dist;
+		}
+	}
+	fin.close();
+	// Find CC, and save each edge (x,y) where x in Ci and y in Cj
+	int curr_cc = 0;
+	visited.assign(N + 1, 0);
+	for (int i = 1; i < graph.size(); i++) {
+		if (!visited[i])
+		{
+			CC.push_back(vi());
+			DFS(i, curr_cc);
+			curr_cc++;
+		}
+	}
+
+	ii curr_disc;
+	vii disc;
+
+	for (int i = 0; i < CC.size(); ++i) {
+		for (int j = 0; j < CC[i].size(); ++j) {
+			for (int k = i + 1; k < CC.size(); ++k) {
+				for (int m = 0; m < CC[k].size(); ++m) {
+					disc.push_back({CC[i][j], CC[k][m]});
+				}
+			}
+		}
+	}
+
+	// Set FW to contain current shortest paths b/w all connected verticies
+	double original_max_path = floyd_washall();
+	double save_max_path = INF;
+	for (int i = 0; i < disc.size(); ++i) {
+		ii curr_field = disc[i];
+		int u = curr_field.first;
+		int v = curr_field.second;
+		dist = get_dist(verticies[u], verticies[v]);
+		// Add the edge
+		graph[u][v] = dist;
+		graph[v][u] = dist;
+
+		// Update paths for all (x,y) in CC[x] and CC[y] to reflect the added vertex
+		FW_temp.assign(graph.size(), vector<double>(N + 1));
+		double curr_max_path = 0;
+
+		int CC_u = vertex_CC_map[u];
+		int CC_v = vertex_CC_map[v];
+		for (int i = 0; i < CC[CC_u].size(); ++i) {
+			for (int j = 0; j < CC[CC_v].size(); ++j) {
+				int x = CC[CC_u][i];
+				int y = CC[CC_v][j];
+				FW_temp[x][y] = min(FW[x][y], FW[x][u] + graph[u][v] + FW[v][y]);
+				if (FW_temp[x][y] > curr_max_path && FW_temp[x][y] < INF-1)
+					curr_max_path = FW_temp[x][y];
+			}
+		}
+
+		save_max_path = min(save_max_path, curr_max_path);
+		save_max_path = max(save_max_path, original_max_path);
+
+		// Remove the edge
+		graph[u][v] = INF;
+		graph[v][u] = INF;
+	}
+
+	ofstream fout("cowtour.out");
+	fout << std::fixed << std::setprecision(6) << save_max_path << '\n';
+	fout.close();
+	return 0;
+}

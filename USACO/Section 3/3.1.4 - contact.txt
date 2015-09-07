@@ -1,0 +1,129 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: contact
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const int INF = LONG_MAX;
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const int MAX = 200001;
+
+std::unordered_map<string, int> pattern_count;
+string sequence="";
+vector<pair<int,string>> count_vec;
+
+bool my_comp(pair<int, string> lhs, pair<int, string> rhs) {
+	if (lhs.first != rhs.first)
+		return lhs.first > rhs.first;
+	else {
+		if (lhs.second.size() != rhs.second.size())
+			return lhs.second.size() < rhs.second.size();
+		else
+			return lhs.second < rhs.second;
+	}
+}
+
+int main(){
+	std::ios::sync_with_stdio(false);
+	cin.tie(0);
+	
+	ifstream fin("contact.in");
+	int A, B, N;
+	string curr;
+	fin >> A >> B >> N;
+	while (fin >> curr)
+		sequence += curr;
+	fin.close();
+
+	for (int i = 0; i < sequence.size() - A + 1; ++i) {
+		for (int j = A; i+j <= sequence.size() && j <= B; ++j) {
+			curr = sequence.substr(i, j);
+			pattern_count[curr]++;
+		}
+	}
+	count_vec.resize(pattern_count.size());
+	int vec_i = 0;
+	for (auto p_c : pattern_count) {
+		count_vec[vec_i] = {p_c.second, p_c.first};
+		vec_i++;
+	}
+	sort(count_vec.begin(), count_vec.end(), my_comp);
+	ofstream fout("contact.out");
+
+	vec_i = 0;
+	int last_count = count_vec[vec_i].first;
+	int curr_count = count_vec[vec_i].first;
+	for (int i = 0; i < N && vec_i < count_vec.size(); ++i) {
+		fout << curr_count << '\n';
+		int print_count = 0;
+		while (true) {
+			fout << count_vec[vec_i].second;
+			print_count++;
+			vec_i++;
+			if (vec_i >= count_vec.size())
+				break;
+			curr_count = count_vec[vec_i].first;
+			if (curr_count == last_count)
+				if (print_count >= 6) {
+					fout << '\n';
+					print_count = 0;
+				}
+				else
+					fout << ' ';
+			else break;
+		}
+		fout << '\n';
+		last_count = curr_count;
+	}
+	return 0;
+}

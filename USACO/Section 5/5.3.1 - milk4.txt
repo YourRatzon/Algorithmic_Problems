@@ -1,0 +1,172 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+
+/*
+ID: jamerz1
+PROG: milk4
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+
+#define F first
+#define S second
+
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<int, ii> iii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+typedef vector<ull> vull;
+typedef vector<ll> vll;
+
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const int INF = INT_MAX;
+double EPS = 1e-10;
+const int MAX_Q = 20002;
+const int MAX_P = 102;
+vi pails;
+
+int DP[MAX_P][MAX_Q];
+bool from_above[MAX_P][MAX_Q];
+int best = INF;
+
+vi DFS(int r, int c, int i) {
+	// no need for visited since we are climbing a tree?
+	if (r == 0)
+		return {};
+	if (from_above[r][c] == 1)
+		return DFS(r - 1, c, i);
+	else {
+		vi curr_res(i+1, INF);
+		curr_res[i] = pails[r];
+		while (c > 0) {
+			while (c > 0 && from_above[r][c] == 0)
+				c -= pails[r];
+			if (c == 0)
+				return curr_res;
+			else if (DP[r][c] == i) {
+				vi new_res = DFS(r - 1, c, i - 1);
+				vi compare_curr_res = vi(curr_res.begin(), curr_res.begin() + new_res.size());
+				if (new_res < compare_curr_res) {
+					for (int j = 0; j < new_res.size(); ++j)
+						curr_res[j] = new_res[j];
+				}
+			}
+			c -= pails[r];
+		}
+		return curr_res;
+	}
+}
+
+int main(int argc, char *argv[]) {
+	//std::ios::sync_with_stdio(false);
+	//cin.tie(0);
+	ifstream fin("milk4.in");
+	int Q, P;
+	fin >> Q >> P;
+	pails.resize(P+1);
+	for (int i = 1; i <= P; ++i)
+		fin >> pails[i];
+	sort(pails.begin(), pails.end());
+	fin.close();
+	for (int i = 0; i <= P; ++i)
+		DP[i][0] = 0;
+	for (int j = 1; j <= Q; ++j)
+		DP[0][j] = INF;
+
+	memset(from_above, 1, sizeof(from_above));
+
+	int above, left;
+	for (int i = 1; i <= P; ++i) {
+		int curr_pail = pails[i];
+		for (int j = 1; j <= Q; ++j) {
+			if (curr_pail > j) {
+				DP[i][j] = DP[i - 1][j];
+			}
+			else { // curr_pail <= j
+				above = DP[i - 1][j];
+				if (DP[i][j - curr_pail] == INF) {
+					left = INF;
+				}
+				else if (from_above[i][j - curr_pail] == 1)
+					left = DP[i][j - curr_pail] + 1;
+				else
+					left = DP[i][j - curr_pail];
+
+				if (above < left) {
+					DP[i][j] = above;
+				}
+				else {
+					DP[i][j] = left;
+					from_above[i][j] = 0;
+				}
+			}
+		}
+		if (DP[i][Q] < best) {
+			best = DP[i][Q];
+		}
+	}
+
+	int curr_C = Q;
+	vi best_res(best, INF);
+	for (int curr_R = P; curr_R > 0; --curr_R) {
+		if (DP[curr_R][Q] > best)
+			continue;
+		vi curr_res = DFS(curr_R, Q, best-1);
+		if (curr_res < best_res)
+			best_res = curr_res;
+	}
+
+	ofstream fout("milk4.out");
+	fout << best;
+	for (int x : best_res)
+		fout << ' ' << x;
+	fout << '\n';
+	fout.close();
+	
+	return 0;
+}

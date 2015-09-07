@@ -1,0 +1,135 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: ditch
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<int, ii> iii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+typedef vector<ull> vull;
+typedef vector<ll> vll;
+
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const int MAX_N = 2097153;
+const double INF = 2e9 + 1;
+
+const int MAX_V = 202;
+int res[MAX_V][MAX_V];
+vi dist;
+vi parent;
+int S = 1;
+int edges, verts;
+int f;
+void augment(int u, int min_edge) {
+	if (u == S)  {
+		f = min_edge;
+		return;
+	}
+
+	else {
+		int curr_p = parent[u];
+		if (curr_p == -1) {
+			return;
+		}
+
+		min_edge = min(min_edge, res[curr_p][u]);
+		augment(curr_p, min_edge);
+		res[curr_p][u] -= f;
+		res[u][curr_p] += f;
+	}
+}
+
+int main(int argc, char *argv[]) {
+	//std::ios::sync_with_stdio(false);
+	//cin.tie(0);
+
+	ifstream fin("ditch.in");
+	fin >> edges >> verts;
+	int u, v, w;
+	for (int i = 0; i < edges; ++i) {
+		fin >> u >> v >> w;
+		res[u][v] += w;
+	}
+	fin.close();
+
+	int max_f = 0;
+	int T = verts;
+	while (true) {
+		dist.assign(MAX_V, INF);
+		dist[S] = 0;
+		parent.assign(MAX_V, -1);
+		queue<int> q;
+		q.push(S);
+		while (!q.empty()) {
+			u = q.front();
+			q.pop();
+			for (int v = 1; v <= verts; ++v) {
+				if (res[u][v] > 0 && dist[v] == INF) {
+					dist[v] = dist[u] + 1;
+					parent[v] = u;
+					q.push(v);
+				}
+			}
+		}
+		f = 0;
+		augment(T, INF);
+		if (f == 0)
+			break;
+		max_f += f;
+
+	}
+	ofstream fout("ditch.out");
+	fout << max_f << '\n';
+	fout.close();
+	return 0;
+
+}

@@ -1,0 +1,118 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+/*
+ID: jamerz1
+PROG: crypt1
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <streambuf>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const int MAX = 20001;
+bool digits[10] = { 0 };
+
+bool inMap(int num)
+{
+	if (num == 0)
+		return false;
+	while (num > 0)
+	{
+		int digit = num % 10;
+		if (digits[digit] == 0)
+			return false;
+		num /= 10;
+	}
+	return true;
+
+}
+
+int digitCount(int num)
+{
+	int result = 0;
+	while (num > 0)
+	{
+		result++;
+		num /= 10;
+	}
+	return result;
+}
+
+int main()
+{
+	ifstream fin("crypt1.in");
+	ofstream fout("crypt1.out");
+
+	int N;
+	fin >> N;
+	int digit;
+	for (int i = 0; i < N; ++i)
+	{
+		fin >> digit;
+		digits[digit] = 1;
+	}
+
+	/*int minDigit, maxDigit;
+	int index=0;
+	while (digits[index] == 0) index++;
+	minDigit = index;
+	index = 9;
+	while (digits[index] == 0) index--;
+	maxDigit = index;*/
+	int total = 0;
+	for (int i = 11111; i <= 99999; ++i)
+	{
+		int a = i / 100;
+		int b = i % 100;
+		int p1 = a * (b % 10);
+		if (digitCount(p1) != 3)
+			continue;
+		int p2 = a * (b / 10);
+		if (digitCount(p2) != 3)
+			continue;
+		int prod = a * b;
+		if (digitCount(prod) != 4)
+			continue;
+		if (inMap(a) && inMap(b) && inMap(p1) && inMap(p2) && inMap(prod))
+			total++;
+	}
+	fout << total << '\n';
+	return 0;
+}

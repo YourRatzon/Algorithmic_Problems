@@ -1,0 +1,92 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+/*
+ID: jamerz1
+PROG: palsquare
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const int MAX = 100002;
+char charMap[20];
+string toBase(int num, int base)
+{
+	string result;
+
+	while (num > 0)
+	{
+		result.insert(result.begin(), charMap[(num % base)]);
+		num /= base;
+	}
+	return result;
+}
+
+bool isPalindrome(string str)
+{
+	for (int l = 0, r = str.size() - 1; l < r; ++l, --r)
+	{
+		if (str[l] != str[r])
+			return false;
+	}
+	return true;
+}
+
+int main()
+{
+	for (int i = 0; i < 10; ++i)
+		charMap[i] = '0' + i;
+	for (int i = 10; i < 20; ++i)
+		charMap[i] = 'A' + i - 10;
+
+	ifstream fin("palsquare.in");
+	ofstream fout("palsquare.out");
+	int base;
+	fin >> base;
+	for (int n = 1; n <= 300; ++n)
+	{
+		string inBase = toBase(n, base);
+		string inBaseSq = toBase(n*n, base);
+		if (isPalindrome(inBaseSq))
+		{
+			fout << inBase << ' ' << inBaseSq << '\n';
+		}
+	}
+	return 0;
+}

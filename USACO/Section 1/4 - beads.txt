@@ -1,0 +1,151 @@
+
+/*
+ID: jamerz1
+PROG: beads
+LANG: C++
+*/
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <vector>
+using namespace std;
+
+int getLongestString(string beads);
+
+int main()
+{
+	ifstream fin("beads.in");
+	ofstream fout("beads.out");
+
+	int x;
+	fin >> x;
+	string beads;
+	fin >> beads;
+	
+	int result = getLongestString(beads);
+	fout << result;
+	fout << '\n';
+
+	return 0;
+}
+
+int getLongestString(string beads)
+{
+	char first = beads[0];
+	char holdingAt;
+	int firstHalfString = 0;
+	int counter1 = 0;
+	int counter2 = 0;
+	int toggle = 0;
+	int white = 0;
+	int save = 0;
+	bool start = false;
+	int max = 0;
+
+	for (int i = 1; i < beads.size(); i ++)
+	{
+		if (!counter1 && beads[i] != first)
+			start = true;
+		
+		if (start)
+		{
+			if (!counter1) //First check
+			{
+				counter1++;
+				holdingAt = beads[i];
+				if (beads[i] == 'w')
+						white++;
+
+				continue;
+			}
+
+			if (!toggle && beads[i] != 'w' && beads[i] != holdingAt && holdingAt != 'w')
+			{
+				counter2++;
+				toggle = 1;
+				holdingAt = beads[i];
+				counter2 += white;
+				save = white;
+				white = 0;
+
+				continue;
+			}
+			if (!toggle)
+			{
+		
+				counter1++;
+				if (beads[i] == 'w')
+						white++;
+				else
+				{
+					white = 0;
+					holdingAt = beads[i];
+				}
+				continue;
+			}
+
+			if (toggle)
+			{
+				if (beads[i] == holdingAt || beads[i] == 'w')
+				{
+					counter2++;
+					if (beads[i] == 'w')
+						white++;
+					else 
+						white = 0;
+					continue;
+				}
+				else
+				{
+					if (counter1 + counter2 - save > max)
+						max = counter1 + counter2 - save;
+					counter1 = counter2;
+					counter2 = 1 + white;
+					save = white;
+					white = 0;
+					holdingAt = beads[i];
+					continue;
+				}
+			}
+		}
+	}
+	// At the end of the for loop, counter1 contains the count of the last half of the last string.
+	toggle = 0;
+	if (!counter2)
+	{
+		counter2 = counter1;
+		counter1 = 0;
+	}
+	for (int i = 0; i < beads.size() ; i++)
+	{
+		if (!toggle && (beads[beads.size()-1] == 'w' || beads[i] == beads[beads.size()-1] || beads[i] == 'w'))
+		{
+			if (i > 0 && beads[i] != 'w' && beads[i-1] != 'w' && beads[i] != beads[i-1])
+			{
+				if (counter1 + counter2 - save > max)
+					max = counter1 + counter2 - save;
+				return max;
+			}
+
+			counter2++;
+			continue;
+		}
+		else if ((i == 0 || toggle) && beads[i] != beads[beads.size()-1] && beads[i] != 'w')
+		{
+			counter1 = i + 1;
+			toggle = 1;
+			continue;
+		}
+		else
+		{
+			if (counter1 + counter2 - save > max)
+					max = counter1 + counter2 - save;
+			return max;
+		}
+	}
+	if (counter1 + counter2 - save > max)
+		max = counter1 + counter2 - save;
+	return max;
+}

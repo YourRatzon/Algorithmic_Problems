@@ -1,0 +1,122 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: fence
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const int MAX_N = 1026;
+const int INF = LONG_MAX;
+vector<std::multiset<int>> AdjList(MAX_N, std::multiset<int>());
+vector<std::multiset<int>> AdjListCopy(AdjList);
+
+list<int> res;
+void euler_tour(int u) {
+	if (AdjList[u].size() == 0)
+		res.push_back(u);
+	else {
+		while (AdjList[u].size() != 0) {
+			int v = *AdjList[u].begin();
+			AdjList[u].erase(AdjList[u].begin());
+			AdjList[v].erase(AdjList[v].find(u));
+			euler_tour(v);
+		}
+		res.push_back(u);
+	}
+}
+
+int main(int argc, char *argv[]) {
+	//std::ios::sync_with_stdio(false);
+	//cin.tie(0);
+	
+	ifstream fin("fence.in");
+
+	int n_fences;
+	fin >> n_fences;
+	int u, v;
+	set<int> verticies;
+	for (int i = 0; i < n_fences; ++i) {
+		fin >> u >> v;
+		verticies.insert(u);
+		verticies.insert(v);
+		AdjList[u].insert(v);
+		AdjList[v].insert(u);
+	}
+	fin.close();
+	ofstream fout("fence.out");
+	
+	bool cycle = true;
+	int min_odd = MAX_N;
+	int min_vert = MAX_N;
+	for (auto it = verticies.begin(); it != verticies.end(); ++it){
+		if (AdjList[*it].size() % 2 == 1) {
+			cycle = false;
+			min_odd = min(min_odd, *it);
+		}
+		min_vert = min(min_vert, *it);
+	}
+
+	if (!cycle)
+		euler_tour(min_odd);
+	else {
+		euler_tour(min_vert);
+		cout << "CYCLE!!\n";
+	}
+	for (auto it = res.rbegin(); it != res.rend(); ++it) {
+		fout << *it << '\n';
+	}
+	fout.close();
+
+	return 0;
+}

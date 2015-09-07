@@ -1,0 +1,206 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: nuggets
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<int, ii> iii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+typedef vector<ull> vull;
+typedef vector<ll> vll;
+
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const int MAX_N = 258;
+const double INF = 2e9 + 1;
+
+
+int main(int argc, char *argv[]) {
+	//std::ios::sync_with_stdio(false);
+	//cin.tie(0);
+	ifstream fin("nuggets.in");
+	ofstream fout("nuggets.out");
+	int N;
+	fin >> N;
+	vi sizes(N, INF);
+	vi pointers(N, 0);
+
+	std::unordered_set<int> possible_set;
+	std::unordered_map<int, int> size_to_idx;
+	possible_set.insert(0);
+	vi possible(1, 0);
+
+	bool two=false, three=false, odd=false, even=false;
+	for (int i = 0; i < N; ++i) {
+		fin >> sizes[i];
+		size_to_idx[sizes[i]]=i;
+		if (sizes[i] == 1) {
+			fout << 0 << '\n';
+			return 0;
+		}
+		else if (sizes[i] == 2)
+			two = true;
+		else if (sizes[i] == 3)
+			three = true;
+
+		if (sizes[i] % 2 == 0)
+			even = true;
+		else
+			odd = true;
+	}
+	fin.close();
+	if (!even || !odd) {
+		fout << 0 << '\n';
+		return 0;
+	}
+	if (two && three) {
+		fout << 1 << '\n';
+		return 0;
+	}
+	sort(sizes.begin(), sizes.end());
+	int biggest_size = *(sizes.end() - 1);
+	int next_min = INF, next_idx;
+	int next_sum, next_ptr;
+
+	std::unordered_set<int> size_idx_to_remove;
+
+	int no_diff_count = 0;
+	int max_impossible;
+
+	while (possible.back() < biggest_size) {
+		next_min = INF;
+		for (int i = 0; i < N; ++i) {
+			next_ptr = pointers[i];
+			while (next_ptr < possible.size() &&
+				   possible_set.count(possible[next_ptr] + sizes[i]) != 0) {
+				next_ptr++;
+			}
+			pointers[i] = next_ptr;
+			next_sum = possible[next_ptr] + sizes[i];
+			if (size_to_idx.count(next_sum) != 0 && next_ptr > 0)
+				size_idx_to_remove.insert(size_to_idx[next_sum]);
+
+			if (next_sum < next_min && possible_set.count(next_sum) == 0) {
+				next_min = next_sum;
+				next_idx = i;
+			}
+		}
+		possible.push_back(next_min);
+		int diff = possible.back() - *(possible.end() - 2) - 1;
+		if (diff > 0) {
+			for (int j = 1; j <= diff; ++j)
+			max_impossible = (possible.back()-1);
+			no_diff_count = 0;
+		}
+		else if (diff == 0) {
+			no_diff_count++;
+			if (no_diff_count >= sizes[0]) {
+				fout << max_impossible << '\n';
+				fout.close();
+				return 0;
+			}
+		}
+		possible_set.insert(next_min);
+		pointers[next_idx]++;
+	}
+
+	vi sizes2;
+	for (int i = 0; i < N; ++i) {
+		if (size_idx_to_remove.count(i) == 0)
+			sizes2.push_back(sizes[i]);
+	}
+
+	sizes = sizes2;
+	N = sizes2.size();
+	
+
+	while (next_min < 2e9) {
+		next_min = INF;
+		for (int i = 0; i < N; ++i) {
+			next_ptr = pointers[i];
+			while (next_ptr < possible.size() &&
+				possible_set.count(possible[next_ptr] + sizes[i]) != 0) {
+				next_ptr++;
+			}
+			pointers[i] = next_ptr;
+			next_sum = possible[next_ptr] + sizes[i];
+			if (size_to_idx.count(next_sum) != 0 && next_ptr > 0)
+				size_idx_to_remove.insert(i);
+
+			if (next_sum < next_min && possible_set.count(next_sum) == 0) {
+				next_min = next_sum;
+				next_idx = i;
+			}
+		}
+		possible.push_back(next_min);
+		int diff = possible.back() - *(possible.end() - 2) - 1;
+		if (diff > 0) {
+			for (int j = 1; j <= diff; ++j)
+			max_impossible = possible.back()-1;
+			no_diff_count = 0;
+		}
+		else if (diff == 0) {
+			no_diff_count++;
+			if (no_diff_count >= sizes[0])
+				break;
+		}
+
+		possible_set.insert(next_min);
+		pointers[next_idx]++;
+	}
+	
+	fout << max_impossible << '\n';
+	fout.close();
+
+	
+	return 0;
+
+}

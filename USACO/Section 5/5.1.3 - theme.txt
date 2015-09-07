@@ -1,0 +1,140 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+
+/*
+ID: jamerz1
+PROG: theme
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+
+#define F first
+#define S second
+
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<int, ii> iii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+typedef vector<ull> vull;
+typedef vector<ll> vll;
+
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const int INF = INT_MAX;
+const int MAX_N = 1e4 + 5;
+double EPS = 1e-10;
+
+int N;
+vi notes;
+
+
+int main(int argc, char *argv[]) {
+	//std::ios::sync_with_stdio(false);
+	//cin.tie(0);
+
+	ifstream fin("theme.in");
+	fin >> N;
+	notes.resize(N);
+	for (int i = 0; i < N; ++i) {
+		fin >> notes[i];
+	}
+	fin.close();
+	ofstream fout("theme.out");
+
+
+	int max_size = N / 2;
+	if (max_size < 5) {
+		cout << 0 << '\n';
+		return 0;
+	}
+
+	list<char> curr_try;
+	int best = 0;
+	int curr_L_bord, perv_R_bord;
+
+	int small =5, big = max_size;
+
+	while (small <= big) {
+		int sz = (small + big) / 2;
+
+		vector<char> curr_try;
+		std::map<vector<char>, int> visited_themes;
+
+		for (int j = 1; j < sz; ++j) {
+			curr_try.push_back(notes[j] - notes[j - 1]);
+		}
+		visited_themes[curr_try] = sz-1;
+		for (int R = sz; R < N; ++R) {
+			curr_L_bord =  R - sz + 1;
+			curr_try.erase(curr_try.begin());
+			curr_try.push_back(notes[R] - notes[R - 1]);
+
+			if (visited_themes.find(curr_try) == visited_themes.end())
+				visited_themes[curr_try] = R;
+			else {
+				perv_R_bord = visited_themes[curr_try];
+				if (perv_R_bord < curr_L_bord) {
+					best = sz;
+					break;
+				}
+			}
+		}
+
+		if (best < sz) {
+			big = sz - 1;
+		}
+		else if (best == sz) {
+			small = sz + 1;
+		}
+		visited_themes.clear();
+	}
+
+	fout << best << '\n';
+	fout.close();
+	return 0;
+
+}

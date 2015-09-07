@@ -1,0 +1,236 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+
+/*
+ID: jamerz1
+PROG: starry
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+
+#define F first
+#define S second
+
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<int, ii> iii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+typedef vector<ull> vull;
+typedef vector<ll> vll;
+
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const int INF = INT_MAX;
+const int MAX_N = 1e4 + 5;
+double EPS = 1e-10;
+
+struct Point {
+	int x, y;
+	Point(int _x = 0, int _y = 0) :x(_x), y(_y) {}
+};
+
+vector<vector<char>> board;
+vector<vector<bool>> visited;
+vii moves = { {-1,-1},{-1,0},{-1,1},{0,-1},{0,1},{1,-1},{1,0},{1,1} };
+
+ii operator+(const ii & lhs, const ii & rhs) {
+	return { lhs.first + rhs.first, lhs.second + rhs.second } ;
+}
+
+int cols, rows;
+
+bool legal_move(ii v) {
+	return (v.first >= 0 && v.first < rows && v.second >= 0 && v.second < cols);
+}
+
+vii curr_fig;
+char next_let_id = 'a';
+
+void DFS(ii u) {
+	visited[u.F][u.S] = true;
+	curr_fig.push_back(u);
+
+	for (int i = 0; i < moves.size(); ++i) {
+		ii v = u + moves[i];
+		if (legal_move(v) && !visited[v.F][v.S] && board[v.F][v.S]=='1')
+			DFS(v);
+	}
+}
+
+std::map<vii, char> shape_to_let;
+
+vii to_norm_coord() {
+	int min_row = INF, min_col = INF;
+	int max_row = -1, max_col = -1;
+	for (ii x : curr_fig) {
+		min_row = min(min_row, x.F);
+		max_row = max(max_row, x.F);
+		min_col = min(min_col, x.S);
+		//max_col = max(max_col, x.S);
+	}
+
+	vector<ii> coord_fig;
+	for (ii c : curr_fig) {
+		int y_diff = max_row - c.first;
+		int x_diff = c.second - min_col;
+		int new_y = y_diff;
+		int new_x = x_diff;
+		coord_fig.push_back({ new_x, new_y });
+	}
+
+	sort(coord_fig.begin(), coord_fig.end());
+	return coord_fig;
+
+}
+
+vii normalize(vii coord_fig) {
+	int min_x = INF, min_y = INF;
+	//int max_row = -1, max_col = -1;
+	for (ii p : coord_fig) {
+		min_x = min(min_x, p.F);
+		//max_row = max(max_row, x.F);
+		min_y = min(min_y, p.S);
+		//max_col = max(max_col, x.S);
+	}
+
+	vii norm_fig(coord_fig.size());
+	for (int i = 0; i < coord_fig.size(); ++i) {
+		int new_x = coord_fig[i].first - min_x;
+		int new_y = coord_fig[i].second - min_y;
+		norm_fig[i] = { new_x, new_y };
+	}
+
+	return norm_fig;
+}
+
+void spin_norm_insert_coord_fig(vii norm_curr_fig) {
+	
+	vii next_rotation(norm_curr_fig.size());
+
+	for (int i = 0; i < 4; ++i) {
+		for (int j = 0; j < norm_curr_fig.size(); ++j) {
+			next_rotation[j] = { norm_curr_fig[j].S, norm_curr_fig[j].F * -1 };
+		}
+		vii normal_rotation = normalize(next_rotation);
+		sort(normal_rotation.begin(), normal_rotation.end());
+		shape_to_let[normal_rotation] = next_let_id;
+
+		norm_curr_fig = normal_rotation;
+	}
+
+	// reflect across y-axis;
+	for (int j = 0; j < norm_curr_fig.size(); ++j) {
+		norm_curr_fig[j].first *= -1;
+	}
+
+
+	for (int i = 0; i < 4; ++i) {
+		for (int j = 0; j < norm_curr_fig.size(); ++j) {
+			next_rotation[j] = { norm_curr_fig[j].S, norm_curr_fig[j].F * -1 };
+		}
+		vii normal_rotation = normalize(next_rotation);
+		sort(normal_rotation.begin(), normal_rotation.end());
+		shape_to_let[normal_rotation] = next_let_id;
+
+		norm_curr_fig = normal_rotation;
+	}
+}
+
+int main(int argc, char *argv[]) {
+	//std::ios::sync_with_stdio(false);
+	//cin.tie(0);
+	
+	ifstream fin("starry.in");
+	fin >> cols >> rows;
+	board.assign(rows, vector<char>(cols));
+
+	string line;
+	for (int r = 0; r < rows; ++r) {
+		fin >> line;
+		for (int c = 0; c < cols; ++c)
+			board[r][c] = line[c];
+	}
+	fin.close();
+
+	visited.assign(rows, vector<bool>(cols, false));
+	char fig_id;
+	for (int r = 0; r < rows; ++r) {
+		for (int c = 0; c < cols; ++c) {
+			if (!visited[r][c]) {
+				if (board[r][c] == '0')
+					visited[r][c] = true;
+				else {
+					curr_fig.clear();
+					DFS({ r, c });
+					vii norm_curr_fig = to_norm_coord();
+					if (shape_to_let.count(norm_curr_fig) != 0) {
+						fig_id = shape_to_let[norm_curr_fig];
+					}
+					else {
+						spin_norm_insert_coord_fig(norm_curr_fig);
+						fig_id = next_let_id;
+						next_let_id++;
+					}
+					for (ii cell : curr_fig)
+						board[cell.F][cell.S] = fig_id;
+				}
+			}
+		}
+	}
+
+	ofstream fout("starry.out");
+	for (int r = 0; r < rows; ++r) {
+		for (int c = 0; c < cols; ++c) {
+			fout << board[r][c];
+		}
+		fout << '\n';
+	}
+
+	fout.close();
+	return 0;
+
+}

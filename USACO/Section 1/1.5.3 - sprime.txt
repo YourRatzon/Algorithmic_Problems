@@ -1,0 +1,89 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+/*
+ID: jamerz1
+PROG: sprime
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int,  int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const unsigned int MAX = 1000;
+vector<int> primes;
+
+
+bool is_prime(int num) {
+	for (int i = 2; i <= sqrt(num); ++i)
+		if (num % i == 0)
+			return false;
+	return true;
+}
+
+void solve(vector<int> last_primes, int n) {
+	if (n == 1 || last_primes.size() == 0) {
+		primes = vector<int>(last_primes.begin(), last_primes.end());
+		return;
+	}
+	vector<int> new_primes;
+	for (int i = 0; i < last_primes.size(); ++i) {
+		for (int j = 1; j <= 9; j += 2) {
+			int test = last_primes[i] * 10 + j;
+			if (is_prime(test))
+				new_primes.push_back(test);
+		}
+	}
+	solve(new_primes, n - 1);
+}
+
+int main()
+{
+	ifstream fin("sprime.in");
+	ofstream fout("sprime.out");
+	int N;
+	fin >> N;
+	fin.close();
+	solve({ 2, 3, 5, 7 }, N);
+	for (int i = 0; i < primes.size(); ++i)
+		fout << primes[i] << '\n';
+	fout.close();
+	return 0;
+}

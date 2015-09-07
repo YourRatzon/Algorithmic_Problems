@@ -1,0 +1,166 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+/*
+ID: jamerz1
+PROG: castle
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int,  int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const unsigned int MAX = 51;
+
+
+bool is_bit_set(int num, int bit) {
+	int mask = 1 << bit;
+	return (num & mask) != 0;
+}
+
+vector<ii> graph[MAX][MAX];
+bool visited[MAX][MAX];
+int curr_size;
+
+void DFS(ii v) {
+	visited[v.first][v.second] = true;
+	curr_size++;
+	for (int i = 0; i < graph[v.first][v.second].size(); ++i) {
+		ii u = graph[v.first][v.second][i];
+		if (!visited[u.first][u.second])
+			DFS(u);
+	}
+}
+
+int main()
+{
+	ifstream fin("castle.in");
+	ofstream fout("castle.out");
+	int cols, rows, walls;
+	fin >> cols >> rows;
+	for (int i = 1; i <= rows; ++i) {
+		for (int j = 1; j <= cols; ++j) {
+			fin >> walls;
+			if (!is_bit_set(walls, 0)) // west
+				graph[i][j].push_back({ i, j - 1 });
+			if (!is_bit_set(walls, 1)) // north
+				graph[i][j].push_back({ i - 1, j });
+			if (!is_bit_set(walls, 2)) // east
+				graph[i][j].push_back({ i, j + 1 });
+			if (!is_bit_set(walls, 3)) // south
+				graph[i][j].push_back({ i + 1, j });
+		}
+	}
+	fin.close();
+
+	int num_of_rooms = 0;
+	int res_max_roomsize = 0;
+	memset(visited, 0, MAX*MAX);
+	for (int i = 1; i <= rows; ++i) {
+		for (int j = 1; j <= cols; ++j) {
+			if (!visited[i][j]) {
+				num_of_rooms++;
+				curr_size = 0;
+				DFS({ i, j });
+				res_max_roomsize = max(res_max_roomsize, curr_size);
+			}
+		}
+	}
+
+	int max_new_roomsize = 0;
+	struct t_wall_loc {
+		int row, col;
+		char direction;
+	} curr_wall_loc, res_wall_loc;
+	char direction = ' ';
+	ii new_edge;
+
+	for (int j = 1; j <= cols; ++j) {
+		for (int i = rows; i >= 1; --i) {
+			vector<ii>::iterator it;
+			for (int d = 0; d < 2; ++d) {
+				// try adding an edge to the east (remove eastern wall)
+				if (d == 1) {
+					if (j == cols) break;
+					new_edge = { i, j + 1 };
+					it = std::find(graph[i][j].begin(), graph[i][j].end(), new_edge);
+					if (it != graph[i][j].end()) break;
+					direction = 'E';
+				}
+				// try adding an edge to the north (remove northern wall)
+				else if (d == 0) {
+					if (i == 1) continue;
+					new_edge = { i-1, j };
+					it = std::find(graph[i][j].begin(), graph[i][j].end(), new_edge);
+					if (it != graph[i][j].end()) continue;
+					direction = 'N';
+				}
+				graph[i][j].push_back(new_edge);
+				graph[new_edge.first][new_edge.second].push_back({ i, j });
+				curr_wall_loc = { i, j, direction };
+
+				int curr_max_roomsize = 0;
+				memset(visited, 0, MAX*MAX);
+				for (int k = 1; k <= rows; ++k) {
+					for (int m = 1; m <= cols; ++m) {
+						if (!visited[k][m]) {
+							curr_size = 0;
+							DFS({ k, m });
+							curr_max_roomsize = max(curr_max_roomsize, curr_size);
+						}
+					}
+				}
+				if (curr_max_roomsize > max_new_roomsize) {
+					res_wall_loc = curr_wall_loc;
+					max_new_roomsize = curr_max_roomsize;
+				}
+
+				// remove the new edges
+				graph[i][j].erase(graph[i][j].end()-1);
+				graph[new_edge.first][new_edge.second].erase(graph[new_edge.first][new_edge.second].end() - 1);
+			}
+		}
+	}
+	fout << num_of_rooms << '\n' << res_max_roomsize << '\n';
+	fout << max_new_roomsize << '\n' << res_wall_loc.row << ' ';
+	fout << res_wall_loc.col << ' ' << res_wall_loc.direction << '\n';
+	fout.close();
+	return 0;
+}

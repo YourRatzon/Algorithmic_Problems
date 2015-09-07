@@ -1,0 +1,112 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: agrinet
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const int INF = 1e9;
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const int MAX = 1e5 + 1;
+
+vector<vi> AdjMatrix;
+vector<bool> visited;
+
+
+int main(){
+	std::ios::sync_with_stdio(false);
+	cin.tie(0);
+	
+	ifstream fin("agrinet.in");
+	ofstream fout("agrinet.out");
+	int N;
+	fin >> N;
+	AdjMatrix.assign(N, vi(N));
+	for (int i = 0; i < N; ++i){
+		for (int j = 0; j < N; ++j) {
+			fin >> AdjMatrix[i][j];
+		}
+	}
+	fin.close();
+
+	vi closest_tree_node(N,-1);
+	vector<bool> in_tree(N, false);
+	vi distance(N, INF);
+	int mst_size = 1;
+	int mst_cost = 0;
+	in_tree[0] = true;
+	for (int i = 1; i < N; ++i){
+		distance[i] = AdjMatrix[0][i];
+		closest_tree_node[i] = 0;
+	}
+
+	while (mst_size < N) {
+		int best = INF, best_node;
+		for (int i = 0; i < N; ++i){
+			if (!in_tree[i] && distance[i] < best) {
+				best = distance[i];
+				best_node = i;
+			}
+		}
+		in_tree[best_node] = true;
+		mst_cost += distance[best_node];
+		mst_size++;
+		for (int i = 0; i < N; ++i) {
+			if (!in_tree[i] && distance[i] > AdjMatrix[best_node][i]) {
+				distance[i] = AdjMatrix[best_node][i];
+				closest_tree_node[i] = best_node;
+			}
+		}
+	}
+
+	fout << mst_cost << '\n';
+	return 0;
+}

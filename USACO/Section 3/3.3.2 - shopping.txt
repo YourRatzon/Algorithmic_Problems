@@ -1,0 +1,198 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: shopping
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const int MAX_N = 1026;
+const int INF = LONG_MAX;
+
+int shoplist_prices[6][6][6][6][6];
+
+vi target_shoplist;
+vi item_prices;
+vector<vi> offers(110, vi(1001, 0));
+int n_offers;
+vi offer_prices(110);
+vi ix_to_item_code(6);
+int items_to_buy;
+
+
+inline bool is_zero(vi cs) {
+	for (int x : cs) {
+		if (x != 0)
+			return false;
+	}
+	return true;
+}
+
+inline bool can_use(vi cs, vi curr_offer) {
+	for (int i = 0; i < cs.size(); ++i) {
+		int item_code = ix_to_item_code[i];
+		if (cs[i] - curr_offer[item_code] < 0)
+			return false;
+	}
+	return true;
+}
+
+inline vi use(vi curr, vi offer) {
+	for (int i = 0; i < curr.size(); ++i) {
+		int item_code = ix_to_item_code[i];
+		curr[i] -= offer[item_code];
+		if (curr[i] < 0) {
+			curr[0] = -1;
+			return curr;
+		}
+	}
+	return curr;
+}
+
+inline int get_price(vi shoplist) {
+	vi x(5);
+	for (int i = 0; i < 5; ++i) {
+		if (i < shoplist.size())
+			x[i] = shoplist[i];
+		else
+			x[i] = 0;
+	}
+	return shoplist_prices[x[0]][x[1]][x[2]][x[3]][x[4]];
+}
+
+inline void set_price(vi shoplist, int price){
+	int curr_price = get_price(shoplist);
+	if (curr_price != -1 && curr_price <= price)
+		return;
+
+	vi x(5);
+	for (int i = 0; i < 5; ++i) {
+		if (i < shoplist.size())
+			x[i] = shoplist[i];
+		else
+			x[i] = 0;
+	}
+	shoplist_prices[x[0]][x[1]][x[2]][x[3]][x[4]] = price;
+}
+
+void solve(vi cs, int first_offer) {
+	
+		int new_price;
+		int min_price = INF;
+		int next_offer = INF;
+		for (int i = first_offer; i < n_offers; ++i) {
+			vi ns = use(cs, offers[i]);
+			if (ns[0] != -1) {
+				if (next_offer == INF) next_offer = i;
+				
+				if (shoplist_prices[ns[0]][ns[1]][ns[2]][ns[3]][ns[4]] == -1) {
+					solve(ns, next_offer);
+				}
+				new_price = shoplist_prices[ns[0]][ns[1]][ns[2]][ns[3]][ns[4]] + offer_prices[i];
+				min_price = min(min_price, new_price);
+			}
+		}
+		new_price = 0;
+		for (int i = 0; i < cs.size(); ++i) {
+			new_price += item_prices[i] * cs[i];
+		}
+		min_price = min(min_price, new_price);
+
+		shoplist_prices[cs[0]][cs[1]][cs[2]][cs[3]][cs[4]] = min_price;
+
+}
+
+
+int main(int argc, char *argv[]) {
+	//std::ios::sync_with_stdio(false);
+	//cin.tie(0);
+	
+	memset(shoplist_prices, -1, 6 * 6 * 6 * 6 * 6 * sizeof(int));
+	ifstream fin("shopping.in");
+	ofstream fout("shopping.out");
+
+	fin >> n_offers;
+	int n, item_code, n_items;
+	for (int i = 0; i < n_offers; ++i) {
+		fin >> n;
+		for (int j = 0; j < n; ++j) {
+			fin >> item_code >> n_items;
+			offers[i][item_code] = n_items;
+		}
+		fin >> offer_prices[i];
+	}
+	fin >> items_to_buy;
+	if (items_to_buy == 0) {
+		fout << 0 << '\n';
+		return 0;
+	}
+
+	item_prices.resize(items_to_buy);
+	int item_price;
+	vi shoplist(5);
+	int n_buy;
+	for (int i = 0; i < items_to_buy; ++i) {
+		fin >> item_code >> n_buy >> item_price;
+		item_prices[i] = item_price;
+		shoplist[i] = n_buy;
+		ix_to_item_code[i] = item_code;
+	}
+	for (int i = items_to_buy; i < 5; ++i)
+		shoplist[i] = 0;
+
+	fin.close();
+	shoplist_prices[0][0][0][0][0] = 0;
+	solve(shoplist, 0);
+	fout << get_price(shoplist) << '\n';
+	return 0;
+}

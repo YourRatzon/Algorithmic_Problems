@@ -1,0 +1,104 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: humble
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const int INF = LONG_MAX;
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const int MAX = 1e4 + 5;
+
+vector<ll> our_primes;
+vector<int> res;
+vi next_product_ix;
+std::unordered_set<ll> visited;
+
+int main(){
+	std::ios::sync_with_stdio(false);
+	cin.tie(0);
+	
+	ifstream fin("humble.in");
+	int K, N;
+	fin >> K >> N;
+	our_primes.resize(K);
+	for (int i = 0; i < K; ++i) {
+		fin >> our_primes[i];
+	}
+	fin.close();
+	res.resize(N + 1);
+	res[0] = 1;
+	next_product_ix.assign(K, 0);
+
+	int next_mult_ix;
+	for (int i = 1; i <= N; ++i) {
+		ll next_mult = INF;
+		for (int j = 0; j < K; ++j) {
+			while (visited.find(res[next_product_ix[j]] * our_primes[j]) != visited.end()) {
+				next_product_ix[j]++;
+			}
+			int curr_ix = next_product_ix[j];
+			ll curr_mult = res[next_product_ix[j]] * our_primes[j];
+			if (curr_mult < next_mult) {
+				next_mult = curr_mult;
+				next_mult_ix = j;
+			}
+		}
+		res[i] = next_mult;
+		next_product_ix[next_mult_ix]++;
+		visited.insert(next_mult);
+	}
+
+	ofstream fout("humble.out");
+	fout << res[N] << '\n';
+	return 0;
+}

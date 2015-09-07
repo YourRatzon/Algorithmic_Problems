@@ -1,0 +1,255 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+
+/*
+ID: jamerz1
+PROG: window
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <math.h>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+
+//#define F first
+//#define S second
+
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<int, ii> iii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+typedef vector<ull> vull;
+typedef vector<ll> vll;
+
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const double PI = 3.14159265;
+const int INF = INT_MAX;
+double EPS = 1e-10;
+const int MAX_N = 1e5 + 1;
+
+struct window {
+	window() :
+		id('?'), left_x(0), right_x(0), top_y(0), bottom_y(0), area(0) {};
+	window(int _id, int lx, int rx, int ty, int by, int _area) :
+		id(_id), left_x(lx), right_x(rx), top_y(ty), bottom_y(by), area(_area) {};
+	char id;
+	int left_x;
+	int right_x;
+	int top_y;
+	int bottom_y;
+	int area;
+};
+
+list<window> window_list;
+typedef char window_id;
+std::unordered_map<window_id, list<window>::iterator> window_id_to_it;
+
+struct rect {
+	rect() : left_x(0), right_x(0), top_y(0), bottom_y(0) {};
+	rect(int lx, int rx, int ty, int by) : left_x(lx), right_x(rx), top_y(ty), bottom_y(by)
+	{};
+	int left_x, right_x, top_y, bottom_y;
+};
+
+void find_and_set_uncovered_blocks(const rect& I_rect, const rect& J_rect, 
+								   vector<rect> & uncovered_blocks) {
+	// 1. find intersection I x J
+	// 2. if not 0, find blocks of I not covered by J and add to uncovered_blocks
+
+	// IJ intersection
+	int IJ_left_x = max(I_rect.left_x, J_rect.left_x);
+	int IJ_right_x = min(I_rect.right_x, J_rect.right_x);
+	int IJ_top_y = min(I_rect.top_y, J_rect.top_y);
+	int IJ_bottom_y = max(I_rect.bottom_y, J_rect.bottom_y);
+	if (IJ_right_x <= IJ_left_x || IJ_top_y <= IJ_bottom_y) {
+		uncovered_blocks.push_back(I_rect);
+		return;
+	}
+
+	// left block
+	int left_left_x = I_rect.left_x;
+	int left_right_x = IJ_left_x;
+	if (left_left_x < left_right_x) {
+		int left_top_y = I_rect.top_y;
+		int left_bottom_y = I_rect.bottom_y;
+		uncovered_blocks.push_back(rect(left_left_x, left_right_x, left_top_y, left_bottom_y));
+	}
+	// right block
+	int right_left_x = IJ_right_x;
+	int right_right_x = I_rect.right_x;
+	if (right_left_x < right_right_x) {
+		int right_top_y = I_rect.top_y;
+		int right_bottom_y = I_rect.bottom_y;
+		uncovered_blocks.push_back(rect(right_left_x, right_right_x, right_top_y, right_bottom_y));
+	}
+	// top block
+	int top_top_y = I_rect.top_y;
+	int top_bottom_y = IJ_top_y;
+	if (top_top_y > top_bottom_y) {
+		int top_left_x = IJ_left_x;
+		int top_right_x = IJ_right_x;
+		uncovered_blocks.push_back(rect(top_left_x, top_right_x, top_top_y, top_bottom_y));	
+	}
+	// bottom block
+	int bottom_top_y = IJ_bottom_y;
+	int bottom_bottom_y = I_rect.bottom_y;
+	if (bottom_top_y > bottom_bottom_y) {
+		int bottom_left_x = IJ_left_x;
+		int bottom_right_x = IJ_right_x;
+		uncovered_blocks.push_back(rect(bottom_left_x, bottom_right_x, bottom_top_y, bottom_bottom_y));
+	}
+	return;
+}
+
+ll get_area_of_blocks(vector<rect> blocks) {
+	ll area = 0;
+	for (int i = 0; i < blocks.size(); ++i)
+		area += (blocks[i].right_x - blocks[i].left_x) * 
+				(blocks[i].top_y - blocks[i].bottom_y);
+	return area;
+}
+ll get_uncovered_area(char id) {
+	list<window>::iterator curr_window_it, J_it, K_it;
+	window I_window, J_window, K_window;
+	int I_area, uncovered_area;
+	curr_window_it = window_id_to_it[id];
+	I_window = *curr_window_it;
+	I_area = I_window.area;
+	vector<rect> uncovered_blocks(1, rect(I_window.left_x, I_window.right_x,
+										  I_window.top_y, I_window.bottom_y));
+	vector<rect> next_uncovered_blocks;
+	rect I_rect, J_rect;
+	J_it = std::next(curr_window_it);
+	while (J_it != window_list.end()) {
+		next_uncovered_blocks.clear();
+		J_rect = rect(J_it->left_x, J_it->right_x,
+					  J_it->top_y, J_it->bottom_y);
+		for (int i = 0; i < uncovered_blocks.size(); ++i) {
+			I_rect = uncovered_blocks[i];
+			find_and_set_uncovered_blocks(I_rect, J_rect, next_uncovered_blocks);
+		}
+		++J_it;
+		uncovered_blocks = next_uncovered_blocks;
+	}
+
+	return get_area_of_blocks(uncovered_blocks);
+}
+
+int main(int argc, char *argv[]) {
+	std::ios::sync_with_stdio(false);
+	cin.tie(0);
+
+	int left_x, right_x, top_y, bottom_y;
+	int I_area;
+	ll uncovered_area;
+	char id;
+	double percent_vis;
+	window I_window, J_window, K_window;
+	list<window>::iterator curr_window_it, J_it, K_it;
+
+	ifstream fin("window.in");
+	string command;
+	ofstream fout("window.out");
+	fout << std::fixed;
+
+	while (fin >> command  && !fin.eof()) {
+		id = command[2];
+		switch (command[0]) {
+		case 'w': {
+			stringstream command_ss(command.substr(4));
+			command_ss >> left_x;
+			command_ss.ignore();
+			command_ss >> top_y;
+			command_ss.ignore();
+			command_ss >> right_x;
+			command_ss.ignore();
+			command_ss >> bottom_y;
+
+			if (left_x > right_x)
+				swap(left_x, right_x);
+			if (bottom_y > top_y)
+				swap(bottom_y, top_y);
+			I_area = (right_x - left_x) * (top_y - bottom_y);
+			window_list.push_back(
+				window(id, left_x, right_x, top_y, bottom_y, I_area));
+			window_id_to_it[id] = --window_list.end();
+			break;
+		}
+		case 't':
+			curr_window_it = window_id_to_it[id];
+			I_window = *curr_window_it;
+			window_list.erase(curr_window_it);
+			window_list.push_back(I_window);
+			window_id_to_it[id] = --window_list.end();
+			break;
+		case 'b':
+			curr_window_it = window_id_to_it[id];
+			I_window = *curr_window_it;
+			window_list.erase(curr_window_it);
+			window_list.push_front(I_window);
+			window_id_to_it[id] = window_list.begin();
+			break;
+		case 'd':
+			curr_window_it = window_id_to_it[id];
+			I_window = *curr_window_it;
+			window_list.erase(curr_window_it);
+			break;
+		case 's':
+			uncovered_area = get_uncovered_area(id);
+			curr_window_it = window_id_to_it[id];
+			I_window = *curr_window_it;
+			percent_vis = 100.0 * double(uncovered_area) / double(I_window.area);
+			fout << std::setprecision(3) << percent_vis << '\n';
+			break;
+		default:
+			break;
+		}
+	}
+	fin.close();
+	fout.close();
+
+	return 0;
+}

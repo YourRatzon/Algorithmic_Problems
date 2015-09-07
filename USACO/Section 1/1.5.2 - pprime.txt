@@ -1,0 +1,116 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+/*
+ID: jamerz1
+PROG: pprime
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int,  int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const unsigned int MAX = 1000;
+vector<string> palindromes;
+
+void generate_palindromes(vector<string> last_pals, int to) {
+	vector<string> new_pals;
+	string curr_string = "";
+	if (last_pals.size() == 0) {
+		for (int i = 1; i <= 9; ++i) {
+			new_pals.push_back(string(1, '0' + i));
+			palindromes.push_back(string(1, '0' + i));
+		}
+	}
+	else if (stoi(last_pals.back()) >= to)
+		return;
+
+	else if (last_pals[0].size() % 2 != 0) {
+		int mid_index = last_pals[0].size() / 2;
+		for (int i = 0; i < last_pals.size(); i++) {
+			curr_string = last_pals[i];
+			curr_string.insert(curr_string.begin()+mid_index, curr_string[mid_index]);
+			new_pals.push_back(curr_string);
+			palindromes.push_back(curr_string);
+		}
+	}
+	else {
+		int mid_index = last_pals[0].size() / 2;
+		for (int i = 0; i < last_pals.size(); i++) {
+			for (int j = 0; j <= 9; ++j) {
+				curr_string = last_pals[i];
+				curr_string.insert(curr_string.begin() + mid_index, '0' + j);
+				new_pals.push_back(curr_string);
+				palindromes.push_back(curr_string);
+			}
+		}
+	}
+	generate_palindromes(new_pals, to);
+	return;
+}
+
+bool is_prime(int num) {
+	for (int i = 2; i <= sqrt(num); ++i)
+		if (num % i == 0)
+			return false;
+	return true;
+}
+
+int main()
+{
+	ifstream fin("pprime.in");
+	ofstream fout("pprime.out");
+	int a, b;
+	fin >> a >> b;
+	generate_palindromes({}, b);
+	int start = 0;
+	while (stoi(palindromes[start]) < a) ++start;
+	int end = palindromes.size() - 1;
+	while (stoi(palindromes[end]) > b) --end;
+
+	for (; start <= end; ++start) {
+		int curr_palin = stoi(palindromes[start]);
+		if (is_prime(curr_palin))
+			fout << curr_palin << '\n';
+	}
+	fout.close();
+
+	return 0;
+}

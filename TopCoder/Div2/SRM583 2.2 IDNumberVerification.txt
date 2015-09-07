@@ -1,0 +1,161 @@
+
+/*
+SRM 583 - Division 2 Problem 2
+IDNumberVerification
+*/
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <vector>
+#include <utility>
+#include <list>
+#include <iterator> 
+#include <cctype>
+#include <istream>
+#include <ctime>
+#include <algorithm>  
+#include <vector>
+#include <cmath>
+#include <climits>
+#include <queue>
+#include <stdlib.h> 
+using namespace std;
+
+class IDNumberVerification
+{
+public:
+	string verify(string id, vector <string> regionCodes)
+	{
+		string region = id.substr(0, 6);
+		string bday = id.substr(6, 8);
+		string code = id.substr(14, 3);
+
+		istringstream ss(code);
+
+		if (code == "000")
+			return "Invalid";
+
+		if (checkRegion(region, regionCodes) && checkBday(bday) && checkSum(id))
+		{
+			int codeInt;
+			ss >> codeInt;
+
+			if (codeInt % 2 == 0)
+				return "Female";
+			else 
+				return "Male";
+		}
+		else
+			return "Invalid";
+	}
+
+	bool checkRegion(string region, vector <string> regionCodes)
+	{
+		for (int i = 0; i < regionCodes.size(); i++)
+		{
+			if (region == regionCodes[i])
+				return true;
+		}
+
+		return false;
+
+	}
+		
+	bool checkBday(string bday)
+	{
+		stringstream ss;
+		
+		string yearStr = bday.substr(0, 4);
+		string monStr = bday.substr(4, 2);
+		string dayStr = bday.substr(6, 2);
+
+		ss << yearStr;
+		int year;
+		ss >> year;
+		if (year < 1900 || year > 2011)
+			return false;
+
+		int month;
+		ss.clear();
+		ss << monStr;
+		ss >> month;
+		if (month < 1 || month > 12)
+			return false;
+
+		int day;
+		ss.clear();
+		ss << dayStr;
+		ss >> day;
+		if (day < 1 || day > 31)
+			return false;
+
+		if (month == 1 || month == 3 || month == 5 || month == 7 
+			|| month == 8 || month == 10 || month == 12)
+		{
+			return true;
+		}
+		else if (month != 2)
+		{
+			if (day == 31)
+				return false;
+		}
+		else
+		{
+			if (year == 2000)
+			{
+					return true;
+			}
+			if ((year % 4 == 0) && (year % 100 != 0))
+			{
+				return true;
+			}
+		}
+
+		if (day > 28)
+			return false;
+
+		return true;
+	}
+	bool checkSum(string id)
+	{
+		int x;
+
+		if (id[17] == 'X')
+			x = 10;
+
+		else
+			x = id[17] - '0';
+
+		double sum = x;
+
+		for (int i = 0, j = 17; i < id.length()-1; i++, j--)
+		{
+			sum += (id[i] - '0') * pow(2.0, (double)j);
+		}
+
+		if ((int)sum % 11 == 1)
+			return true;
+	
+		else
+			return false;
+	}
+
+};
+
+
+int main()
+{
+	string id = "520381193206090891";
+
+	vector<string> vec;
+	vec.push_back("532922");
+	vec.push_back("520381");
+
+	IDNumberVerification ID;
+
+
+	cout<<ID.verify(id, vec)<<endl;
+
+}

@@ -1,0 +1,154 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: fracdec
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const unsigned int MAX = 100000;
+int INF = 1e9;
+
+vector<vi> AdjMat;
+vector<vi> FW;
+
+string long_division(int num, int div) {
+	string res;
+	unordered_map<int, int> remainder_index_map;
+	bool decimal = false;
+	string start_num = std::to_string(num);
+	int num_idx = 0;
+	int curr_num = 0;
+	while (num_idx < start_num.size() && curr_num < div) {
+		curr_num = curr_num * 10 + (start_num[num_idx] - '0');
+		++num_idx;
+	}
+	int i;
+	for (i = 0; i < MAX;) {
+		if (curr_num >= div) {
+			int curr_res = curr_num / div;
+			res.push_back('0' + curr_res);
+			++i;
+			curr_num -= (div * curr_res);
+			if (num_idx < start_num.size()) { // bring down next digit of start_num
+				curr_num = curr_num * 10 + (start_num[num_idx] - '0');
+				num_idx++;
+				if (curr_num < div) {
+					res.push_back('0');
+					++i;
+				}
+			}
+			if (num_idx == start_num.size() && curr_num == 0) {
+				if (!decimal)
+					res += ".0";
+				return res;
+			}
+		}
+		else if (num_idx < start_num.size()) {
+			res.push_back('0');
+			curr_num = curr_num * 10 + (start_num[num_idx] - '0');
+			num_idx++;
+			++i;
+		}
+		else
+			break;
+	}
+
+	// On to the decimal part
+	decimal = true;
+	if (res == "") {
+		res.push_back('0');
+		++i;
+	}
+	res.push_back('.');
+	++i;
+
+	for (; i < MAX;) {
+
+		curr_num *= 10;
+
+		if (!remainder_index_map[curr_num]) {
+			remainder_index_map[curr_num] = res.size();
+		}
+		else { // DONE!
+			int open = remainder_index_map[curr_num];
+			int close = res.size();
+			res.insert(res.begin() + open, '(');
+			res.insert(res.begin() + close + 1, ')');
+			return res;
+		}
+		
+		int curr_res = curr_num / div;
+		res.push_back('0' + curr_res);
+		++i;
+		curr_num -= (div * curr_res);
+
+		if (curr_num == 0)
+			return res;
+	
+
+	}
+
+	if (!decimal)
+		res += ".0";
+	return res;
+}
+
+int main(){
+	//std::ios::sync_with_stdio(false);
+	//cin.tie(0);
+	ifstream fin("fracdec.in");
+	int N, D;
+	fin >> N >> D;
+	fin.close();
+
+	ofstream fout("fracdec.out");
+	string res = long_division(N, D);
+	for (int i = 0; i < res.size(); i += 76)
+		fout << res.substr(i, 76) << '\n';
+
+	return 0;
+}
+

@@ -1,0 +1,120 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: range
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<ull, ull> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+typedef vector<ull> vull;
+
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const ull MAX_N = 1026;
+const ull INF = 1e7;
+
+vector<vector<bool>> grid;
+vector<vector<int>> max_sq_sz;
+
+int main(ull argc, char *argv[]) {
+	std::ios::sync_with_stdio(false);
+	cin.tie(0);
+
+	ifstream fin("range.in");
+	int N;
+	fin >> N;
+	grid.assign(N, vector<bool>(N, false));
+	string line;
+	for (int i = 0; i < N; ++i) {
+		fin >> line;
+		for (int j = 0; j < line.size(); ++j) {
+			if (line[j] == '1')
+				grid[i][j] = true;
+		}
+	}
+	
+	max_sq_sz.assign(N, vector<int>(N, 0));
+	for (int i = 0; i < N; ++i) {
+		if (grid[0][i])
+			max_sq_sz[0][i] = 1;
+		if (grid[i][0])
+			max_sq_sz[i][0] = 1;
+	}
+
+	for (int i = 1; i < N; ++i) {
+		for (int j = 1; j < N; ++j) {
+			if (!grid[i][j])
+				max_sq_sz[i][j] = 0;
+			else {
+				int min_neigh_sz = min(max_sq_sz[i - 1][j], min(max_sq_sz[i - 1][j - 1], max_sq_sz[i][j - 1]));
+				max_sq_sz[i][j] = min_neigh_sz + 1;
+			}
+		}
+	}
+
+	vi res(251, 0);
+	for (int row = 0; row < N; ++row) {
+		for (int col = 0; col < N; ++col) {
+			int curr_max_sz = max_sq_sz[row][col];
+			for (int i = 2; i <= curr_max_sz; ++i)
+				res[i]++;
+		}
+	}
+
+	ofstream fout("range.out");
+	for (int i = 2; i < res.size(); ++i) {
+		int curr = res[i];
+		if (curr == 0)
+			break;
+		else
+			fout << i << ' ' << curr << '\n';
+	}
+	return 0;
+}

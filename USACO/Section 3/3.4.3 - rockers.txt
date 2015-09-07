@@ -1,0 +1,106 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: rockers
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<ull, ull> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+typedef vector<ull> vull;
+typedef vector<ll> vll;
+
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const int MAX_N = 5 * 1e3 + 1;
+const double INF = 2e9;
+
+vi songs;
+vi discs;
+int N, T, nD;
+int best = 0;
+void solve(int i, int curr_disc, int curr_songs) {
+	if (i == N)
+		return;
+	if (curr_disc >= nD) {
+		return;
+	}
+	while (i < N) {
+		if (discs[curr_disc] + songs[i] <= T) {
+			// try placing song i to curr_disc
+			curr_songs++;
+			discs[curr_disc] += songs[i];
+			best = max(best, curr_songs);
+			solve(i + 1, curr_disc, curr_songs); //next song
+			solve(i + 1, curr_disc + 1, curr_songs);
+			//backtrack
+			discs[curr_disc] -= songs[i];
+			curr_songs--;
+		}
+		++i;
+	}
+}
+
+
+int main(int argc, char *argv[]) {
+	//std::ios::sync_with_stdio(false);
+	//cin.tie(0);
+	ifstream fin("rockers.in");
+	fin >> N >> T >> nD;
+	songs.resize(N);
+	discs.resize(nD);
+	for (int i = 0; i < N; ++i) {
+		fin >> songs[i];
+	}
+
+	solve(0, 0, 0);
+	ofstream fout("rockers.out");
+	fout << best << '\n';
+	return 0;
+}

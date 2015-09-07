@@ -1,0 +1,82 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+/*
+ID: jamerz1
+PROG: frac1
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int,  int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const unsigned int MAX = 51;
+
+int gcd(int a, int b) { return (b == 0 ? a : gcd(b, a % b)); }
+bool frac_comp(ii lhs, ii rhs) {
+	double a = (double)lhs.first / lhs.second;
+	double b = (double)rhs.first / rhs.second;
+	return a < b;
+}
+
+int main()
+{
+	ifstream fin("frac1.in");
+	ofstream fout("frac1.out");
+	int N;
+	fin >> N;
+	fin.close();
+
+	fout << "0/1\n";
+
+	vii fracs;
+	for (int den = 2; den <= N; ++den) {
+		for (int nom = 1; nom < den; ++nom) {
+			if (gcd(den, nom) == 1)
+				fracs.push_back({ nom, den });
+		}
+	}
+	std::sort(fracs.begin(), fracs.end(), frac_comp);
+	for (ii fr : fracs)
+		fout << fr.first << '/' << fr.second << '\n';
+	fout << "1/1\n";
+	fout.close();
+	return 0;
+}

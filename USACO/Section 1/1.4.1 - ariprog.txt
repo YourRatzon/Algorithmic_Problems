@@ -1,0 +1,89 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+/*
+ID: jamerz1
+PROG: ariprog
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int,  int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const unsigned int MAX = 1000;
+bool bisquares[125001]; // 2 * 250 * 250 + 1
+int main()
+{
+	ifstream fin("ariprog.in");
+
+	int N, M;
+	fin >> N >> M;
+	fin.close();
+	memset(bisquares, 0, 63002);
+	for (int i = 0; i <= M; ++i) {
+		for (int j = 0; j <= M; ++j) {
+			bisquares[i * i + j * j] = true;
+		}
+	}
+	int max_term = 2 * M * M;
+	int max_b = (max_term /(N-1));
+	bool found = false;
+	ofstream fout("ariprog.out");
+	for (int b = 1; b <= max_b; ++b) {
+		for (int a = 0; a <= max_term - (b * (N - 1)); ++a) {
+			int n;
+			for (n = 0; n < N; ++n) {
+				ll test = a + (b * n);
+				if (bisquares[test]) continue;
+				else break;
+			}
+			if (n == N) {
+				found = true;
+				fout << a << ' ' << b << '\n';
+			}
+		}
+	}
+	if (!found)
+		fout << "NONE\n";
+	fout.close();
+
+
+	return 0;
+}

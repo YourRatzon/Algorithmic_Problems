@@ -1,0 +1,83 @@
+
+/*
+ID: jamerz1
+PROG: friday
+LANG: C++
+*/
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <vector>
+using namespace std;
+
+int * Friday13th(int n);
+
+int main()
+{
+	ifstream fin ("friday.in");
+	ofstream fout ("friday.out");
+
+	int n;
+	fin >> n;
+	int * days = Friday13th(n-1);
+
+	for (int i = 0; i < 7; i++)
+	{	
+		fout<<days[i];
+		if (i < 6)
+			fout<<' ';
+
+	}
+	fout<<'\n';
+		
+	delete[] days;
+	
+	return 0;
+}
+
+int * Friday13th(int n)
+{
+	int * days = new int[7];
+	for (int i = 0; i < 7; i++)
+		days[i] = 0;
+
+	int i = 2; // January 1, 1900 was on a Monday.
+	for (int y = 1900; y < 1900+n+1; y++ )
+	{
+		for (int m = 1; m < 13; m++)
+		{
+			for (int d = 1; d < 32; d++)
+			{
+				if (d == 28 && m == 2)
+				{
+					if (y % 4 == 0 && 
+						y != 1900 && y != 2100 && y != 2200)  // y is a leap year
+					{
+						i += 2;
+						i = i % 7;
+						break;
+					}
+
+					i += 1;
+					i = i % 7;
+					break;
+				}
+
+				if (d == 30 && (m == 9 || m == 4 || m == 6 || m == 11) )
+				{
+					i++;
+					i = i % 7;
+					break;
+				}
+
+				if (d == 13)
+					days[i]++;
+				i++;
+				i = i % 7;
+			}
+		}
+	}
+	return days;
+}

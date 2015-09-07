@@ -1,0 +1,124 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: cowtour
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const unsigned int MAX = 1001;
+ull INF = ull(1e19);
+vector<bool> visited;
+int N;
+int memo[31][31][31][440];
+class ABC {
+
+public:
+	int n, k;
+	string ans;
+
+	bool solve(int a, int b, int c, int res, string S) {
+		if (S.size() == n) {
+			if (res == k)
+				return true;
+			else
+				return false;
+		}
+		bool try_S;
+		if (memo[a + 1][b][c][res] == -1)
+			memo[a + 1][b][c][res] = solve(a + 1, b, c, res, S + 'A');
+		try_S = memo[a + 1][b][c][res];
+		if (try_S) {
+			if (ans == "")
+				ans = S+'A';
+			return 1;
+		}
+		if (memo[a][b+1][c][res+a] == -1)
+			memo[a][b+1][c][res+a] = solve(a, b+1, c, res+a, S + 'B');
+		
+		try_S = memo[a][b + 1][c][res+a];
+		if (try_S) {
+			if (ans == "")
+				ans = S+'B';
+			return 1;
+		}
+
+		if (memo[a][b][c+1][res+a+b] == -1)
+			memo[a][b][c+1][res+a+b] = solve(a, b, c+1, res+a+b, S + 'C');
+		try_S = memo[a][b][c + 1][res + a + b];
+		if (try_S) {
+			if (ans == "")
+				ans = S+'C';
+			return 1;
+		}
+		else {
+			return 0;
+		}
+
+	}
+	string createString(int N, int K){
+		n = N;
+		k = K;
+		ans = "";
+		for (int i = 0; i < 31; ++i)
+			for (int j = 0; j < 31; ++j)
+				for (int k = 0; k < 31; ++k)
+					for (int res = 0; res < 440; ++res)
+						memo[i][j][k][res] = -1;
+
+		solve(0, 0, 0, 0, "");
+		return ans;
+	}
+	
+}K;
+
+int main()
+{
+	std::ios::sync_with_stdio(false);
+	cin.tie(0);
+	cout<<K.createString(30,300) << '\n';
+	
+	return 0;
+}

@@ -1,0 +1,102 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+/*
+ID: jamerz1
+PROG: preface
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int,  int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const unsigned int MAX = 3500;
+const int INF = 16;
+int N;
+const string ROMAN = "IVXLCDM";
+const vector<string> roman_ones = { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX" };
+const vector<string> roman_tens = { "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC" };
+const vector<string> roman_huns = { "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM" };
+const vector<string> roman_thos = { "M", "MM", "MMM" };
+vector<vector<string>> roman_vals = { roman_ones, roman_tens, roman_huns, roman_thos };
+
+unordered_map<char, int> int_to_roman(int num) {
+	unordered_map<char, int> res;
+	int count = 0, curr_digit = 0;
+	string curr_roman;
+	while (num > 0)
+	{
+		curr_digit = num % 10;
+		num /= 10;
+		if (curr_digit != 0) {
+			curr_roman = roman_vals[count][curr_digit - 1];
+			for (char c : curr_roman)
+				res[c]++;
+		}
+		count++;
+	}
+	return res;
+}
+
+int main()
+{
+	ifstream fin("preface.in");
+	fin >> N;
+	fin.close();
+	unordered_map<char, int> res_map;
+	for (char c : ROMAN)
+		res_map[c] = 0;
+
+	int num = 0;
+	unordered_map<char, int> curr_res;
+	for (int i = 1; i <= N; ++i) {
+		curr_res = int_to_roman(i);
+		for (auto entry : curr_res)
+			res_map[entry.first] += entry.second;
+	}
+
+	ofstream fout("preface.out");
+	for (char c : ROMAN)
+		if (res_map[c] > 0)
+			fout << c << ' ' << res_map[c] << '\n';
+	fout.close();
+
+	return 0;
+}

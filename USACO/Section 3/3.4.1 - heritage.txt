@@ -1,0 +1,101 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: heritage
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<ull, ull> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+typedef vector<ull> vull;
+typedef vector<ll> vll;
+
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+int build_post_order(string in_order, string pre_order, string &post_order, int post_idx) {
+	if (post_idx < 0)
+		return -1;
+	if (in_order.size() == 0)
+		return post_idx;
+
+	std::unordered_map<char,int> in_order_chars;
+	for (int i = 0; i < in_order.size(); ++i)
+		in_order_chars[in_order[i]] = i; 
+	int idx = 0;
+	while (idx<pre_order.size() && in_order_chars.count(pre_order[idx]) == 0)
+		++idx;
+	int mid = in_order_chars[pre_order[idx]];
+	post_order[post_idx] = in_order[mid];
+	post_idx--;
+
+	if (in_order.size()-1 > mid) 
+		post_idx = build_post_order(in_order.substr(mid + 1), pre_order, post_order, post_idx);
+
+	if (mid > 0)
+		post_idx = build_post_order(in_order.substr(0, mid), pre_order, post_order, post_idx);
+
+	return post_idx;
+}
+
+int main(int argc, char *argv[]) {
+	//std::ios::sync_with_stdio(false);
+	//cin.tie(0);
+	ifstream fin("heritage.in");
+	string in_order, pre_order, post_order;
+	fin >> in_order >> pre_order;
+	fin.close();
+	post_order.resize(pre_order.size());
+	build_post_order(in_order, pre_order, post_order, post_order.size() - 1);
+	ofstream fout("heritage.out");
+	fout << post_order << '\n';
+
+
+	return 0;
+}
+

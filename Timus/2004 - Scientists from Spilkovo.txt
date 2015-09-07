@@ -1,0 +1,117 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: fence6
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional>
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<int, ii> iii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+typedef vector<ull> vull;
+typedef vector<ll> vll;
+
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const int MAX_N = 2097153;
+const double INF = 2e9 + 1;
+const int MN = 1048596;
+int MAX, N;
+bool codes[MAX_N];
+int codes_rix[MAX_N];
+char res[MN];
+
+int bin_str_to_int(char * suff, int N) {
+	int res = 0;
+	for (int i = N - 1; i >= 0; --i) {
+		res *= 2;
+		res += (suff[i] - '0');
+	}
+	return res;
+}
+
+int main(int argc, char *argv[]) {
+	//std::ios::sync_with_stdio(false);
+	//cin.tie(0);
+
+	scanf("%d",&N);
+	MAX = pow(2, N) + N - 1;
+
+	for (int i = 0; i < MAX; ++i)
+		res[i] = '0';
+
+	char * curr_suffix;
+	int r_idx = N-1;
+	while (r_idx < MAX){
+		curr_suffix = res + r_idx - (N - 1);
+		int suff = bin_str_to_int(curr_suffix, N);
+		if (!codes[suff]) {
+			codes[suff] = true;
+			codes_rix[suff] = r_idx;
+			r_idx++;
+		}
+		else {
+			if (codes_rix[suff] == r_idx)
+				codes[suff] = false;
+			if (res[r_idx] == '0') {
+				res[r_idx] = '1';
+			}
+			else {
+				res[r_idx] = '0';
+				r_idx--;
+			}
+		}
+	}
+	printf(res);
+	printf("\n");
+
+
+	return 0;
+
+}

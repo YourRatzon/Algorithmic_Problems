@@ -1,0 +1,84 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: money
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const unsigned int MAX_V = 26;
+const unsigned int MAX_N = 10001;
+vi coin_types;
+ll DP[MAX_V][MAX_N];
+
+int main()
+{
+	ifstream fin("money.in");
+	int V, N;
+	fin >> V >> N;
+	coin_types.resize(V+1);
+	for (int i = 1; i <= V; ++i) {
+		fin>>coin_types[i];
+	}
+	fin.close();
+
+	for (int j = 0; j <= N; ++j) {
+		DP[0][j] = 0;
+	}
+	for (int i = 0; i <= V; ++i) {
+		DP[i][0] = 1;
+	}
+	for (int i = 1; i <= V; ++i) {
+		for (int j = 1; j <= N; ++j) {
+			if (j - coin_types[i] < 0)
+				DP[i][j] = DP[i - 1][j];
+			else
+				DP[i][j] = DP[i - 1][j] + DP[i][j - coin_types[i]];
+		}
+	}
+	ofstream fout("money.out");
+	fout << DP[V][N] << '\n';
+	fout.close();
+	return 0;
+}

@@ -1,0 +1,162 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: spin
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const int INF = LONG_MAX;
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const int MAX_N = 1e6 + 1;
+
+ll gcd(ll a, ll b) {
+	return b == 0 ? a : gcd(b, a% b);
+}
+ll lcm(ll a, ll b) {
+	return a * (b / gcd(a, b)); 
+}
+
+vector<vi> AdjMatrix;
+int MOD = 1000000007;
+
+bool wedge_comp(const ii & lhs, const ii & rhs) {
+	
+	if (lhs.first != rhs.first)
+		return lhs.first < rhs.first;
+	else
+		return lhs.second > rhs.second;
+}
+
+int main(){
+	std::ios::sync_with_stdio(false);
+	cin.tie(0);
+	ifstream fin("spin.in");
+	vi speed(5);
+	vector<vii> wedges(5);
+	vi n_wedges(5);
+	vector<vi> extent(5);
+	int s;
+	for (int i = 0; i < 5; ++i) {
+		fin >> speed[i] >> n_wedges[i];
+		wedges[i] = vii(n_wedges[i]);
+		extent[i] = vi(n_wedges[i]);
+		for (int j = 0; j < n_wedges[i]; ++j) {
+			fin >> s >> extent[i][j];
+			wedges[i][j] = { s, (s + extent[i][j]) % 360 };
+		}
+	}
+	
+	ll max_time = lcm(speed[0],speed[1]);
+	for (int i = 1; i < 5; ++i) {
+		max_time = lcm(max_time, speed[i]);
+	}
+
+	ofstream fout("spin.out");
+	vii new_wedges;
+	for (ll t = 0; t <= 360; ++t) {
+		vector<ii> current_wedges;
+		
+		for (int i = 0; i < 5; ++i) {
+			for (int j = 0; j < wedges[i].size(); ++j) {
+				current_wedges.push_back({ wedges[i][j].first, 1 });//start
+				current_wedges.push_back ({ wedges[i][j].second, 0 });///end
+
+				if (wedges[i][j].second >= wedges[i][j].first && 
+					wedges[i][j].second - wedges[i][j].first != extent[i][j]) { // un-split segment
+					wedges[i][j].second = (wedges[i][j].first + extent[i][j]) % 360;
+				}
+			}
+		}
+
+		for (int j = 0; j < new_wedges.size(); ++j) {
+			current_wedges.push_back({ new_wedges[j].first, 1 });//start
+			current_wedges.push_back({ new_wedges[j].second, 0 });///end
+		}
+
+		sort(current_wedges.begin(), current_wedges.end(), wedge_comp);
+		int active = 0;
+		for (int i = 0; i < current_wedges.size(); ++i) {
+			if (current_wedges[i].second == 1) {
+				active++;
+				if (active >= 5) {
+					fout << t << '\n';
+					return 0;
+				}
+
+			}
+			else if (active > 0) {
+					active--;
+			}
+
+		}
+		new_wedges.clear();
+		for (int i = 0; i < 5; ++i) {
+			for (int j = 0; j < wedges[i].size(); ++j) {
+				wedges[i][j].first =  (wedges[i][j].first  + speed[i] ) % 360;
+				wedges[i][j].second = (wedges[i][j].second + speed[i] ) % 360;
+
+
+				if (wedges[i][j].second < wedges[i][j].first) { //split into two segments
+					int save = wedges[i][j].second;
+					wedges[i][j].second = 359;
+					new_wedges.push_back({ 0, save });
+				}
+
+			}
+		}
+	}
+
+	fout << "none\n";
+	fout.close();
+	return 0;
+}

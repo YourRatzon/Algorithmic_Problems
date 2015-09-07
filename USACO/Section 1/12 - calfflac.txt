@@ -1,0 +1,131 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+/*
+ID: jamerz1
+PROG: calfflac
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <streambuf>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const int MAX = 20001;
+int stallTable[MAX] = { 0 };
+int translationMap[MAX];
+
+int main()
+{
+	ifstream fin("calfflac.in");
+	std::string fileStr((std::istreambuf_iterator<char>(fin)),
+		std::istreambuf_iterator<char>());
+
+	ofstream fout("calfflac.out");
+	string text(MAX, ' ');
+	int k = 0, totalIndex = 0;
+
+	for (int i = 0; i < fileStr.size(); ++i, totalIndex++)
+	{
+		if (isalpha(fileStr[i]))
+		{
+			text[k] = tolower(fileStr[i]);
+			translationMap[k] = totalIndex;
+			k++;
+		}
+	}
+	translationMap[k] = totalIndex;
+
+	int maxLength = 0;
+	int maxCenter;
+	for (int i = 0; i < k; ++i)
+	{
+		int currLength = 1;
+
+		//check for odd lengthed pal's with i being their middle
+		int currCenter = i;
+		for (int left = i - 1, right = i + 1; right < k && left >= 0; ++right, --left)
+		{
+			if (text[left] == text[right])
+			{
+				currLength += 2;
+				if (currLength > maxLength)
+				{
+					maxLength = currLength;
+					maxCenter = currCenter;
+				}
+			}
+			else
+				break;
+		}
+
+		currLength = 0;
+		//check for even lengthed pal's with i being the left half of their middle
+		for (int left = i, right = i + 1; left >= 0 && right < k; ++right, --left)
+		{
+			if (text[left] == text[right])
+			{
+				currLength += 2;
+				if (currLength > maxLength)
+				{
+					maxLength = currLength;
+					maxCenter = currCenter;
+				}
+			}
+			else
+				break;
+
+		}
+	}
+
+	fout << maxLength << '\n';
+	if (maxLength % 2 == 0)
+	{
+		int start = translationMap[maxCenter + 1 - maxLength / 2];
+		int end = translationMap[maxCenter - maxLength / 2 + maxLength];
+		fout << fileStr.substr(start, end-start+1)  << '\n';
+	}
+	else
+	{
+		int start = translationMap[maxCenter - maxLength / 2];
+		int end = translationMap[maxCenter - maxLength / 2 + maxLength-1];
+		fout << fileStr.substr(start, end - start+1) << '\n';
+	}
+
+	return 0;
+}

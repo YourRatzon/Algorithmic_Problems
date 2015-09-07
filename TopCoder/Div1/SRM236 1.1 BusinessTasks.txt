@@ -1,0 +1,76 @@
+
+/*
+TopCoder SRM 236 Div1, Level 1.
+BusinessTasks
+*/
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <vector>
+using namespace std;
+
+class BusinessTasks
+{
+public:
+	string getTask(vector<string> tasks, int n)
+	{
+		vector<string>::iterator it, it2;
+		int j;
+		string test;
+		it = tasks.begin();
+		it2= tasks.begin();
+		int size = tasks.size();
+		for (int i = 1; i < size; i ++)
+		{
+			it2 = it;
+			test = (*it);
+			for (j = 0; test != tasks.back(); j++)
+			{
+				++it;
+				test = (*it);
+			}
+
+			it = it2;
+
+			if (j >= n - 1)
+				it = it + n - 1;
+			else
+			{
+				it = tasks.begin();
+				it += (n - (j + 1) - 1) % tasks.size() ;
+			}
+
+			if (it != tasks.begin())
+			{
+				it2 = it-1;
+				tasks.erase(it);
+				if (it2 == tasks.end() - 1)
+					it = tasks.begin();
+				else
+					it = it2 + 1;
+			}
+			else
+			{
+				tasks.erase(it);
+				it = tasks.begin();
+			}
+			
+		}
+
+		return tasks.back();
+	}
+
+}BT;
+
+int main()
+{
+	string arr[] = {"zlqamum","yjsrpybmq","tjllfea","fxjqzznvg","nvhekxr","am","skmazcey","piklp",
+"olcqvhg","dnpo","bhcfc","y","h","fj","bjeoaxglt","oafduixsz","kmtbaxu",
+"qgcxjbfx","my","mlhy","bt","bo","q"};
+	vector<string> tasks(arr, arr + sizeof arr / sizeof arr[0]);
+
+	string result = BT.getTask(tasks, 9000000);
+	cout<<result<<endl;
+}

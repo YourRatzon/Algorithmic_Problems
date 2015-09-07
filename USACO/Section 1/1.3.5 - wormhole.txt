@@ -1,0 +1,189 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+/*
+ID: jamerz1
+PROG: wormhole
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int,  int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const unsigned int MAX = 21;
+
+vector<vii> res_permuts;
+
+vector<vii> make_pair_permuts(const vi holes, vector<vii> all_permuts)
+{
+	if (holes.size() == 0) {
+		return all_permuts;
+	}
+	else {
+		if (all_permuts.size() == 0)
+		{
+			for (int i = 1; i < holes.size(); ++i) {
+				vector<vii> new_permuts;
+				vii new_V(1, { holes[0], holes[i] });
+				new_permuts.push_back(new_V);
+				vi new_holes = holes;
+				new_holes.erase(new_holes.begin() + i);
+				new_holes.erase(new_holes.begin());
+				vector<vii> result = make_pair_permuts(new_holes, new_permuts);
+				res_permuts.insert(res_permuts.end(), result.begin(), result.end());
+			}
+			return res_permuts;
+			
+		}
+		vector<vii> curr_result;
+		for (int i = 1; i < holes.size(); ++i) {
+			vector<vii> new_permuts;
+			for (int j = 0; j < all_permuts.size(); ++j) {
+				vii perm = all_permuts[j];
+				perm.push_back({ holes[0], holes[i] });
+				new_permuts.push_back(perm);
+
+				vi new_holes = holes;
+				new_holes.erase(new_holes.begin() + i);
+				new_holes.erase(new_holes.begin());
+				vector<vii> temp_res = make_pair_permuts(new_holes, new_permuts);
+				curr_result.insert(curr_result.end(), temp_res.begin(), temp_res.end());
+			}
+		}
+		return curr_result;
+	}
+}
+
+vector<ii> holes;
+ull total = 0;
+
+int get_right_neighbor(int hole_index)
+{
+	ii my_hole = holes[hole_index];
+	ii closest_neighbor = {2000000000, 2000000000};
+	int res_index = -1;
+
+	for (int i = 0; i < holes.size();  i++) {
+		if (i == hole_index) continue;
+
+		if (my_hole.second == holes[i].second) {
+			if (holes[i].first > my_hole.first && holes[i].first < closest_neighbor.first) {
+				closest_neighbor = holes[i];
+				res_index = i;
+			}
+		}
+	}
+
+	return res_index;
+}
+
+vector<bool> VISITED;
+bool cycle = false;
+bool DFS(vector<vi>& AdjList, int v)
+{
+	VISITED[v] = true;
+	for (int u : AdjList[v])
+	{
+		if (VISITED[u]) {
+			cycle = true;
+			return cycle;
+		}
+		else {
+			cycle |= DFS(AdjList, u);
+		}
+	}
+	return cycle;
+}
+
+int main()
+{
+	ifstream fin("wormhole.in");
+	ofstream fout("wormhole.out");
+
+
+	int N;
+	fin >> N;
+	ii temp;
+	vi indicies;
+	set<ii> table;
+	int index = 0;
+
+	for (int i = 0; i < N; ++i)
+	{
+		fin >> temp.first >> temp.second;
+		// ignore identical warmholes
+		if (table.count(temp) == 0) {
+			holes.push_back(temp);
+			table.insert(temp);
+			indicies.push_back(index);
+			index++;
+		}
+	}
+	vector<vii> all_perms = make_pair_permuts(indicies, vector<vii>());
+	for (auto perm : all_perms)
+	{
+		vector<vi> adjList(perm.size() * 2);
+		for (int i = 0; i < perm.size(); ++i)
+		{
+			int index_hole1 = perm[i].first;
+			int index_hole2 = perm[i].second;
+			int hole1_right_neigh = get_right_neighbor(index_hole1);
+			int hole2_right_neigh = get_right_neighbor(index_hole2);
+
+			if (hole1_right_neigh != -1) {
+				adjList[index_hole2].push_back(hole1_right_neigh);
+
+			}
+			
+			if (hole2_right_neigh != -1) {
+				adjList[index_hole1].push_back(hole2_right_neigh);
+			}
+		}
+		cycle = false;
+		bool res = false;
+		for (int i = 0; i < adjList.size(); ++i) {
+			VISITED = vector<bool>(N, 0);
+			res |= DFS(adjList, i);
+		}
+		total += res;
+	}
+	fout << total << '\n';
+	return 0;
+}

@@ -1,0 +1,126 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+/*
+ID: jamerz1
+PROG: comehome
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const unsigned int MAX = 52;
+int INF = 1e9;
+
+vector<vi> AdjMat;
+vector<vi> FW;
+
+int main(){
+	//std::ios::sync_with_stdio(false);
+	//cin.tie(0);
+	ifstream fin("comehome.in");
+
+	int P;
+	fin >> P;
+	AdjMat.assign(MAX, vi(MAX, INF));
+	map<char, int> charToIndMap;
+	for (int i = 0; i < 26; ++i){
+		charToIndMap['a' + i] = i;
+		charToIndMap['A' + i] = 26+i;
+	}
+
+	char from, to;
+	int w, u, v;
+	for (int i = 0; i < P; ++i) {
+		fin >> from >> to;
+		fin >> w;
+		u = charToIndMap[from];
+		v = charToIndMap[to];
+		AdjMat[u][v] = min(AdjMat[u][v],w);
+		AdjMat[v][u] = min(AdjMat[v][u],w);
+	}
+	fin.close();
+
+	int dist[MAX];
+	int parent[MAX];
+	bool visited[MAX];
+	for (int i = 0; i < MAX; ++i) {
+		dist[i] = INF;
+		parent[i] = -1;
+		visited[i] = false;
+	}
+	int BARN = 51;
+	dist[BARN] = 0;
+	int nodes_visited = 0, min_vert=0, min_dist = INF;
+	while (nodes_visited < MAX) {
+		min_vert = 0;
+		min_dist = INF;
+		// find node closest to source to visit next
+		for (int i = 0; i < MAX; ++i) {
+			if (dist[i] < min_dist && !visited[i]) {
+				min_vert = i;
+				min_dist = dist[min_vert];
+			}
+		}
+		visited[min_vert] = true;
+		for (int i = 0; i < MAX; ++i) {
+			if (dist[min_vert] + AdjMat[min_vert][i] < dist[i]) {
+				dist[i] = dist[min_vert] + AdjMat[min_vert][i];
+				parent[i] = min_vert;
+			}
+		}
+		nodes_visited++;
+	}
+
+	min_dist = INF;
+	for (int i = 26; i < MAX-1; ++i) {
+		if (dist[i] < min_dist) {
+			min_dist = dist[i];
+			min_vert = i;
+		}
+	}
+	char min_cow = char('A' + min_vert - 26);
+	ofstream fout("comehome.out");
+	fout << min_cow << ' ' << min_dist << '\n';
+	return 0;
+}
+

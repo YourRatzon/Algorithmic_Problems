@@ -1,0 +1,188 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+
+/*
+ID: jamerz1
+PROG: shuttle
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<int, ii> iii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+typedef vector<ull> vull;
+typedef vector<ll> vll;
+
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const int MAX_N = 51;
+const int INF = INT_MAX;
+
+
+std::unordered_map<string, pair<string,int>> parent;
+string win;
+int N;
+ll best = INF;
+
+void BFS(string s, int h) {
+
+	std::queue<pair<string,int>> q;
+	q.push({s, h});
+	parent[s] = { "", -1 };
+	while (!q.empty()) {
+		pair<string,int> p = q.front();
+		string state = p.first;
+		int hole = p.second;
+		q.pop();
+		if (state == win)
+			return;
+
+		
+		string new_state = state;
+
+		if (hole - 2 >= 0 && state[hole - 1] == 'B' && state[hole - 2] == 'W') {
+			// jump W to right over B
+			//WWBWB B
+			//WWB BWB
+			new_state[hole] = 'W';
+			new_state[hole - 2] = ' ';
+			if (parent.count(new_state) == 0) {
+				parent[new_state] = { state, hole - 2 };
+				q.push({ new_state, hole-2 });
+			}
+		}
+
+		new_state = state;
+
+		if (hole - 1 >= 0 && state[hole - 1] == 'W') {
+			// move W to right
+			//WWW BBB
+			//WW WBBB
+			new_state[hole] = 'W';
+			new_state[hole - 1] = ' ';
+			if (parent.count(new_state) == 0) {
+				parent[new_state] = { state, hole - 1 };
+				q.push({ new_state, hole - 1 });
+			}
+		}
+
+		new_state = state;
+
+		if (hole + 1 < 2 * N + 1 && state[hole + 1] == 'B') {
+			// move B to left
+			//WWBW BB
+			//WWBWB B
+			new_state[hole] = 'B';
+			new_state[hole + 1] = ' ';
+			if (parent.count(new_state) == 0) {
+				parent[new_state] = { state, hole + 1 };
+				q.push({ new_state, hole + 1 });
+			}
+		}
+
+		new_state = state;
+
+		if (hole + 2 < 2 * N + 1 && state[hole + 1] == 'W' && state[hole + 2] == 'B') {
+			// jump B to left over W
+			//BW WBWB
+			//BWBW WB
+			new_state[hole] = 'B';
+			new_state[hole + 2] = ' ';
+			if (parent.count(new_state) == 0) {
+				parent[new_state] = { state, hole + 2 };
+				q.push({ new_state, hole + 2 });
+			}
+		}
+	}
+}
+
+int main(int argc, char *argv[]) {
+	//std::ios::sync_with_stdio(false);
+	//cin.tie(0);
+	ifstream fin("shuttle.in");
+	fin >> N;
+	fin.close();
+	ofstream fout("shuttle.out");
+
+	if (N == 1) {
+		fout << 1 << ' ' << 3 << ' ' << 2 << '\n';
+		fout.close();
+		return 0;
+	}
+
+	string state(2*N+1, ' ');
+	win.resize(2*N + 1);
+	for (int i = 0; i < N; ++i) {
+		state[i] = 'W';
+		state[N + 1 + i] = 'B';
+	}
+
+	win = state;
+	reverse(win.begin(), win.end());
+
+	BFS(state, N);
+
+	// get shortest path from parent
+	vi ans;
+	string curr = win;
+	while (parent[curr].first != "") {
+		ans.push_back(parent[curr].second+1);
+		curr = parent[curr].first;
+	}
+	reverse(ans.begin(), ans.end());
+	for (int i = 1; i <= ans.size(); ++i) {
+		fout << ans[i-1];
+		if (i == ans.size() ||  i % 20 == 0)
+			fout << '\n';
+		else 
+			fout << ' ';
+	}
+	fout.close();
+	return 0;
+
+}

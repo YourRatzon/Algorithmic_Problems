@@ -1,0 +1,245 @@
+#define _CRT_SECURE_NO_WARNINGS
+#define _USE_MATH_DEFINES
+
+/*
+ID: jamerz1
+PROG: milk6
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+#include <iterator>
+
+// C++03
+#include <climits>
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+#include <locale>
+#include <vector>
+#include <streambuf>
+#include <ctime>
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef pair<int, ii> iii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+typedef vector<ull> vull;
+typedef vector<ll> vll;
+
+
+template <class T>
+T min_(T a, T b) { return (a < b ? a : b); }
+template <class T>
+T max_(T a, T b) { return (a > b ? a : b); }
+
+const ll MAX_N = 34;
+const ll INF = INT_MAX;
+
+vector<vll> residue;
+ll S, T;
+vll dist;
+vll parent;
+std::unordered_set<ll> curr_cut_set, start_set;
+
+vector<bool> visited;
+ll V, E;
+
+void DFS(ll u) {
+	visited[u] = true;
+	for (ll i = 1; i<=V; ++i) {
+		if (residue[u][i] > 0 && !visited[i]) {
+			DFS(i);
+		}
+	}
+
+	curr_cut_set.insert(u);
+}
+
+ll augment(ll v, ll min_edge) {
+	if (v == S)
+		return min_edge;
+
+	ll curr_p = parent[v];
+	if (curr_p == -1)
+		return 0;
+	min_edge = min(min_edge, residue[curr_p][v]);
+	min_edge = augment(curr_p, min_edge);
+	residue[curr_p][v] -= min_edge;
+	residue[v][curr_p] += min_edge;
+
+	return min_edge;
+}
+
+vector<vector<vector<ll>>> truck_route_idx;
+
+bool reach_sink(ll u) {
+	visited.assign(V + 1, false);
+	DFS(u);
+	return visited[V];
+}
+
+bool compare_sets(set<ll> curr_cut_idx_set, set<ll> cut_set) {
+	for (auto it1 = curr_cut_idx_set.begin(), it2 = cut_set.begin();
+		it1 != curr_cut_idx_set.end(); ++it1, ++it2) {
+		if (*it1 < *it2)
+			return true;
+		else if (*it2 < *it1)
+			return false;
+	}
+	
+	return false;
+}
+
+int main(int argc, char *argv[]) {
+	//std::ios::sync_with_stdio(false);
+	//cin.tie(0);
+
+	ifstream fin("milk6.in");
+	fin >> V >> E;
+	residue.assign(V + 1, vll(V + 1, 0));
+	ll u, v, w;
+	truck_route_idx.assign(V + 1, vector<vll>(V + 1, vll()));
+	for (ll i = 0; i < E; ++i) {
+		fin >> u >> v >> w;
+		residue[u][v] += w;
+		truck_route_idx[u][v].push_back(i + 1);
+	}
+	fin.close();
+	
+	ofstream fout("milk6.out");
+
+	// get rid of any vertices from which we can't reach the sink (d-ends)
+	for (ll i = 1; i <= V; ++i) {
+		if (!reach_sink(i)) {
+			if (i == 1) {
+				fout << 0 << ' ' << 0 << '\n';
+				return 0;
+			}
+
+			for (ll v=1; v <= V; ++v) {
+				residue[i][v] = 0;
+				residue[v][i] = 0;
+			}
+		}
+	}
+
+	ll mf = 0;
+	ll f = 0;
+	S = 1, T = V;
+	while (true) {
+		f = 0;
+		queue<ll> q;
+		dist.assign(V + 1, INF);
+		parent.assign(V + 1, -1);
+		q.push(S);
+		dist[S] = 0;
+		while (!q.empty()) {
+			u = q.front();
+			q.pop();
+			if (u == T)
+				break;
+
+			for (ll v = 1; v <= V; ++v) {
+				if (residue[u][v] > 0 && dist[v] == INF) {
+					dist[v] = dist[u] + 1;
+					parent[v] = u;
+					q.push(v);
+				}
+			}
+		}
+
+		f = augment(T, INF);
+		if (f == 0)
+			break;
+		else
+			mf += f;
+	}
+
+
+	visited.assign(V + 1, false);
+	bool first_run = true;
+	std::set<ll> cut_set, curr_cut_idx_set;
+	start_set.insert(S);
+	
+	while (true) {
+		curr_cut_set.clear();
+		curr_cut_idx_set.clear();
+		//visited.assign(V + 1, false);
+
+		for (ll u : start_set) {
+			DFS(u);
+		}
+		start_set.clear();
+
+
+		for (ll x : curr_cut_set) {
+			for (ll i = 1; i <= V; ++i) {
+				if (residue[i][x] > 0 && visited[i] == false) {
+					start_set.insert(i);
+					curr_cut_idx_set.insert(truck_route_idx[x][i].begin(),
+											truck_route_idx[x][i].end());
+				} 
+			}
+			
+		}
+
+		if (cut_set.size() == 0 || (curr_cut_idx_set.size() != 0)) {
+			if (curr_cut_idx_set.size() < cut_set.size())
+				cut_set = curr_cut_idx_set;
+			if (curr_cut_idx_set.size() == cut_set.size()) {
+				bool change = compare_sets(curr_cut_idx_set, cut_set);
+				if (change)
+					cut_set = curr_cut_idx_set;
+			}
+			else if (cut_set.size() == 0 ||
+				(curr_cut_idx_set.size() != 0 &&
+				curr_cut_idx_set.size() < cut_set.size())) {
+				cut_set = curr_cut_idx_set;
+			}
+		}
+	
+		if (curr_cut_idx_set.size() == 0)
+			break;
+
+		if (start_set.find(T) != start_set.end())
+			break;
+
+	}
+
+	fout << mf << ' ' << cut_set.size() << '\n';
+	for (auto it = cut_set.begin(); it != cut_set.end(); ++it) {
+		fout << *it;
+		fout << '\n';
+	}
+	fout.close();
+	return 0;
+
+}

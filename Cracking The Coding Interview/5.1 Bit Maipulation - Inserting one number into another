@@ -1,0 +1,82 @@
+
+/*
+Cracking The Coding Inteview 5.1
+Bit Manipulation
+*/
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <vector>
+#include <utility>
+#include <list>
+#include <iterator> 
+#include <cctype>
+#include <istream>
+#include <ctime>
+#include <algorithm>  
+#include <vector>
+#include <cmath>
+#include <climits>
+#include <queue>
+#include <stdlib.h> 
+using namespace std;
+
+void print(int N)
+{
+	unsigned int mask = 1 << 31;
+	bool digit;
+	bool start = false;
+	for (int i = 0; i < 32; i++)
+	{
+		bool digit = N & mask;
+		if (digit && !start)
+			start = true;
+		if (start)
+			cout<<digit;
+		mask = mask >> 1;
+	}
+	cout<<endl;
+}
+
+//To clear all bits from the most significant bit through i (inclusive)
+void insertBits(int N, int M, int i, int j)
+{
+	unsigned int mask = 1, clearMask = 1;
+	for (int k = i; k <= j; k++)
+	{
+		mask = 1 & M;
+		M >>= 1;
+		mask = mask << k;
+		clearMask = ~(1 << k);
+		N = N & clearMask;
+		N = N | mask;
+	}
+
+	print(N);
+}
+
+int main()
+{
+	
+	while (true)
+	{
+		int N, M, i, j;
+		cout<<"num N: ";
+		cin>>N;
+		cout<<"num M: ";
+		cin>>M;
+		if (!N)
+			break;
+		cout<<"start bit index: ";
+		cin>>i;
+		cout<<"end bit index: ";
+		cin>>j;
+		
+		insertBits(N, M, i, j);
+		print(N);
+		print(M);
+	}
+	return 0;
+}

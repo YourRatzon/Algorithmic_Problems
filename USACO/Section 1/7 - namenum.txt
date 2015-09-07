@@ -1,0 +1,113 @@
+#define _CRT_SECURE_NO_WARNINGS
+
+/*
+ID: jamerz1
+PROG: namenum
+LANG: C++11
+*/
+
+// C++11
+#include <tuple>
+#include <chrono>
+#include <unordered_map>
+#include <unordered_set>
+#include <random>
+#include <array>
+
+// C++03
+#include <cstring>
+#include <algorithm>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <math.h>
+#include <iomanip>
+#include <stdlib.h>
+#include <time.h>
+#include <stack>
+#include <queue>
+#include <map>
+#include <cstdio>
+#include <ctime>
+#include <list>
+#include <set>
+#include <stdio.h>
+#include <bitset>
+#include <functional> 
+
+#include <iostream>
+using namespace std;
+
+typedef unsigned long long ull;
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<ii> vii;
+typedef vector<int> vi;
+
+const int MAX = 100002;
+
+string base3(int digits, int num)
+{
+	string result(digits,'0');
+
+	for (int i = digits-1; num > 0; --i)
+	{
+		result[i] = '0' + num % 3;
+		num /= 3;
+	}
+	return result;
+}
+
+int main()
+{
+	char keypadMap[10][3];
+	char letter = 'A';
+	for (int i = 2; i < 10; ++i)
+	{
+		for (int j = 0; j < 3; ++j, ++letter)
+		{
+			if (letter == 'Q')
+				letter++;
+			keypadMap[i][j] = letter;
+		}
+		
+	}
+	ifstream fin("namenum.in");
+	ofstream fout("namenum.out");
+	string cowTag;
+	fin >> cowTag;
+	set<string> possibleNames;
+	ifstream fin2("dict.txt");
+	string name;
+	while (fin2 >> name)
+	{
+		if (name.size() == cowTag.size())
+			possibleNames.insert(name);
+	}
+	int maxNum = int(pow(3.0, cowTag.size())) - 1;
+
+	int digits = cowTag.size();
+	bool NONE = true;
+	for (int i = 0; i <= maxNum; ++i)
+	{
+		string currNum = base3(digits, i);
+		string currName(digits, '0');
+
+		for (int j = 0; j < digits; ++j)
+		{
+			int currDialNumber = cowTag[j] - '0';
+			int currLetter = currNum[j] - '0';
+			currName[j] = keypadMap[currDialNumber][currLetter];
+			if (possibleNames.count(currName) != 0)
+			{
+				fout << currName << '\n';
+				NONE = false;
+			}
+		}
+	}
+
+	if (NONE) fout << "NONE\n";
+
+
+	return 0;
+}
