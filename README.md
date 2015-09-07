@@ -1,2 +1,2 @@
-# Solved_Problems
-Collection of solved algorithmic problems from various internet sites, competitions and books
+# Algorithmic_Problems
+A collection of solved algorithmic problems from various sites, books and competitions
