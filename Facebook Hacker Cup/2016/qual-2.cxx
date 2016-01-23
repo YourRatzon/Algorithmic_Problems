@@ -46,6 +46,7 @@ LANG: C++11
 
 #include <iostream>
 
+
 //#define F first
 //#define S second
 
@@ -67,8 +68,8 @@ char _;
 // TIMER
 std::clock_t start;
 double duration;
-void start_timer() {start = std::clock();}
-void print_timer() {	
+void start_timer() { start = std::clock(); }
+void print_timer() {
 	duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
 	std::cout << "Duration: " << duration << '\n';
 }
@@ -78,67 +79,64 @@ template <class T>
 T min_(T a, T b) { return (a < b ? a : b); }
 template <class T>
 T max_(T a, T b) { return (a > b ? a : b); }
-
-const double PI = 3.14159265;
-const int INF = INT_MAX;
-int A_MAX = 1e9;
-int A_MIN = -1e9;
 double EPS = 1e-10;
-const int MAX_N = 5e5 + 5;
+bool eq(const double& lhs, const double &rhs) {
+	return (fabs(lhs - rhs) < EPS);
+}
 
-vector<vector<int>> FlightsTo, FlightsBack;
-std::unordered_map<string, int> city_to_id;
-vector<vector<bool>> graph;
-vector<vector<int>> paths;
+const int INF = int(2e9);
+
+vector<vector<char>> adj_matrix;
+vector<vector<bool>> visited;
+int rows, cols;
+vector<ii> moves = { {1,0}, {-1,0}, {0,1}, {0, -1} };
+
+bool LegalMove(int r, int c) {
+	return (r >= 0 && r < rows && c >= 0 && c < cols);
+}
+
+int DFS(int r, int c, vii& curr_cc_out) {
+	visited[r][c] = true;
+	int cc_size = 0;
+	for (int i = 0; i < moves.size(); ++i) {
+		int new_r = r+moves[i].first;
+		int new_c = c+moves[i].second;
+		if (LegalMove(new_r, new_c) && adj_matrix[new_r][new_c] != '*' && !visited[new_r][new_c]) {
+			cc_size += DFS(new_r, new_c, curr_cc_out);
+		}
+	}
+	curr_cc_out.push_back({ r, c });
+	return cc_size + 1;
+}
 
 int main(int argc, char *argv[]) {
 	//start_timer();
 	//std::ios::sync_with_stdio(false);
 	//cin.tie(0);
-	
-	ifstream fin("tour.in");
-	int cities, flights;
-	fin >> cities >> flights;
-	graph.assign(cities, vector<bool>(cities, false));
-	paths.assign(cities, vi(cities, 0));
 
-	string city1, city2;
-	for (int city_id = 0; city_id < cities; ++city_id) {
-		fin >> city1;
-		city_to_id[city1] = city_id;
-	}
-	int city1_id, city2_id;
-	for (int i = 0; i < flights; ++i) {
-		fin >> city1 >> city2;
-		city1_id = city_to_id[city1];
-		city2_id = city_to_id[city2];
-		graph[city1_id][city2_id] = true;
-		graph[city2_id][city1_id] = true;
-	}
-	fin.close();
-	
-	paths[0][0] = 1;
-	for (int i = 0; i < cities - 1; ++i) {
-		for (int j = i + 1; j < cities; ++j) {
-			paths[i][j] = -1;
-			for (int k = 0; k < j; ++k) {
-				if (graph[k][j] && paths[i][k] > 0 && paths[i][k] > paths[i][j])
-					paths[i][j] = paths[i][k];
+	ifstream fin("fb2.in");
+	ofstream fout("fb2.out");
+	int T, N, P;
+	vector<int> prices;
+	fin >> T;
+	for (int t = 0; t < T; ++t) {
+		fin >> N >> P;
+		prices.resize(N);
+		for (int i = 0; i < N; ++i)
+			fin >> prices[i];
+		ll res = 0;
+		ll curr_sum = 0;
+		int left = 0;
+		for (int right = 0; right < N; ++right) {
+			curr_sum += prices[right];
+			while (left <= right && curr_sum > P){
+				curr_sum -= prices[left];
+				left++;
 			}
-			paths[i][j]++;
-			paths[j][i] = paths[i][j];
+			res += (right - left + 1);
 		}
+		fout << "Case #" << t + 1 << ": " << res << '\n';
 	}
-
-	int answer = 1;
-	for (int i = 0; i < cities; ++i) {
-		if (graph[i][cities - 1] && paths[i][cities - 1]>answer)
-			answer = paths[i][cities - 1];
-	}
-
-	ofstream fout("tour.out");
-	fout << answer << '\n';
-	fout.close();
 	//print_timer();
 	return 0;
 }

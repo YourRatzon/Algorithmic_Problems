@@ -46,6 +46,7 @@ LANG: C++11
 
 #include <iostream>
 
+
 //#define F first
 //#define S second
 
@@ -67,8 +68,8 @@ char _;
 // TIMER
 std::clock_t start;
 double duration;
-void start_timer() {start = std::clock();}
-void print_timer() {	
+void start_timer() { start = std::clock(); }
+void print_timer() {
 	duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
 	std::cout << "Duration: " << duration << '\n';
 }
@@ -79,66 +80,44 @@ T min_(T a, T b) { return (a < b ? a : b); }
 template <class T>
 T max_(T a, T b) { return (a > b ? a : b); }
 
+// Mod values for the rabin-karp string matching hashing algorithm
+const int RKMOD1 = 100003, RK_MOD2 = 100019;
 const double PI = 3.14159265;
 const int INF = INT_MAX;
+const ll INFL = LLONG_MAX;
 int A_MAX = 1e9;
 int A_MIN = -1e9;
 double EPS = 1e-10;
-const int MAX_N = 5e5 + 5;
+const int MAX_N = int(1e6)+5;
 
-vector<vector<int>> FlightsTo, FlightsBack;
-std::unordered_map<string, int> city_to_id;
-vector<vector<bool>> graph;
-vector<vector<int>> paths;
 
+class BearDartsDiv2 {
+public:
+	long long count(vector <int> w) {
+		if (w.size() < 4)
+			return 0;
+		vector<int> triple_prod_counts(MAX_N, 0);
+		ll res=0;
+		for (int i = 2; i < w.size(); ++i) {
+			res += triple_prod_counts[w[i]];
+			for (int j = i - 1; j >= 0; --j) {
+				for (int k = j - 1; k >= 0; --k) {
+					ll prod = ll(w[i]) * ll(w[j]) * ll(w[k]);
+					if (prod < MAX_N)
+						triple_prod_counts[prod]++;
+				}
+			}
+		}
+		return res;
+	}
+};
 int main(int argc, char *argv[]) {
-	//start_timer();
+	start_timer();
 	//std::ios::sync_with_stdio(false);
 	//cin.tie(0);
-	
-	ifstream fin("tour.in");
-	int cities, flights;
-	fin >> cities >> flights;
-	graph.assign(cities, vector<bool>(cities, false));
-	paths.assign(cities, vi(cities, 0));
+	BearDartsDiv2 BD;
+	cout << BD.count({ 2, 3, 4, 5, 6, 8, 12, 16, 20, 24, 40, 24, 20, 16, 12, 8, 6, 5, 4, 3, 2 }) << '\n';
 
-	string city1, city2;
-	for (int city_id = 0; city_id < cities; ++city_id) {
-		fin >> city1;
-		city_to_id[city1] = city_id;
-	}
-	int city1_id, city2_id;
-	for (int i = 0; i < flights; ++i) {
-		fin >> city1 >> city2;
-		city1_id = city_to_id[city1];
-		city2_id = city_to_id[city2];
-		graph[city1_id][city2_id] = true;
-		graph[city2_id][city1_id] = true;
-	}
-	fin.close();
-	
-	paths[0][0] = 1;
-	for (int i = 0; i < cities - 1; ++i) {
-		for (int j = i + 1; j < cities; ++j) {
-			paths[i][j] = -1;
-			for (int k = 0; k < j; ++k) {
-				if (graph[k][j] && paths[i][k] > 0 && paths[i][k] > paths[i][j])
-					paths[i][j] = paths[i][k];
-			}
-			paths[i][j]++;
-			paths[j][i] = paths[i][j];
-		}
-	}
-
-	int answer = 1;
-	for (int i = 0; i < cities; ++i) {
-		if (graph[i][cities - 1] && paths[i][cities - 1]>answer)
-			answer = paths[i][cities - 1];
-	}
-
-	ofstream fout("tour.out");
-	fout << answer << '\n';
-	fout.close();
-	//print_timer();
+	print_timer();
 	return 0;
 }
