@@ -1,0 +1,14 @@
+import sys
+import pprint, pickle
+def solve(path):
+    with open(path, 'rb') as f:
+        p = pickle.load(f)
+    for l in p:
+        for (c,n) in l:
+            sys.stdout.write(''.join([c * n]))
+        sys.stdout.write('\n')
+    
+
+if __name__ == '__main__':
+    path = 'banner.pkl'
+    solve(path)
