@@ -1,0 +1,3558 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="X-Csrf-Token" content="845bddd809ae067f86de119b415f5922"/>
+    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=0.01"/>
+    <script type="text/javascript" src="//st.codeforces.com/s/79846/js/jquery-1.8.3.js"></script>
+    <script type="application/javascript">
+        window.standaloneContest = false;
+        function adjustViewport() {
+            var screenWidthPx = Math.min($(window).width(), window.screen.width);
+            var siteWidthPx = 1100; // min width of site
+            var ratio = Math.min(screenWidthPx / siteWidthPx, 1.0);
+            var viewport = "width=device-width, initial-scale=" + ratio;
+            $('#viewport').attr('content', viewport);
+            var style = $('<style>html * { max-height: 1000000px; }</style>');
+            $('html > head').append(style);
+        }
+
+        if ( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+            adjustViewport();
+        }
+    </script>
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="expires" content="-1">
+    <meta http-equiv="profileName" content="d2">
+    <meta name="google-site-verification" content="OTd2dN5x4nS4OPknPI9JFg36fKxjqY0i1PSfFPv_J90"/>
+    <meta property="fb:admins" content="100001352546622" />
+    <meta property="og:image" content="//st.codeforces.com/s/79846/images/codeforces-telegram-square.png" />
+    <link rel="image_src" href="//st.codeforces.com/s/79846/images/codeforces-telegram-square.png" />
+    <meta property="og:title" content="Status - Codeforces"/>
+    <meta property="og:description" content=""/>
+    
+    <meta property="og:site_name" content="Codeforces"/>
+    <meta name="uc" content="d87162dc10b06439f904c47f49581638fbb24afb"/>
+    <meta name="gc" content="8c9bc4287ed5c8013c8d556f014cb025c89ae4fd"/>
+    
+    
+    
+    <meta name="utc_offset" content="+03:00"/>
+    <meta name="verify-reformal" content="f56f99fd7e087fb6ccb48ef2" />
+    <title>Status - Codeforces</title>
+        <meta name="description" content="Codeforces. Programming competitions and contests, programming community" />
+        <meta name="keywords" content="programming algorithm contest competition informatics olympiads c++ java graphs vkcup" />
+    <meta name="robots" content="index, follow" />
+
+    <link rel="stylesheet" href="//st.codeforces.com/s/79846/css/font-awesome.min.css" type="text/css" charset="utf-8" />
+
+        <link href='//fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+        <link href='//fonts.googleapis.com/css?family=Cuprum&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+
+    <link rel="shortcut icon" type="image/png" href="//st.codeforces.com/s/79846/favicon.png">
+
+    <!--CombineResourcesFilter-->
+    <link rel="stylesheet" href="//st.codeforces.com/s/79846/css/prettify.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="//st.codeforces.com/s/79846/css/clear.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="//st.codeforces.com/s/79846/css/style.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="//st.codeforces.com/s/79846/css/ttypography.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="//st.codeforces.com/s/79846/css/problem-statement.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="//st.codeforces.com/s/79846/css/second-level-menu.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="//st.codeforces.com/s/79846/css/roundbox.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="//st.codeforces.com/s/79846/css/datatable.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="//st.codeforces.com/s/79846/css/table-form.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="//st.codeforces.com/s/79846/css/topic.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="//st.codeforces.com/s/79846/css/jquery.jgrowl.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="//st.codeforces.com/s/79846/css/facebox.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="//st.codeforces.com/s/79846/css/jquery.wysiwyg.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="//st.codeforces.com/s/79846/css/jquery.autocomplete.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="//st.codeforces.com/s/79846/css/codeforces.datepick.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="//st.codeforces.com/s/79846/css/colorbox.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="//st.codeforces.com/s/79846/css/jquery.drafts.css" type="text/css" charset="utf-8" />
+        <link rel="stylesheet" href="//st.codeforces.com/s/79846/css/status.css" type="text/css" charset="utf-8" />
+        <link rel="stylesheet" href="//st.codeforces.com/s/79846/css/community.css" type="text/css" charset="utf-8" />
+
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$$$','$$$']], displayMath: [['$$$$$$','$$$$$$']]}
+    });
+    </script>
+    <script type="text/javascript" async
+            src="https://assets.codeforces.com/mathjax/MathJax.js?config=TeX-MML-AM_CHTML">
+    </script>
+    <!-- /MathJax -->
+
+    <script type="text/javascript" src="//st.codeforces.com/s/79846/js/prettify/prettify.js"></script>
+    <script type="text/javascript" src="//st.codeforces.com/s/79846/js/moment-with-locales.min.js"></script>
+    <script type="text/javascript" src="//st.codeforces.com/s/79846/js/pushstream.js"></script>
+    <script type="text/javascript" src="//st.codeforces.com/s/79846/js/jquery.easing.min.js"></script>
+    <script type="text/javascript" src="//st.codeforces.com/s/79846/js/jquery.lavalamp.min.js"></script>
+    <script type="text/javascript" src="//st.codeforces.com/s/79846/js/jquery.jgrowl.js"></script>
+    <script type="text/javascript" src="//st.codeforces.com/s/79846/js/jquery.swipe.js"></script>
+    <script type="text/javascript" src="//st.codeforces.com/s/79846/js/facebox.js"></script>
+    <script type="text/javascript" src="//st.codeforces.com/s/79846/js/jquery.wysiwyg.js"></script>
+    <script type="text/javascript" src="//st.codeforces.com/s/79846/js/controls/wysiwyg.colorpicker.js"></script>
+    <script type="text/javascript" src="//st.codeforces.com/s/79846/js/controls/wysiwyg.table.js"></script>
+    <script type="text/javascript" src="//st.codeforces.com/s/79846/js/controls/wysiwyg.image.js"></script>
+    <script type="text/javascript" src="//st.codeforces.com/s/79846/js/controls/wysiwyg.link.js"></script>
+    <script type="text/javascript" src="//st.codeforces.com/s/79846/js/jquery.autocomplete.js"></script>
+    <script type="text/javascript" src="//st.codeforces.com/s/79846/js/jquery.datepick.js"></script>
+    <script type="text/javascript" src="//st.codeforces.com/s/79846/js/jquery.ie6blocker.js"></script>
+    <script type="text/javascript" src="//st.codeforces.com/s/79846/js/jquery.colorbox-min.js"></script>
+    <script type="text/javascript" src="//st.codeforces.com/s/79846/js/jquery.ba-bbq.js"></script>
+    <script type="text/javascript" src="//st.codeforces.com/s/79846/js/jquery.drafts.js"></script>
+    <script type="text/javascript" src="//st.codeforces.com/s/79846/js/sjcl.js"></script>
+    <script type="text/javascript" src="/scripts/81dbd05296d11dfa4416ec2779f013cc/en/codeforces-options.js"></script>
+    <script type="text/javascript" src="//st.codeforces.com/s/79846/js/codeforces.js?v=20160131"></script>
+    <!--/CombineResourcesFilter-->
+
+    <link rel="stylesheet" href="//st.codeforces.com/s/79846/markitup/skins/markitup/style.css" type="text/css" charset="utf-8" />
+    <link rel="stylesheet" href="//st.codeforces.com/s/79846/markitup/sets/markdown/style.css" type="text/css" charset="utf-8" />
+
+    <script type="text/javascript" src="//yandex.st/share/share.js" charset="utf-8"></script>
+
+    <script type="text/javascript" src="//st.codeforces.com/s/79846/markitup/jquery.markitup.js"></script>
+    <script type="text/javascript" src="//st.codeforces.com/s/79846/markitup/sets/markdown/set.js"></script>
+
+    <!--[if IE]>
+    <style>
+        #sidebar {
+            padding-left: 1em;
+            margin: 1em 1em 1em 0;
+        }
+    </style>
+    <![endif]-->
+
+
+</head>
+<body><span style='display:none;' class='csrf-token' data-csrf='845bddd809ae067f86de119b415f5922'>&nbsp;</span>
+
+<div class="button-up" style="display: none; opacity: 0.7; width: 50px; height:100%; position: fixed; left: 0; top: 0; cursor: pointer; text-align: center; line-height: 35px; color: #d3dbe4; font-weight: bold; font-size: 3.0rem;"><i class="icon-circle-arrow-up"></i></div>
+
+<!-- Codeforces JavaScripts. -->
+<script type="text/javascript">
+    var queryMobile = Codeforces.queryString.mobile;
+    if (queryMobile === "true" || queryMobile === "false") {
+        Codeforces.putToStorage("useMobile", queryMobile == "true");
+    } else {
+        var useMobile = Codeforces.getFromStorage("useMobile");
+        if (useMobile === true || useMobile === false) {
+            if (useMobile != false) {
+                Codeforces.redirect(Codeforces.updateUrlParameter(document.location.href, "mobile", useMobile));
+            }
+        }
+    }
+</script>
+<script type="text/javascript">
+    if (window.parent.frames.length > 0) {
+        window.stop();
+    }
+</script>
+<script type="text/javascript">
+    window.fbAsyncInit = function() {
+        FB.init({
+            appId      : '554666954583323',
+            xfbml      : true,
+            version    : 'v2.8'
+        });
+        FB.AppEvents.logPageView();
+    };
+
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+    (function () {
+        jQuery.expr[':'].containsCI = function(elem, index, match) {
+            return !match || !match.length || match.length < 4 || !match[3] || (
+                    elem.textContent || elem.innerText || jQuery(elem).text() || ''
+            ).toLowerCase().indexOf(match[3].toLowerCase()) >= 0;
+        }
+    }(jQuery));
+
+    $.ajaxPrefilter(function(options, originalOptions, xhr) {
+        var csrf = Codeforces.getCsrfToken();
+
+        if (csrf) {
+            var data = originalOptions.data;
+            if (originalOptions.data !== undefined) {
+                if (Object.prototype.toString.call(originalOptions.data) === '[object String]') {
+                    data = $.deparam(originalOptions.data);
+                }
+            } else {
+                data = {};
+            }
+            options.data = $.param($.extend(data, { csrf_token: csrf }));
+        }
+    });
+
+    window.getCodeforcesServerTime = function(callback) {
+        $.post("/data/time", {}, callback, "json");
+    }
+
+    window.updateTypography = function () {
+        $("div.ttypography code").addClass("tt");
+        $("div.ttypography pre>code").addClass("prettyprint").removeClass("tt");
+        $("div.ttypography table").addClass("bordertable");
+        prettyPrint();
+    }
+
+    $.ajaxSetup({ scriptCharset: "utf-8" ,contentType: "application/x-www-form-urlencoded; charset=UTF-8", headers: {
+        'X-Csrf-Token': Codeforces.getCsrfToken()
+    }});
+
+    window.updateTypography();
+
+    Codeforces.signForms();
+
+    setTimeout(function() {
+        $(".second-level-menu-list").lavaLamp({
+            fx: "backout",
+            speed: 1000
+        });
+    }, 0);
+
+
+    Codeforces.countdown();
+    $("a[rel='photobox']").colorbox();
+
+        var count = 0;
+
+        function getDelay() {
+            var delay = 0;
+            var last = Codeforces.getFromStorage("LastOnlineTimeUpdaterMillis", 0);
+            if (last && last != null) {
+                var period = count < 20 ? 180 * 1000 : 360 * 1000;
+                delay = period - (new Date().getTime() - last);
+                if (delay < 0)
+                    delay = 0;
+            }
+            return delay;
+        }
+
+        window.setInterval(function () {
+            if (getDelay() <= 0 && count < 120) {
+                ++count;
+                Codeforces.ping("/data/update-online");
+            }
+        }, 5000);
+
+        var handle = "YourRatzon";
+        $("a.rated-user:contains(" + handle + "), span.participant:contains(" + handle + ")").each(function () {
+            if ($(this).text() == handle) {
+                var td = $(this).parent();
+                var tr = $(this).parent().parent();
+                if (td.is("td") && tr.is("tr")) {
+                    tr.addClass("highlighted-row");
+                }
+            }
+        });
+
+    function showAnnouncements(json) {
+        //info("j=" + JSON.stringify(json));
+
+        if (json.t != "a") {
+            return;
+        }
+        // console.log("Got announcement from channel");
+        setTimeout(function() {
+            Codeforces.showAnnouncements(json.d, "en");
+        }, Math.random() * 500);
+    }
+    if (Codeforces.getParticipantChannel()) {
+        Codeforces.subscribe(Codeforces.getParticipantChannel(), function(json) {
+            showAnnouncements(json);
+        });
+    }
+
+    if (Codeforces.getContestChannel()) {
+        Codeforces.subscribe(Codeforces.getContestChannel(), function(json) {
+            showAnnouncements(json);
+        });
+    }
+
+    if (Codeforces.getGlobalChannel()) {
+        Codeforces.subscribe(Codeforces.getGlobalChannel(), function(json) {
+            showAnnouncements(json);
+        });
+    }
+
+    if (Codeforces.getUserChannel()) {
+        Codeforces.subscribe(Codeforces.getUserChannel(), function(json) {
+            showAnnouncements(json);
+        });
+    }
+
+    $(".clickable-title").click(function() {
+        Codeforces.alert($(this).attr("title"));
+    }).css("position", "relative").css("bottom", "3px");
+
+        Codeforces.showMessage("Solution to the problem D has been submitted successfully");
+
+    Codeforces.reformatTimes();
+    Codeforces.initializePubSub();
+
+    Codeforces.setupContestTimes("/data/contests");
+    Codeforces.setupSpoilers();
+    Codeforces.setupTutorials("/data/problemTutorial");
+        });
+    </script>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-743380-5']);
+  _gaq.push(['_trackPageview']);
+
+  (function () {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = (document.location.protocol == 'https:' ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+
+<div id="body">
+        <script src="//st.codeforces.com/s/79846/js/swfobject-2.2.min.js" type="text/javascript"></script>
+        <script src="//st.codeforces.com/s/79846/js/ftaa.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            $(function() {
+                if (window.evercookie) {
+                    var ec = new evercookie({
+                        history: false,
+                        silverlight: false,
+                        baseurl: '',
+                        asseturi: '/assets',
+                        phpuri: '/2fdcd78',
+                        pngPath: '/eps',
+                        etagPath: '/ees',
+                        cachePath: '/ecs'
+                    });
+
+                    var randomNumber = function () {
+                        return Math.random().toString(36).substr(2);
+                    };
+
+                    var randomToken = function () {
+                        return (randomNumber() + randomNumber()).substring(0, 18);
+                    };
+
+                    window._ftaa = "";
+
+                    ec.get("70a7c28f3de", function (value) {
+                        window._ftaa = value;
+                        if (!window._ftaa) {
+                            window._ftaa = randomToken();
+                            ec.set("70a7c28f3de", window._ftaa);
+                        }
+                        $.post("/data/empty", {bfaa: window._bfaa, ftaa: window._ftaa});
+                    });
+                } else {
+                    window._ftaa = "n/a";
+                    $.post("/data/empty", {bfaa: window._bfaa, ftaa: window._ftaa});
+                }
+            });
+        </script>
+
+        <script src="//st.codeforces.com/s/79846/js/bfaa.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            $(function() {
+                if (window.Fingerprint2) {
+                    var options = {swfPath: undefined};
+                    window._bfaa = "";
+
+                    new Fingerprint2(options).get(function(result){
+                        window._bfaa = result;
+                        $.post("/data/empty", {bfaa: window._bfaa, ftaa: window._ftaa});
+                    });
+                } else {
+                    window._bfaa = "n/a";
+                    $.post("/data/empty", {bfaa: window._bfaa, ftaa: window._ftaa});
+                }
+            });
+        </script>
+        
+
+<div class="side-bell" style="visibility: hidden; display: none; opacity: 0.7; width: 40px; position: fixed; right: 0; top: 0; cursor: pointer; text-align: center; line-height: 35px; color: #d3dbe4; font-weight: bold; font-size: 1.5rem;">
+    <span class="icon-stack" style="width: 100%;">
+        <i class="icon-circle icon-stack-base"></i>
+        <i class="icon-bell-alt icon-light"></i>
+    </span>
+    <br/>
+    <span class="side-bell__count" style="position: relative; top: -10px;"></span>
+</div>
+
+
+<div class="header-bell" style="display: none;">
+    <div class="header-bell__img"><span class="header-bell__count"></span></div>
+
+    <div class="bell-details">
+        <div class="bell-details__proto-row-comment">
+            <a class="bell-details__thumbnail-a" href="#"><img src=""/></a>
+            <div class="bell-details__comment"></div>
+            <div class="bell-details__time"></div>
+        </div>
+        <div class="bell-details__proto-row-blog-entry">
+            <a class="bell-details__thumbnail-a" href="#"><img src=""/></a>
+            <div class="bell-details__blog-entry"></div>
+            <div class="bell-details__time"></div>
+        </div>
+        <div class="bell-details__proto-row-comment-reply">
+            <a class="bell-details__thumbnail-a" href="#"><img src=""/></a>
+            <div class="bell-details__comment-reply"></div>
+            <div class="bell-details__time"></div>
+        </div>
+
+        <div class="bell-details__no-new">
+            There are no new notifications
+        </div>
+
+        <div class="bell-details__recent-link">
+            <a href="/notifications">History (at most 100 notifications)</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .header-bell {
+        display: inline-block;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .header-bell__img {
+        opacity: 0.5;
+        background-image: url("//st.codeforces.com/s/79846/images/icons/bell_inactive-20x20.png");
+        position: relative;
+        bottom: 1px;
+        width: 20px;
+        height: 20px;
+    }
+
+    .header-bell__img-active  {
+        opacity: 1 !important;
+        background-image: url("//st.codeforces.com/s/79846/images/icons/bell_active-20x20.png") !important;
+    }
+
+    .header-bell__count {
+        position: absolute;
+        top: 8px;
+        left: 18px;
+        font-weight: bold;
+        font-size: 10px;
+    }
+
+    .bell-details {
+        display: none;
+        z-index: 5;
+        border: 1px solid rgb(185, 185, 185);
+        width: 40rem;
+        max-height: 60rem;
+        padding: 0;
+        position: absolute;
+        top: 20px;
+        right: 0;
+        background-color: white;
+        overflow: scroll;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+    .bell-details.sidebar-bell {
+        position: fixed;
+        right: 50px;
+    }
+
+    .bell-details__no-new {
+        font-size: 1.3rem;
+        display: block;
+        text-align: center;
+        color: #888 !important;
+        padding: 1em;
+    }
+
+    .bell-details__recent-link {
+        margin: 0;
+        padding: 0.5em;
+        text-align: center;
+        border-top: 1px solid rgb(185, 185, 185);
+    }
+
+    .bell-details__recent-link a {
+        font-size: 1.2rem;
+    }
+
+    .bell-details__proto-row-comment {
+        display: none;
+    }
+
+    .bell-details__proto-row-blog-entry {
+        display: none;
+    }
+
+    .bell-details__proto-row-comment-reply {
+        display: none;
+    }
+
+    .bell-details__row {
+        text-align: left;
+        margin: 0.5em;
+        padding: 0.25em 0.25em 0.75em 0.25em;
+        clear: both;
+    }
+
+    .bell-details__row:hover {
+        cursor: pointer;
+        background-color: #def;
+    }
+
+    .bell-details__row-active {
+        background-color: #def;
+    }
+
+    .bell-details__thumbnail-a {
+        text-decoration: none;
+    }
+
+    .bell-details__row img {
+        zoom: 50%;
+        margin-right: 2em;
+        float: left;
+    }
+
+    .bell-details__comment {
+        padding-left: 45px;
+        font-size: 1.3rem;
+    }
+
+    .bell-details__blog-entry {
+        padding-left: 45px;
+        font-size: 1.3rem;
+    }
+
+    .bell-details__comment-reply {
+        padding-left: 45px;
+        font-size: 1.3rem;
+    }
+
+    .bell-details__time {
+        padding-left: 45px;
+        margin-top: 0.2em;
+        font-size: 1.1rem;
+        color: #888 !important;
+    }
+</style>
+
+<script>
+    $(function () {
+        if ($(window).width() < 1600) {
+            $('.side-bell').css('width', '30px').css('line-height', '30px').css('font-size', '10px');
+        }
+
+        if ($(window).width() >= 1200) {
+            $ (window).scroll (function () {
+                if ($ (this).scrollTop () > 100) {
+                    $(".bell-details").addClass("sidebar-bell");
+                    $ ('.side-bell').fadeIn();
+                } else {
+                    $(".bell-details").removeClass("sidebar-bell");
+                    $ ('.side-bell').fadeOut();
+                }
+            });
+
+            $('.side-bell').hover(function () {
+                $(this).animate({
+                    'opacity':'1'
+                }).css({'color':'#6a86a4'});
+            }, function () {
+                $(this).animate({
+                    'opacity':'0.7'
+                }).css({'color':'#d3dbe4'});
+            });
+        }
+
+        $(".lang-chooser>div:first-child").prepend($("<span style='position: relative; bottom: 8px; padding: 0 0.5em;'>|</span>")).prepend($(".header-bell").show());
+        function Bell() {
+            var bell = this;
+            var notifications = JSON.parse("[]");
+
+            bell.notifications = {};
+
+            for (var i in notifications) {
+                if (notifications.hasOwnProperty(i)) {
+                    bell.notifications[notifications[i].id] = notifications[i];
+                }
+            }
+
+            function onClick(notification) {
+                var notificationIds = [];
+                var reason = notification.data.reasonType + "#" + notification.reasonId;
+                for (id in bell.notifications) {
+                    if (bell.notifications.hasOwnProperty(id)) {
+                        var otherNotification = bell.notifications[id];
+                        var otherReason = otherNotification.data.reasonType + "#" + otherNotification.reasonId;
+                        if (otherReason == reason) {
+                            notificationIds.push(otherNotification.id);
+                        }
+                    }
+                }
+                $.post("/data/notification", {action: "markAsRead", notificationIds: notificationIds.join(",")}, function(result) {
+                    Codeforces.redirect(notification.data.url);
+                }, "json");
+            }
+
+            var $bellDetails = $(".bell-details");
+            bell.newCommentRow = function (notification) {
+                var row = $(".bell-details__proto-row-comment").clone();
+                row.addClass("bell-details__row").attr("data-notificationId", notification.id);
+                row.find(".bell-details__thumbnail-a").attr("href", notification.data.reasonUserUrl);
+                row.find("img").attr("src", notification.data.reasonUserThumbnailUrl);
+                row.find(".bell-details__comment").html(
+                        "ReasonUser mentioned you in a comment".replace("ReasonUser", notification.data.reasonUserHtml)
+                );
+                row.find(".bell-details__time").html(
+                        "<span class='format-systemtimewithseconds'>"
+                        + notification.creationTimeString
+                        + "</span>"
+                );
+                row.removeClass("bell-details__proto-row-comment");
+                row.click(function() {
+                    onClick(notification);
+                    return false;
+                });
+                return row;
+            };
+            bell.newFriendCommentRow = function (notification) {
+                var row = $(".bell-details__proto-row-comment").clone();
+                row.addClass("bell-details__row").attr("data-notificationId", notification.id);
+                row.find(".bell-details__thumbnail-a").attr("href", notification.data.reasonUserUrl);
+                row.find("img").attr("src", notification.data.reasonUserThumbnailUrl);
+                row.find(".bell-details__comment").html(
+                        "ReasonUser wrote a comment".replace("ReasonUser", notification.data.reasonUserHtml)
+                );
+                row.find(".bell-details__time").html(
+                        "<span class='format-systemtimewithseconds'>"
+                        + notification.creationTimeString
+                        + "</span>"
+                );
+                row.removeClass("bell-details__proto-row-comment");
+                row.click(function() {
+                    onClick(notification);
+                    return false;
+                });
+                return row;
+            };
+            bell.newCommentReplyRow = function (notification) {
+                var row = $(".bell-details__proto-row-comment-reply").clone();
+                row.addClass("bell-details__row").attr("data-notificationId", notification.id);
+                row.find(".bell-details__thumbnail-a").attr("href", notification.data.reasonUserUrl);
+                row.find("img").attr("src", notification.data.reasonUserThumbnailUrl);
+                row.find(".bell-details__comment-reply").html(
+                        "ReasonUser replied to your comment".replace("ReasonUser", notification.data.reasonUserHtml)
+                );
+                row.find(".bell-details__time").html(
+                        "<span class='format-systemtimewithseconds'>"
+                        + notification.creationTimeString
+                        + "</span>"
+                );
+                row.removeClass("bell-details__proto-row-comment-reply");
+                row.click(function() {
+                    onClick(notification);
+                    return false;
+                });
+                return row;
+            };
+            bell.newBlogEntryRow = function (notification) {
+                var row = $(".bell-details__proto-row-blog-entry").clone();
+                row.addClass("bell-details__row").attr("data-notificationId", notification.id);
+                row.find(".bell-details__thumbnail-a").attr("href", notification.data.reasonUserUrl);
+                row.find("img").attr("src", notification.data.reasonUserThumbnailUrl);
+                row.find(".bell-details__blog-entry").html(
+                        "ReasonUser mentioned you in a blog entry".replace("ReasonUser", notification.data.reasonUserHtml)
+                );
+                row.find(".bell-details__time").html(
+                        "<span class='format-systemtimewithseconds'>"
+                        + notification.creationTimeString
+                        + "</span>"
+                );
+                row.removeClass("bell-details__proto-row-blog-entry");
+                row.click(function() {
+                    onClick(notification);
+                    return false;
+                });
+                return row;
+            };
+            bell.newFriendBlogEntryRow = function (notification) {
+                var row = $(".bell-details__proto-row-blog-entry").clone();
+                row.addClass("bell-details__row").attr("data-notificationId", notification.id);
+                row.find(".bell-details__thumbnail-a").attr("href", notification.data.reasonUserUrl);
+                row.find("img").attr("src", notification.data.reasonUserThumbnailUrl);
+                row.find(".bell-details__blog-entry").html(
+                        "ReasonUser wrote a blog entry".replace("ReasonUser", notification.data.reasonUserHtml)
+                );
+                row.find(".bell-details__time").html(
+                        "<span class='format-systemtimewithseconds'>"
+                        + notification.creationTimeString
+                        + "</span>"
+                );
+                row.removeClass("bell-details__proto-row-blog-entry");
+                row.click(function() {
+                    onClick(notification);
+                    return false;
+                });
+                return row;
+            };
+
+            bell.renderRow = function (notification) {
+                var $row = $(".bell-details__row[data-notificationId='" + notification.id + "']");
+
+                if ($bellDetails.css("display") != "block" && notification.read) {
+                    $row.hide();
+                    return;
+                }
+
+                notification.data = JSON.parse(notification.dataJson);
+
+                var reason = notification.data.reasonType + "#" + notification.reasonId;
+
+                var has = false;
+                $row.each(function () {
+                    has = true;
+                });
+                if ($(".bell-details__row[data-reason='" + reason + "']").length) {
+                    has = true;
+                }
+
+                if (!has) {
+                    $(".side-bell").css("visibility", "visible");
+                    var newRow;
+                    if (notification.type == "Comment") {
+                        newRow = bell.newCommentRow(notification);
+                    } else if (notification.type == "BlogEntry") {
+                        newRow = bell.newBlogEntryRow(notification);
+                    } else if (notification.type == "CommentReply") {
+                        newRow = bell.newCommentReplyRow(notification);
+                    } else if (notification.type == "FriendComment") {
+                        newRow = bell.newFriendCommentRow(notification);
+                    } else if (notification.type == "FriendBlogEntry") {
+                        newRow = bell.newFriendBlogEntryRow(notification);
+                    }
+                    if (newRow) {
+                        newRow.attr("data-reason", reason);
+                        $(".bell-details").prepend(newRow);
+                    }
+                }
+            };
+
+            var $count = $(".header-bell__count, .side-bell__count");
+            var $img = $(".header-bell__img");
+            var $noNew = $(".bell-details__no-new");
+
+            bell.renewCount = function () {
+                Codeforces.reformatTimes();
+                var count = 0;
+                var counted = {};
+                for (var id in bell.notifications)
+                    if (bell.notifications.hasOwnProperty(id)) {
+                        var notification = bell.notifications[id];
+                        if (notification) {
+                            var reason = notification.data.reasonType + "#" + notification.reasonId;
+                            if (!notification.read && !counted[reason]) {
+                                count++;
+                                counted[reason] = true;
+                            }
+                        }
+                    }
+                if (count > 0) {
+                    $count.text(count);
+                    $img.addClass("header-bell__img-active");
+                    $noNew.hide();
+                } else {
+                    $count.text("");
+                    $img.removeClass("header-bell__img-active");
+                    if ($bellDetails.css("display") != "block") {
+                        $noNew.show();
+                    }
+                }
+            };
+
+            for (var id in bell.notifications)
+                if (bell.notifications.hasOwnProperty(id))
+                    bell.renderRow(bell.notifications[id]);
+
+            Codeforces.subscribe(Codeforces.getUserChannel(), function(json) {
+                if (json.t == "n") {
+                    for (var i in json.d)
+                        if (json.d.hasOwnProperty(i)) {
+                            var notification = json.d[i];
+                            notification.data = JSON.parse(notification.dataJson);
+                            bell.notifications[notification.id] = notification;
+                            bell.renderRow(notification);
+                            bell.renewCount();
+                        }
+                }
+            });
+
+
+            $(".header-bell, .side-bell").click(function() {
+                if ($bellDetails.css("display") == "none") {
+                    for (var id in bell.notifications)
+                        if (bell.notifications.hasOwnProperty(id))
+                            if (bell.notifications[id].read)
+                                bell.renderRow(bell.notifications[id]);
+                    bell.renewCount();
+
+                    $bellDetails.css("display", "block");
+
+                    var notificationIds = [];
+                    for (id in bell.notifications)
+                        if (bell.notifications.hasOwnProperty(id))
+                            notificationIds.push(id);
+
+                    setTimeout(function() {
+                        if ($bellDetails.css("display") == "block") {
+                            $.post("/data/notification", {action: "markAsRead", notificationIds: notificationIds.join(",")}, function(result) {
+                                // No operations.
+                            }, "json");
+
+                            for (var i in notificationIds) {
+                                if (notificationIds.hasOwnProperty(i)) {
+                                    bell.notifications[notificationIds[i]].read = true;
+                                }
+                            }
+                            bell.renewCount();
+                        }
+                    }, 2000);
+                } else {
+                    var has = false;
+                    for (var id in bell.notifications) {
+                        if (bell.notifications.hasOwnProperty(id) && !bell.notifications[id].read) {
+                            has = true;
+                        }
+                    }
+                    if (!has) {
+                        $(".side-bell").css("visibility", "hidden");
+                    }
+                    $bellDetails.css("display", "none");
+                    bell.renewCount();
+                }
+            });
+        }
+
+        bell = new Bell();
+        bell.renewCount();
+    })
+</script>
+
+<div id="header" style="position: relative;">
+    <div style="float:left;">
+            <a href="/"><img src="//st.codeforces.com/s/79846/images/codeforces-logo-with-telegram.png"/></a>
+    </div>
+    <div class="lang-chooser">
+        <div style="text-align: right;">
+            <a href="?locale=en"><img src="//st.codeforces.com/s/79846/images/flags/24/gb.png" title="In English" alt="In English"/></a>
+            <a href="?locale=ru"><img src="//st.codeforces.com/s/79846/images/flags/24/ru.png" title="По-русски" alt="По-русски"/></a>
+        </div>
+
+        <div >
+                        <a href="/profile/YourRatzon">YourRatzon</a>
+                     | 
+                        <a href="/6e41bb0598b8015498fe5825fef0ac7d/logout">Logout</a>
+                    
+        </div>
+
+
+
+    </div>
+    <br style="clear: both;"/>
+</div>
+        
+
+    <div class="roundbox menu-box" style="">
+            <div class="roundbox-lt">&nbsp;</div>
+            <div class="roundbox-rt">&nbsp;</div>
+            <div class="roundbox-lb">&nbsp;</div>
+            <div class="roundbox-rb">&nbsp;</div>
+    <div class="menu-list-container">
+    <ul class="menu-list main-menu-list">
+                <li class=""><a href="/">Home</a></li>
+                <li class=""><a href="/top">Top</a></li>
+                <li class=""><a href="/contests">Contests</a></li>
+                <li class=""><a href="/gyms">Gym</a></li>
+                <li class="current"><a href="/problemset">Problemset</a></li>
+                <li class=""><a href="/groups">Groups</a></li>
+                <li class=""><a href="/ratings">Rating</a></li>
+                <li class=""><a href="/api/help">API</a></li>
+                <li class=""><a href="/msqs2018">MS Q# Contest <img class="icon" src="//st.codeforces.com/images/icons/cup.png"/></a></li>
+                <li class=""><a href="/vkcup2018">VK Cup <img class="icon" src="//st.codeforces.com/images/icons/cup.png"/></a></li>
+                <li class=""><a href="/calendar">Calendar</a></li>
+                <li class=""><a href="/8years"><span style="color:#ce2a2a;position:relative;bottom:3px;font-weight:bold;">8 years!</span><img src='//assets.codeforces.com/images/icons/gift-small.png'/></a></li>
+    </ul>
+        <form method="post" action="/search"><input type='hidden' name='csrf_token' value='845bddd809ae067f86de119b415f5922'/>
+            <input class="search" name="query" data-isPlaceholder="true" value=""/>
+        </form>
+    <br style="clear: both;"/>
+</div>
+
+    </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("input.search").focus(function () {
+                if ($(this).attr("data-isPlaceholder") === "true") {
+                    $(this).val("");
+                    $(this).removeAttr("data-isPlaceholder");
+                }
+            });
+        });
+    </script>
+            <br style="height: 3em; clear: both;"/>
+
+        <div style="position: relative;">
+                <div id="pageContent">
+                    <div class="second-level-menu">
+
+<ul class="second-level-menu-list">
+        <li class="current selectedLava"><a
+                                        href="/problemset">Main</a></li>
+        <li><a
+                                        href="/problemsets/acmsguru">acmsguru</a></li>
+</ul>
+<span style="position:relative;top:-15px;">|</span>
+
+<ul class="second-level-menu-list">
+        <li><a
+                                        href="/problemset">Problems</a></li>
+        <li><a
+                                        href="/problemset/submit">Submit</a></li>
+        <li class="current selectedLava"><a
+                                        href="/problemset/status">Status</a></li>
+        <li><a
+                                        href="/problemset/standings">Standings</a></li>
+        <li><a
+                                        href="/problemset/customtest">Custom test</a></li>
+</ul>
+</div>
+
+<script type="application/javascript">
+    $(function() {
+        $(".closeUserList").click(function() {
+            document.location = Codeforces.updateUrlParameter(document.location.href, "list", "");
+            return false;
+        });
+    })
+</script>
+
+
+        <div style="float:right;position:relative;bottom:3em;font-size:1.0rem;">
+            <form action="" method="get" class="friendsEnabledSwitch" style="margin-top:0;">
+                <label>
+                    <input name="friends" type="checkbox"/>
+                    <span style="position:relative;bottom:0.4em;">&nbsp;friends only</span>
+                </label>
+            </form>
+        </div>
+
+
+
+<style type="text/css">
+    .status-party-cell {
+        text-align:left;
+        padding-left:1em;
+    }
+</style>
+
+    <script type="text/javascript" src="/scripts/en/preparedVerdictFormats.js"></script>
+
+<div class="datatable"
+     
+     style="background-color: #E1E1E1; padding-bottom: 3px;">
+            <div class="lt">&nbsp;</div>
+            <div class="rt">&nbsp;</div>
+            <div class="lb">&nbsp;</div>
+            <div class="rb">&nbsp;</div>
+
+            <div style="padding: 4px 0 0 6px;font-size:1.4rem;position:relative;">
+                Contest status
+                    <i style="cursor: pointer; font-size: 1.5rem; position: relative; top: 2px;" class="icon-list userListMarker"></i>
+
+                <div style="position:absolute;right:0.25em;top:0.35em;">
+                    <span style="padding:0;position:relative;bottom:2px;" class="rowCount"></span>
+
+                    <img class="closed" src="//st.codeforces.com/s/79846/images/icons/control.png"/>
+
+                    <span class="filter" style="display:none;">
+                        <img class="opened" src="//st.codeforces.com/s/79846/images/icons/control-270.png"/>
+                        <input style="padding:0;position:relative;bottom:2px;border:1px solid #aaa;height:17px;font-size:1.3rem;"/>
+                    </span>
+                </div>
+            </div>
+            <div style="background-color: white;margin:0.3em 3px 0 3px;position:relative;">
+            <div class="ilt">&nbsp;</div>
+            <div class="irt">&nbsp;</div>
+            <table class="status-frame-datatable">
+<tr class="first-row">
+    <th style="width:6em;">#</th>
+    <th>When</th>
+    <th style="text-align:center;">Who</th>
+    <th>Problem</th>
+    <th>Lang</th>
+    <th>Verdict</th>
+    <th style="width: 1em;">Time</th>
+    <th style="width: 1em;">Memory</th>
+</tr>
+
+
+
+
+<tr data-submission-id="40973618" data-a="3889579083438473217" partyMemberIds=";758222;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1011/40973618" submissionId="40973618">40973618</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:20:43
+    </td>
+    <td class="status-party-cell" data-participantId="18818154">
+        <a href="/profile/crescent7122" title="Specialist crescent7122" class="rated-user user-cyan">crescent7122</a>
+    </td>
+    <td class="status-small" data-problemId="201799">
+                <a href="/problemset/problem/1011/D">
+                    1011D - Rocket
+                </a>
+    </td>
+    <td>
+        GNU C++14
+    </td>
+    <td partyMemberIds=";758222;" class="status-cell status-small status-verdict-cell" submissionId="40973618" waiting="true">
+                <span class="submissionVerdictWrapper" submissionId="40973618" submissionVerdict="TESTING" contestType="CF" partyMemberIds=";758222;"><span class='verdict-waiting'>Running on test <span class="verdict-format-judged">1</span></span></span>
+    </td>
+    <td class="time-consumed-cell">
+            0&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            0&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973617" data-a="3889579061688844289" partyMemberIds=";633429;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/678/40973617" submissionId="40973617">40973617</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:20:42
+    </td>
+    <td class="status-party-cell" data-participantId="18881962">
+        <a href="/profile/dmkozyrev" title="Expert dmkozyrev" class="rated-user user-blue">dmkozyrev</a><sup style='margin-left: 0.25em;font-size: 8px;' title="Virtual participant"><a href='/contest/678/standings/participant/18881962#p18881962'>00:30</a></sup>
+    </td>
+    <td class="status-small" data-problemId="62341">
+                <a href="/problemset/problem/678/C">
+                    678C - Joty and Chocolate
+                </a>
+    </td>
+    <td>
+        GNU C++17
+    </td>
+    <td partyMemberIds=";633429;" class="status-cell status-small status-verdict-cell" submissionId="40973617" waiting="true">
+                <span class="submissionVerdictWrapper" submissionId="40973617" submissionVerdict="TESTING" contestType="ICPC" partyMemberIds=";633429;"><span class='verdict-waiting'>Running on test <span class="verdict-format-judged">1</span></span></span>
+    </td>
+    <td class="time-consumed-cell">
+            0&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            0&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973616" data-a="3889579034644135937" partyMemberIds=";678801;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/520/40973616" submissionId="40973616">40973616</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:20:41
+    </td>
+    <td class="status-party-cell" data-participantId="18882825">
+        <a href="/profile/odahmasalmah" title="Pupil odahmasalmah" class="rated-user user-green">odahmasalmah</a>
+    </td>
+    <td class="status-small" data-problemId="23434">
+                <a href="/problemset/problem/520/B">
+                    520B - Two Buttons
+                </a>
+    </td>
+    <td>
+        GNU C++11
+    </td>
+    <td partyMemberIds=";678801;" class="status-cell status-small status-verdict-cell" submissionId="40973616" waiting="true">
+                <span class="submissionVerdictWrapper" submissionId="40973616" submissionVerdict="TESTING" contestType="CF" partyMemberIds=";678801;"><span class='verdict-waiting'>Running on test <span class="verdict-format-judged">1</span></span></span>
+    </td>
+    <td class="time-consumed-cell">
+            0&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            0&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973615" data-a="3889579023354544131" partyMemberIds=";679836;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1012/40973615" submissionId="40973615">40973615</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:20:38
+    </td>
+    <td class="status-party-cell" data-participantId="18881361">
+        <a href="/profile/I_love_Thanh_Tam_" title="Specialist I_love_Thanh_Tam_" class="rated-user user-cyan">I_love_Thanh_Tam_</a>
+    </td>
+    <td class="status-small" data-problemId="203191">
+                <a href="/problemset/problem/1012/A">
+                    1012A - Photo of The Sky
+                </a>
+    </td>
+    <td>
+        GNU C++17
+    </td>
+    <td partyMemberIds=";679836;" class="status-cell status-small status-verdict-cell" submissionId="40973615" waiting="true">
+                <span class="submissionVerdictWrapper" submissionId="40973615" submissionVerdict="TESTING" contestType="CF" partyMemberIds=";679836;"><span class='verdict-waiting'>Running on test <span class="verdict-format-judged">3</span></span></span>
+    </td>
+    <td class="time-consumed-cell">
+            0&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            0&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973614" data-a="3889578911639781377" partyMemberIds=";724079;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1011/40973614" submissionId="40973614">40973614</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:20:35
+    </td>
+    <td class="status-party-cell" data-participantId="18824582">
+        <a href="/profile/hayman42" title="Specialist hayman42" class="rated-user user-cyan">hayman42</a>
+    </td>
+    <td class="status-small" data-problemId="201799">
+                <a href="/problemset/problem/1011/D">
+                    1011D - Rocket
+                </a>
+    </td>
+    <td>
+        GNU C++17
+    </td>
+    <td partyMemberIds=";724079;" class="status-cell status-small status-verdict-cell" submissionId="40973614" waiting="true">
+                <span class="submissionVerdictWrapper" submissionId="40973614" submissionVerdict="TESTING" contestType="CF" partyMemberIds=";724079;"><span class='verdict-waiting'>Running on test <span class="verdict-format-judged">1</span></span></span>
+    </td>
+    <td class="time-consumed-cell">
+            0&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            0&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973613" data-a="3889578988994609154" partyMemberIds=";415323;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1013/40973613" submissionId="40973613">40973613</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:20:31
+    </td>
+    <td class="status-party-cell" data-participantId="18882999">
+        <a href="/profile/mando.ato" title="Pupil mando.ato" class="rated-user user-green">mando.ato</a>
+    </td>
+    <td class="status-small" data-problemId="203185">
+                <a href="/problemset/problem/1013/A">
+                    1013A - Piles With Stones
+                </a>
+    </td>
+    <td>
+        GNU C++14
+    </td>
+    <td partyMemberIds=";415323;" class="status-cell status-small status-verdict-cell" submissionId="40973613" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973613" submissionVerdict="WRONG_ANSWER" contestType="CF" partyMemberIds=";415323;"><span class='verdict-rejected'>Wrong answer on test <span class="verdict-format-judged">2</span></span></span>
+    </td>
+    <td class="time-consumed-cell">
+            15&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            0&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973612" data-a="3889579006174543953" partyMemberIds=";698081;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1013/40973612" submissionId="40973612">40973612</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:20:29
+    </td>
+    <td class="status-party-cell" data-participantId="18878157">
+        <a href="/profile/shaohang" title="Newbie shaohang" class="rated-user user-gray">shaohang</a>
+    </td>
+    <td class="status-small" data-problemId="203187">
+                <a href="/problemset/problem/1013/C">
+                    1013C - Photo of The Sky
+                </a>
+    </td>
+    <td>
+        GNU C++11
+    </td>
+    <td partyMemberIds=";698081;" class="status-cell status-small status-verdict-cell" submissionId="40973612" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973612" submissionVerdict="OK" contestType="CF" partyMemberIds=";698081;"><span class='verdict-accepted'>Accepted</span></span>
+    </td>
+    <td class="time-consumed-cell">
+            155&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            800&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973610" data-a="3889578739886702596" partyMemberIds=";731817;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1012/40973610" submissionId="40973610">40973610</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:20:23
+    </td>
+    <td class="status-party-cell" data-participantId="18881435">
+        <a href="/profile/mvs2667" title="Unrated, mvs2667" class="rated-user user-black">mvs2667</a>
+    </td>
+    <td class="status-small" data-problemId="203191">
+                <a href="/problemset/problem/1012/A">
+                    1012A - Photo of The Sky
+                </a>
+    </td>
+    <td>
+        GNU C++11
+    </td>
+    <td partyMemberIds=";731817;" class="status-cell status-small status-verdict-cell" submissionId="40973610" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973610" submissionVerdict="WRONG_ANSWER" contestType="CF" partyMemberIds=";731817;"><span class='verdict-rejected'>Wrong answer on test <span class="verdict-format-judged">4</span></span></span>
+    </td>
+    <td class="time-consumed-cell">
+            499&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            1600&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973609" data-a="3889578868735557707" partyMemberIds=";636111;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1013/40973609" submissionId="40973609">40973609</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:20:23
+    </td>
+    <td class="status-party-cell" data-participantId="18883083">
+        <a href="/profile/alextxu" title="Specialist alextxu" class="rated-user user-cyan">alextxu</a>
+    </td>
+    <td class="status-small" data-problemId="203186">
+                <a href="/problemset/problem/1013/B">
+                    1013B - And
+                </a>
+    </td>
+    <td>
+        GNU C++11
+    </td>
+    <td partyMemberIds=";636111;" class="status-cell status-small status-verdict-cell" submissionId="40973609" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973609" submissionVerdict="OK" contestType="CF" partyMemberIds=";636111;"><span class='verdict-accepted'>Accepted</span></span>
+    </td>
+    <td class="time-consumed-cell">
+            78&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            3200&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973607" data-a="3889578559497912395" partyMemberIds=";674874;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1013/40973607" submissionId="40973607">40973607</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:20:14
+    </td>
+    <td class="status-party-cell" data-participantId="18882828">
+        <a href="/profile/rk957019" title="Pupil rk957019" class="rated-user user-green">rk957019</a>
+    </td>
+    <td class="status-small" data-problemId="203186">
+                <a href="/problemset/problem/1013/B">
+                    1013B - And
+                </a>
+    </td>
+    <td>
+        GNU C++17
+    </td>
+    <td partyMemberIds=";674874;" class="status-cell status-small status-verdict-cell" submissionId="40973607" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973607" submissionVerdict="OK" contestType="CF" partyMemberIds=";674874;"><span class='verdict-accepted'>Accepted</span></span>
+    </td>
+    <td class="time-consumed-cell">
+            156&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            12500&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973606" data-a="3889578533728075867" partyMemberIds=";626334;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1013/40973606" submissionId="40973606">40973606</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:20:13
+    </td>
+    <td class="status-party-cell" data-participantId="18883085">
+        <a href="/profile/montassar_trimech" title="Newbie montassar_trimech" class="rated-user user-gray">montassar_trimech</a>
+    </td>
+    <td class="status-small" data-problemId="203185">
+                <a href="/problemset/problem/1013/A">
+                    1013A - Piles With Stones
+                </a>
+    </td>
+    <td>
+        GNU C++
+    </td>
+    <td partyMemberIds=";626334;" class="status-cell status-small status-verdict-cell" submissionId="40973606" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973606" submissionVerdict="OK" contestType="CF" partyMemberIds=";626334;"><span class='verdict-accepted'>Accepted</span></span>
+    </td>
+    <td class="time-consumed-cell">
+            31&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            0&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973605" data-a="3889578481963810867" partyMemberIds=";146272;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1005/40973605" submissionId="40973605">40973605</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:20:06
+    </td>
+    <td class="status-party-cell" data-participantId="18541242">
+        <a href="/profile/Luqman" title="Master Luqman" class="rated-user user-orange">Luqman</a>
+    </td>
+    <td class="status-small" data-problemId="196329">
+                <a href="/problemset/problem/1005/E1">
+                    1005E1 - Median on Segments (Permutations Edition)
+                </a>
+    </td>
+    <td>
+        GNU C++17
+    </td>
+    <td partyMemberIds=";146272;" class="status-cell status-small status-verdict-cell" submissionId="40973605" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973605" submissionVerdict="OK" contestType="ICPC" partyMemberIds=";146272;"><span class='verdict-accepted'>Accepted</span></span>
+    </td>
+    <td class="time-consumed-cell">
+            124&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            8000&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973604" data-a="3889578233080397842" partyMemberIds=";687566;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1013/40973604" submissionId="40973604">40973604</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:20:02
+    </td>
+    <td class="status-party-cell" data-participantId="18878138">
+        <a href="/profile/ashish11" title="Specialist ashish11" class="rated-user user-cyan">ashish11</a>
+    </td>
+    <td class="status-small" data-problemId="203186">
+                <a href="/problemset/problem/1013/B">
+                    1013B - And
+                </a>
+    </td>
+    <td>
+        GNU C++14
+    </td>
+    <td partyMemberIds=";687566;" class="status-cell status-small status-verdict-cell" submissionId="40973604" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973604" submissionVerdict="WRONG_ANSWER" contestType="CF" partyMemberIds=";687566;"><span class='verdict-rejected'>Wrong answer on test <span class="verdict-format-judged">18</span></span></span>
+    </td>
+    <td class="time-consumed-cell">
+            62&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            15800&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973602" data-a="3889578241670332419" partyMemberIds=";596053;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1013/40973602" submissionId="40973602">40973602</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:20:01
+    </td>
+    <td class="status-party-cell" data-participantId="18880793">
+        <a href="/profile/ansu2678" title="Newbie ansu2678" class="rated-user user-gray">ansu2678</a>
+    </td>
+    <td class="status-small" data-problemId="203186">
+                <a href="/problemset/problem/1013/B">
+                    1013B - And
+                </a>
+    </td>
+    <td>
+        GNU C++14
+    </td>
+    <td partyMemberIds=";596053;" class="status-cell status-small status-verdict-cell" submissionId="40973602" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973602" submissionVerdict="WRONG_ANSWER" contestType="CF" partyMemberIds=";596053;"><span class='verdict-rejected'>Wrong answer on test <span class="verdict-format-judged">3</span></span></span>
+    </td>
+    <td class="time-consumed-cell">
+            15&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            0&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973601" data-a="3889578106164068357" partyMemberIds=";367253;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/6/40973601" submissionId="40973601">40973601</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:20:01
+    </td>
+    <td class="status-party-cell" data-participantId="18876979">
+        <a href="/profile/Mab1024" title="Newbie Mab1024" class="rated-user user-gray">Mab1024</a>
+    </td>
+    <td class="status-small" data-problemId="23">
+                <a href="/problemset/problem/6/B">
+                    6B - President's Office
+                </a>
+    </td>
+    <td>
+        GNU C++17
+    </td>
+    <td partyMemberIds=";367253;" class="status-cell status-small status-verdict-cell" submissionId="40973601" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973601" submissionVerdict="WRONG_ANSWER" contestType="ICPC" partyMemberIds=";367253;"><span class='verdict-rejected'>Wrong answer on test <span class="verdict-format-judged">5</span></span></span>
+    </td>
+    <td class="time-consumed-cell">
+            15&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            0&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973600" data-a="3889578473598566475" partyMemberIds=";658925;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1013/40973600" submissionId="40973600">40973600</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:20:00
+    </td>
+    <td class="status-party-cell" data-participantId="18877619">
+        <a href="/profile/Pr0tick" title="Specialist Pr0tick" class="rated-user user-cyan">Pr0tick</a>
+    </td>
+    <td class="status-small" data-problemId="203186">
+                <a href="/problemset/problem/1013/B">
+                    1013B - And
+                </a>
+    </td>
+    <td>
+        Python 3
+    </td>
+    <td partyMemberIds=";658925;" class="status-cell status-small status-verdict-cell" submissionId="40973600" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973600" submissionVerdict="OK" contestType="CF" partyMemberIds=";658925;"><span class='verdict-accepted'>Accepted</span></span>
+    </td>
+    <td class="time-consumed-cell">
+            343&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            8700&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973599" data-a="3889577812173635587" partyMemberIds=";234030;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1013/40973599" submissionId="40973599">40973599</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:56
+    </td>
+    <td class="status-party-cell" data-participantId="18879924">
+        <a href="/profile/AhsanRomeo" title="Specialist AhsanRomeo" class="rated-user user-cyan">AhsanRomeo</a>
+    </td>
+    <td class="status-small" data-problemId="203187">
+                <a href="/problemset/problem/1013/C">
+                    1013C - Photo of The Sky
+                </a>
+    </td>
+    <td>
+        GNU C++14
+    </td>
+    <td partyMemberIds=";234030;" class="status-cell status-small status-verdict-cell" submissionId="40973599" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973599" submissionVerdict="WRONG_ANSWER" contestType="CF" partyMemberIds=";234030;"><span class='verdict-rejected'>Wrong answer on test <span class="verdict-format-judged">3</span></span></span>
+    </td>
+    <td class="time-consumed-cell">
+            46&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            7000&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973598" data-a="3889577829127307289" partyMemberIds=";146272;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1005/40973598" submissionId="40973598">40973598</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:56
+    </td>
+    <td class="status-party-cell" data-participantId="18541242">
+        <a href="/profile/Luqman" title="Master Luqman" class="rated-user user-orange">Luqman</a>
+    </td>
+    <td class="status-small" data-problemId="196284">
+                <a href="/problemset/problem/1005/D">
+                    1005D - Polycarp and Div 3
+                </a>
+    </td>
+    <td>
+        GNU C++17
+    </td>
+    <td partyMemberIds=";146272;" class="status-cell status-small status-verdict-cell" submissionId="40973598" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973598" submissionVerdict="OK" contestType="ICPC" partyMemberIds=";146272;"><span class='verdict-accepted'>Accepted</span></span>
+    </td>
+    <td class="time-consumed-cell">
+            31&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            2600&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973597" data-a="3889577863713210443" partyMemberIds=";643941;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1013/40973597" submissionId="40973597">40973597</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:56
+    </td>
+    <td class="status-party-cell" data-participantId="18883048">
+        <a href="/profile/tang666" title="Expert tang666" class="rated-user user-blue">tang666</a>
+    </td>
+    <td class="status-small" data-problemId="203186">
+                <a href="/problemset/problem/1013/B">
+                    1013B - And
+                </a>
+    </td>
+    <td>
+        GNU C++17
+    </td>
+    <td partyMemberIds=";643941;" class="status-cell status-small status-verdict-cell" submissionId="40973597" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973597" submissionVerdict="OK" contestType="CF" partyMemberIds=";643941;"><span class='verdict-accepted'>Accepted</span></span>
+    </td>
+    <td class="time-consumed-cell">
+            46&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            800&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973596" data-a="3889578312341962794" partyMemberIds=";766626;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/118/40973596" submissionId="40973596">40973596</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:55
+    </td>
+    <td class="status-party-cell" data-participantId="18882831">
+        <a href="/profile/xterratop" title="Unrated, xterratop" class="rated-user user-black">xterratop</a>
+    </td>
+    <td class="status-small" data-problemId="617">
+                <a href="/problemset/problem/118/A">
+                    118A - String Task
+                </a>
+    </td>
+    <td>
+        GNU C++17
+    </td>
+    <td partyMemberIds=";766626;" class="status-cell status-small status-verdict-cell" submissionId="40973596" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973596" submissionVerdict="OK" contestType="CF" partyMemberIds=";766626;"><span class='verdict-accepted'>Accepted</span></span>
+    </td>
+    <td class="time-consumed-cell">
+            62&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            0&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973595" data-a="3889577307311521794" partyMemberIds=";709361;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/69/40973595" submissionId="40973595">40973595</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:48
+    </td>
+    <td class="status-party-cell" data-participantId="18882212">
+        <a href="/profile/nuzattasnimturna" title="Newbie nuzattasnimturna" class="rated-user user-gray">nuzattasnimturna</a>
+    </td>
+    <td class="status-small" data-problemId="370">
+                <a href="/problemset/problem/69/A">
+                    69A - Young Physicist
+                </a>
+    </td>
+    <td>
+        GNU C11
+    </td>
+    <td partyMemberIds=";709361;" class="status-cell status-small status-verdict-cell" submissionId="40973595" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973595" submissionVerdict="WRONG_ANSWER" contestType="CF" partyMemberIds=";709361;"><span class='verdict-rejected'>Wrong answer on test <span class="verdict-format-judged">2</span></span></span>
+    </td>
+    <td class="time-consumed-cell">
+            62&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            0&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973594" data-a="3889577728416071716" partyMemberIds=";498654;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/388/40973594" submissionId="40973594">40973594</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:48
+    </td>
+    <td class="status-party-cell" data-participantId="18732702">
+        <a href="/profile/vaibhavvashisht5" title="Pupil vaibhavvashisht5" class="rated-user user-green">vaibhavvashisht5</a>
+    </td>
+    <td class="status-small" data-problemId="6405">
+                <a href="/problemset/problem/388/A">
+                    388A - Fox and Box Accumulation
+                </a>
+    </td>
+    <td>
+        GNU C++17
+    </td>
+    <td partyMemberIds=";498654;" class="status-cell status-small status-verdict-cell" submissionId="40973594" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973594" submissionVerdict="OK" contestType="CF" partyMemberIds=";498654;"><span class='verdict-accepted'>Accepted</span></span>
+    </td>
+    <td class="time-consumed-cell">
+            31&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            0&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973593" data-a="3889577382450675740" partyMemberIds=";146272;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1005/40973593" submissionId="40973593">40973593</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:47
+    </td>
+    <td class="status-party-cell" data-participantId="18541242">
+        <a href="/profile/Luqman" title="Master Luqman" class="rated-user user-orange">Luqman</a>
+    </td>
+    <td class="status-small" data-problemId="196283">
+                <a href="/problemset/problem/1005/C">
+                    1005C - Summarize to the Power of Two
+                </a>
+    </td>
+    <td>
+        GNU C++17
+    </td>
+    <td partyMemberIds=";146272;" class="status-cell status-small status-verdict-cell" submissionId="40973593" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973593" submissionVerdict="OK" contestType="ICPC" partyMemberIds=";146272;"><span class='verdict-accepted'>Accepted</span></span>
+    </td>
+    <td class="time-consumed-cell">
+            592&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            54000&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973592" data-a="3889577270962176029" partyMemberIds=";758202;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1011/40973592" submissionId="40973592">40973592</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:45
+    </td>
+    <td class="status-party-cell" data-participantId="18818146">
+        <a href="/profile/AllureLove" title="Specialist AllureLove" class="rated-user user-cyan">AllureLove</a>
+    </td>
+    <td class="status-small" data-problemId="201796">
+                <a href="/problemset/problem/1011/A">
+                    1011A - Stages
+                </a>
+    </td>
+    <td>
+        GNU C++17
+    </td>
+    <td partyMemberIds=";758202;" class="status-cell status-small status-verdict-cell" submissionId="40973592" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973592" submissionVerdict="OK" contestType="CF" partyMemberIds=";758202;"><span class='verdict-accepted'>Accepted</span></span>
+    </td>
+    <td class="time-consumed-cell">
+            30&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            0&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973591" data-a="3889578439238860881" partyMemberIds=";623849;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1013/40973591" submissionId="40973591">40973591</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:44
+    </td>
+    <td class="status-party-cell" data-participantId="18882952">
+        <a href="/profile/Sasuke-u" title="Specialist Sasuke-u" class="rated-user user-cyan">Sasuke-u</a>
+    </td>
+    <td class="status-small" data-problemId="203187">
+                <a href="/problemset/problem/1013/C">
+                    1013C - Photo of The Sky
+                </a>
+    </td>
+    <td>
+        Java 8
+    </td>
+    <td partyMemberIds=";623849;" class="status-cell status-small status-verdict-cell" submissionId="40973591" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973591" submissionVerdict="OK" contestType="CF" partyMemberIds=";623849;"><span class='verdict-accepted'>Accepted</span></span>
+    </td>
+    <td class="time-consumed-cell">
+            280&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            4800&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973590" data-a="3889577116389064707" partyMemberIds=";581839;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1012/40973590" submissionId="40973590">40973590</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:43
+    </td>
+    <td class="status-party-cell" data-participantId="18882786">
+        <a href="/profile/vdang1" title="Unrated, vdang1" class="rated-user user-black">vdang1</a><sup style='margin-left: 0.25em;font-size: 8px;' title="Virtual participant"><a href='/contest/1012/standings/participant/18882786#p18882786'>00:29</a></sup>
+    </td>
+    <td class="status-small" data-problemId="203191">
+                <a href="/problemset/problem/1012/A">
+                    1012A - Photo of The Sky
+                </a>
+    </td>
+    <td>
+        Java 8
+    </td>
+    <td partyMemberIds=";581839;" class="status-cell status-small status-verdict-cell" submissionId="40973590" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973590" submissionVerdict="WRONG_ANSWER" contestType="CF" partyMemberIds=";581839;"><span class='verdict-rejected'>Wrong answer on test <span class="verdict-format-judged">3</span></span></span>
+    </td>
+    <td class="time-consumed-cell">
+            233&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            0&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973588" data-a="3889578069871640620" partyMemberIds=";557256;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1013/40973588" submissionId="40973588">40973588</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:38
+    </td>
+    <td class="status-party-cell" data-participantId="18880243">
+        <a href="/profile/thunderstorm_t_f" title="Expert thunderstorm_t_f" class="rated-user user-blue">thunderstorm_t_f</a>
+    </td>
+    <td class="status-small" data-problemId="203186">
+                <a href="/problemset/problem/1013/B">
+                    1013B - And
+                </a>
+    </td>
+    <td>
+        GNU C++14
+    </td>
+    <td partyMemberIds=";557256;" class="status-cell status-small status-verdict-cell" submissionId="40973588" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973588" submissionVerdict="WRONG_ANSWER" contestType="CF" partyMemberIds=";557256;"><span class='verdict-rejected'>Wrong answer on test <span class="verdict-format-judged">44</span></span></span>
+    </td>
+    <td class="time-consumed-cell">
+            233&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            53100&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973587" data-a="3889578095641673804" partyMemberIds=";119061;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1012/40973587" submissionId="40973587">40973587</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:36
+    </td>
+    <td class="status-party-cell" data-participantId="18880090">
+        <a href="/profile/Hec" title="Master Hec" class="rated-user user-orange">Hec</a><sup style='margin-left: 0.25em;font-size: 8px;' title="Virtual participant"><a href='/contest/1012/standings/participant/18880090#p18880090'>01:15</a></sup>
+    </td>
+    <td class="status-small" data-problemId="203193">
+                <a href="/problemset/problem/1012/C">
+                    1012C - Hills
+                </a>
+    </td>
+    <td>
+        GNU C++14
+    </td>
+    <td partyMemberIds=";119061;" class="status-cell status-small status-verdict-cell" submissionId="40973587" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973587" submissionVerdict="OK" contestType="CF" partyMemberIds=";119061;"><span class='verdict-accepted'>Accepted</span></span>
+    </td>
+    <td class="time-consumed-cell">
+            186&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            196500&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973586" data-a="3889576927184109596" partyMemberIds=";146272;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1005/40973586" submissionId="40973586">40973586</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:36
+    </td>
+    <td class="status-party-cell" data-participantId="18541242">
+        <a href="/profile/Luqman" title="Master Luqman" class="rated-user user-orange">Luqman</a>
+    </td>
+    <td class="status-small" data-problemId="196282">
+                <a href="/problemset/problem/1005/B">
+                    1005B - Delete from the Left
+                </a>
+    </td>
+    <td>
+        GNU C++17
+    </td>
+    <td partyMemberIds=";146272;" class="status-cell status-small status-verdict-cell" submissionId="40973586" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973586" submissionVerdict="OK" contestType="ICPC" partyMemberIds=";146272;"><span class='verdict-accepted'>Accepted</span></span>
+    </td>
+    <td class="time-consumed-cell">
+            31&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            400&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973585" data-a="3889577176518475779" partyMemberIds=";527969;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1013/40973585" submissionId="40973585">40973585</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:34
+    </td>
+    <td class="status-party-cell" data-participantId="18880727">
+        <a href="/profile/Hemnath_D" title="Expert Hemnath_D" class="rated-user user-blue">Hemnath_D</a>
+    </td>
+    <td class="status-small" data-problemId="203187">
+                <a href="/problemset/problem/1013/C">
+                    1013C - Photo of The Sky
+                </a>
+    </td>
+    <td>
+        GNU C++14
+    </td>
+    <td partyMemberIds=";527969;" class="status-cell status-small status-verdict-cell" submissionId="40973585" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973585" submissionVerdict="WRONG_ANSWER" contestType="CF" partyMemberIds=";527969;"><span class='verdict-rejected'>Wrong answer on test <span class="verdict-format-judged">3</span></span></span>
+    </td>
+    <td class="time-consumed-cell">
+            15&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            400&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973584" data-a="3889576360474656774" partyMemberIds=";607829;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1013/40973584" submissionId="40973584">40973584</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:33
+    </td>
+    <td class="status-party-cell" data-participantId="18879048">
+        <a href="/profile/bertrandovide" title="Newbie bertrandovide" class="rated-user user-gray">bertrandovide</a>
+    </td>
+    <td class="status-small" data-problemId="203186">
+                <a href="/problemset/problem/1013/B">
+                    1013B - And
+                </a>
+    </td>
+    <td>
+        Python 3
+    </td>
+    <td partyMemberIds=";607829;" class="status-cell status-small status-verdict-cell" submissionId="40973584" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973584" submissionVerdict="WRONG_ANSWER" contestType="CF" partyMemberIds=";607829;"><span class='verdict-rejected'>Wrong answer on test <span class="verdict-format-judged">6</span></span></span>
+    </td>
+    <td class="time-consumed-cell">
+            108&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            300&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973583" data-a="3889576786817826819" partyMemberIds=";539486;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/810/40973583" submissionId="40973583">40973583</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:32
+    </td>
+    <td class="status-party-cell" data-participantId="18878396">
+        <a href="/profile/sunrise7" title="Pupil sunrise7" class="rated-user user-green">sunrise7</a><sup style='margin-left: 0.25em;font-size: 8px;' title="Virtual participant"><a href='/contest/810/standings/participant/18878396#p18878396'>01:40</a></sup>
+    </td>
+    <td class="status-small" data-problemId="106947">
+                <a href="/problemset/problem/810/C">
+                    810C - Do you want a date?
+                </a>
+    </td>
+    <td>
+        GNU C++17
+    </td>
+    <td partyMemberIds=";539486;" class="status-cell status-small status-verdict-cell" submissionId="40973583" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973583" submissionVerdict="WRONG_ANSWER" contestType="CF" partyMemberIds=";539486;"><span class='verdict-rejected'>Wrong answer on test <span class="verdict-format-judged">3</span></span></span>
+    </td>
+    <td class="time-consumed-cell">
+            0&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            0&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973582" data-a="3889577642545659951" partyMemberIds=";661724;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/404/40973582" submissionId="40973582">40973582</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:32
+    </td>
+    <td class="status-party-cell" data-participantId="18881231">
+        <a href="/profile/N.B.L" title="Unrated, N.B.L" class="rated-user user-black">N.B.L</a>
+    </td>
+    <td class="status-small" data-problemId="7288">
+                <a href="/problemset/problem/404/A">
+                    404A - Valera and X
+                </a>
+    </td>
+    <td>
+        GNU C++
+    </td>
+    <td partyMemberIds=";661724;" class="status-cell status-small status-verdict-cell" submissionId="40973582" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973582" submissionVerdict="OK" contestType="CF" partyMemberIds=";661724;"><span class='verdict-accepted'>Accepted</span></span>
+    </td>
+    <td class="time-consumed-cell">
+            46&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            100&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973581" data-a="3889575973927567360" partyMemberIds=";758001;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1013/40973581" submissionId="40973581">40973581</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:30
+    </td>
+    <td class="status-party-cell" data-participantId="18883010">
+        <a href="/profile/sabbir123" title="Pupil sabbir123" class="rated-user user-green">sabbir123</a>
+    </td>
+    <td class="status-small" data-problemId="203185">
+                <a href="/problemset/problem/1013/A">
+                    1013A - Piles With Stones
+                </a>
+    </td>
+    <td>
+        GNU C++11
+    </td>
+    <td partyMemberIds=";758001;" class="status-cell status-small status-verdict-cell" submissionId="40973581" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973581" submissionVerdict="COMPILATION_ERROR" contestType="CF" partyMemberIds=";758001;">Compilation error</span>
+    </td>
+    <td class="time-consumed-cell">
+            0&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            0&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973580" data-a="3889576110827257860" partyMemberIds=";533014;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/988/40973580" submissionId="40973580">40973580</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:29
+    </td>
+    <td class="status-party-cell" data-participantId="18877693">
+        <a href="/profile/vishi" title="Pupil vishi" class="rated-user user-green">vishi</a><sup style='margin-left: 0.25em;font-size: 8px;' title="Virtual participant"><a href='/contest/988/standings/participant/18877693#p18877693'>01:50</a></sup>
+    </td>
+    <td class="status-small" data-problemId="186728">
+                <a href="/problemset/problem/988/C">
+                    988C - Equal Sums
+                </a>
+    </td>
+    <td>
+        GNU C++14
+    </td>
+    <td partyMemberIds=";533014;" class="status-cell status-small status-verdict-cell" submissionId="40973580" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973580" submissionVerdict="WRONG_ANSWER" contestType="ICPC" partyMemberIds=";533014;"><span class='verdict-rejected'>Wrong answer on test <span class="verdict-format-judged">4</span></span></span>
+    </td>
+    <td class="time-consumed-cell">
+            280&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            4600&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973578" data-a="3889576669486039056" partyMemberIds=";146272;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1005/40973578" submissionId="40973578">40973578</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:26
+    </td>
+    <td class="status-party-cell" data-participantId="18541242">
+        <a href="/profile/Luqman" title="Master Luqman" class="rated-user user-orange">Luqman</a>
+    </td>
+    <td class="status-small" data-problemId="196281">
+                <a href="/problemset/problem/1005/A">
+                    1005A - Tanya and Stairways
+                </a>
+    </td>
+    <td>
+        GNU C++17
+    </td>
+    <td partyMemberIds=";146272;" class="status-cell status-small status-verdict-cell" submissionId="40973578" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973578" submissionVerdict="OK" contestType="ICPC" partyMemberIds=";146272;"><span class='verdict-accepted'>Accepted</span></span>
+    </td>
+    <td class="time-consumed-cell">
+            31&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            0&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973577" data-a="3889576899578183685" partyMemberIds=";626129;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/910/40973577" submissionId="40973577">40973577</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:24
+    </td>
+    <td class="status-party-cell" data-participantId="18875532">
+        <a href="/profile/Enderturtle" title="Pupil Enderturtle" class="rated-user user-green">Enderturtle</a>
+    </td>
+    <td class="status-small" data-problemId="140248">
+                <a href="/problemset/problem/910/C">
+                    910C - Minimum Sum
+                </a>
+    </td>
+    <td>
+        GNU C++
+    </td>
+    <td partyMemberIds=";626129;" class="status-cell status-small status-verdict-cell" submissionId="40973577" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973577" submissionVerdict="WRONG_ANSWER" contestType="CF" partyMemberIds=";626129;"><span class='verdict-rejected'>Wrong answer on test <span class="verdict-format-judged">5</span></span></span>
+    </td>
+    <td class="time-consumed-cell">
+            31&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            0&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973573" data-a="3889576034057142275" partyMemberIds=";673851;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1013/40973573" submissionId="40973573">40973573</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:20
+    </td>
+    <td class="status-party-cell" data-participantId="18882312">
+        <a href="/profile/Chilllll" title="Specialist Chilllll" class="rated-user user-cyan">Chilllll</a><sup style='margin-left: 0.25em;font-size: 8px;' title="Virtual participant"><a href='/contest/1013/standings/participant/18882312#p18882312'>00:20</a></sup>
+    </td>
+    <td class="status-small" data-problemId="203186">
+                <a href="/problemset/problem/1013/B">
+                    1013B - And
+                </a>
+    </td>
+    <td>
+        GNU C++14
+    </td>
+    <td partyMemberIds=";673851;" class="status-cell status-small status-verdict-cell" submissionId="40973573" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973573" submissionVerdict="WRONG_ANSWER" contestType="CF" partyMemberIds=";673851;"><span class='verdict-rejected'>Wrong answer on test <span class="verdict-format-judged">3</span></span></span>
+    </td>
+    <td class="time-consumed-cell">
+            15&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            1800&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973572" data-a="3889575501435682847" partyMemberIds=";581109;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1011/40973572" submissionId="40973572">40973572</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:17
+    </td>
+    <td class="status-party-cell" data-participantId="18817143">
+        <a href="/profile/Cmajor7" title="Pupil Cmajor7" class="rated-user user-green">Cmajor7</a>
+    </td>
+    <td class="status-small" data-problemId="201797">
+                <a href="/problemset/problem/1011/B">
+                    1011B - Planning The Expedition
+                </a>
+    </td>
+    <td>
+        GNU C++14
+    </td>
+    <td partyMemberIds=";581109;" class="status-cell status-small status-verdict-cell" submissionId="40973572" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973572" submissionVerdict="OK" contestType="CF" partyMemberIds=";581109;"><span class='verdict-accepted'>Accepted</span></span>
+    </td>
+    <td class="time-consumed-cell">
+            30&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            0&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973570" data-a="3889574730350805004" partyMemberIds=";561274;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/158/40973570" submissionId="40973570">40973570</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:12
+    </td>
+    <td class="status-party-cell" data-participantId="16733058">
+        <a href="/profile/truecoder34" title="Newbie truecoder34" class="rated-user user-gray">truecoder34</a>
+    </td>
+    <td class="status-small" data-problemId="970">
+                <a href="/problemset/problem/158/B">
+                    158B - Taxi
+                </a>
+    </td>
+    <td>
+        PyPy 3
+    </td>
+    <td partyMemberIds=";561274;" class="status-cell status-small status-verdict-cell" submissionId="40973570" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973570" submissionVerdict="WRONG_ANSWER" contestType="CF" partyMemberIds=";561274;"><span class='verdict-rejected'>Wrong answer on test <span class="verdict-format-judged">12</span></span></span>
+    </td>
+    <td class="time-consumed-cell">
+            248&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            0&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973569" data-a="3889575080348205062" partyMemberIds=";682845;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1005/40973569" submissionId="40973569">40973569</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:07
+    </td>
+    <td class="status-party-cell" data-participantId="18533958">
+        <a href="/profile/jk17211761" title="Pupil jk17211761" class="rated-user user-green">jk17211761</a>
+    </td>
+    <td class="status-small" data-problemId="196283">
+                <a href="/problemset/problem/1005/C">
+                    1005C - Summarize to the Power of Two
+                </a>
+    </td>
+    <td>
+        GNU C++
+    </td>
+    <td partyMemberIds=";682845;" class="status-cell status-small status-verdict-cell" submissionId="40973569" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973569" submissionVerdict="WRONG_ANSWER" contestType="ICPC" partyMemberIds=";682845;"><span class='verdict-rejected'>Wrong answer on test <span class="verdict-format-judged">6</span></span></span>
+    </td>
+    <td class="time-consumed-cell">
+            31&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            1400&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973568" data-a="3889575006357241892" partyMemberIds=";743928;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/579/40973568" submissionId="40973568">40973568</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:04
+    </td>
+    <td class="status-party-cell" data-participantId="18882978">
+        <a href="/profile/Daili" title="Specialist Daili" class="rated-user user-cyan">Daili</a>
+    </td>
+    <td class="status-small" data-problemId="35410">
+                <a href="/problemset/problem/579/A">
+                    579A - Raising Bacteria
+                </a>
+    </td>
+    <td>
+        GNU C++17
+    </td>
+    <td partyMemberIds=";743928;" class="status-cell status-small status-verdict-cell" submissionId="40973568" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973568" submissionVerdict="OK" contestType="CF" partyMemberIds=";743928;"><span class='verdict-accepted'>Accepted</span></span>
+    </td>
+    <td class="time-consumed-cell">
+            31&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            0&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973567" data-a="3889576377654493275" partyMemberIds=";348172;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1013/40973567" submissionId="40973567">40973567</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:04
+    </td>
+    <td class="status-party-cell" data-participantId="18878773">
+        <a href="/profile/ckd" title="Specialist ckd" class="rated-user user-cyan">ckd</a>
+    </td>
+    <td class="status-small" data-problemId="203185">
+                <a href="/problemset/problem/1013/A">
+                    1013A - Piles With Stones
+                </a>
+    </td>
+    <td>
+        GNU C++14
+    </td>
+    <td partyMemberIds=";348172;" class="status-cell status-small status-verdict-cell" submissionId="40973567" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973567" submissionVerdict="OK" contestType="CF" partyMemberIds=";348172;"><span class='verdict-accepted'>Accepted</span></span>
+    </td>
+    <td class="time-consumed-cell">
+            31&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            0&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973566" data-a="3889574874415972427" partyMemberIds=";638924;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1013/40973566" submissionId="40973566">40973566</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:03
+    </td>
+    <td class="status-party-cell" data-participantId="18879537">
+        <a href="/profile/alireza_kavyani" title="Specialist alireza_kavyani" class="rated-user user-cyan">alireza_kavyani</a>
+    </td>
+    <td class="status-small" data-problemId="203186">
+                <a href="/problemset/problem/1013/B">
+                    1013B - And
+                </a>
+    </td>
+    <td>
+        GNU C++17
+    </td>
+    <td partyMemberIds=";638924;" class="status-cell status-small status-verdict-cell" submissionId="40973566" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973566" submissionVerdict="OK" contestType="CF" partyMemberIds=";638924;"><span class='verdict-accepted'>Accepted</span></span>
+    </td>
+    <td class="time-consumed-cell">
+            46&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            800&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973565" data-a="3889575357389127710" partyMemberIds=";682387;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/32/40973565" submissionId="40973565">40973565</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:02
+    </td>
+    <td class="status-party-cell" data-participantId="18847586">
+        <a href="/profile/Ajaycfd" title="Unrated, Ajaycfd" class="rated-user user-black">Ajaycfd</a>
+    </td>
+    <td class="status-small" data-problemId="149">
+                <a href="/problemset/problem/32/B">
+                    32B - Borze
+                </a>
+    </td>
+    <td>
+        GNU C++14
+    </td>
+    <td partyMemberIds=";682387;" class="status-cell status-small status-verdict-cell" submissionId="40973565" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973565" submissionVerdict="OK" contestType="CF" partyMemberIds=";682387;"><span class='verdict-accepted'>Accepted</span></span>
+    </td>
+    <td class="time-consumed-cell">
+            62&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            0&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973563" data-a="3889574625307901955" partyMemberIds=";705128;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1013/40973563" submissionId="40973563">40973563</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:19:01
+    </td>
+    <td class="status-party-cell" data-participantId="18879518">
+        <a href="/profile/CPX" title="Expert CPX" class="rated-user user-blue">CPX</a>
+    </td>
+    <td class="status-small" data-problemId="203187">
+                <a href="/problemset/problem/1013/C">
+                    1013C - Photo of The Sky
+                </a>
+    </td>
+    <td>
+        GNU C++14
+    </td>
+    <td partyMemberIds=";705128;" class="status-cell status-small status-verdict-cell" submissionId="40973563" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973563" submissionVerdict="WRONG_ANSWER" contestType="CF" partyMemberIds=";705128;"><span class='verdict-rejected'>Wrong answer on test <span class="verdict-format-judged">3</span></span></span>
+    </td>
+    <td class="time-consumed-cell">
+            30&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            7800&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973562" data-a="3889579109183045677" partyMemberIds=";767754;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1014/40973562" submissionId="40973562">40973562</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:18:59
+    </td>
+    <td class="status-party-cell" data-participantId="18724761">
+        <a href="/profile/Caporegime." title="Unrated, Caporegime." class="rated-user user-black">Caporegime.</a>
+    </td>
+    <td class="status-small" data-problemId="201029">
+                <a href="/problemset/problem/1014/A2">
+                    1014A2 - Colored Path
+                </a>
+    </td>
+    <td>
+        Ruby
+    </td>
+    <td partyMemberIds=";767754;" class="status-cell status-small status-verdict-cell" submissionId="40973562" waiting="true">
+                <span class="submissionVerdictWrapper" submissionId="40973562" submissionVerdict="TESTING" contestType="IOI" partyMemberIds=";767754;"><span class='verdict-waiting'>Running on test <span class="verdict-format-judged">45</span></span></span>
+    </td>
+    <td class="time-consumed-cell">
+            0&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            0&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973561" data-a="3889575684883759169" partyMemberIds=";21429;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/570/40973561" submissionId="40973561">40973561</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:18:59
+    </td>
+    <td class="status-party-cell" data-participantId="5365574">
+        <a href="/profile/vjudge4" title="Unrated, vjudge4" class="rated-user user-black">vjudge4</a>
+    </td>
+    <td class="status-small" data-problemId="33020">
+                <a href="/problemset/problem/570/D">
+                    570D - Tree Requests
+                </a>
+    </td>
+    <td>
+        GNU C++11
+    </td>
+    <td partyMemberIds=";21429;" class="status-cell status-small status-verdict-cell" submissionId="40973561" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973561" submissionVerdict="OK" contestType="CF" partyMemberIds=";21429;"><span class='verdict-accepted'>Accepted</span></span>
+    </td>
+    <td class="time-consumed-cell">
+            811&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            137600&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr data-submission-id="40973560" data-a="3889573691310325784" partyMemberIds=";383227;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/447/40973560" submissionId="40973560">40973560</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:18:57
+    </td>
+    <td class="status-party-cell" data-participantId="18882531">
+        <a href="/profile/cc15" title="Specialist cc15" class="rated-user user-cyan">cc15</a>
+    </td>
+    <td class="status-small" data-problemId="11395">
+                <a href="/problemset/problem/447/B">
+                    447B - DZY Loves Strings
+                </a>
+    </td>
+    <td>
+        GNU C++11
+    </td>
+    <td partyMemberIds=";383227;" class="status-cell status-small status-verdict-cell" submissionId="40973560" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973560" submissionVerdict="OK" contestType="CF" partyMemberIds=";383227;"><span class='verdict-accepted'>Accepted</span></span>
+    </td>
+    <td class="time-consumed-cell">
+            31&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            0&nbsp;KB
+    </td>
+</tr>
+
+
+
+
+<tr class="last-row" data-submission-id="40973559" data-a="3889575166473715803" partyMemberIds=";637962;">
+
+    <td class="id-cell">
+                <a class="view-source" title="Source" href="/problemset/submission/1013/40973559" submissionId="40973559">40973559</a>
+    </td>
+    <td class="status-small">
+            2018-07-30 17:18:57
+    </td>
+    <td class="status-party-cell" data-participantId="18877492">
+        <a href="/profile/gaplopes" title="Pupil gaplopes" class="rated-user user-green">gaplopes</a>
+    </td>
+    <td class="status-small" data-problemId="203185">
+                <a href="/problemset/problem/1013/A">
+                    1013A - Piles With Stones
+                </a>
+    </td>
+    <td>
+        GNU C++11
+    </td>
+    <td partyMemberIds=";637962;" class="status-cell status-small status-verdict-cell" submissionId="40973559" waiting="false">
+                <span class="submissionVerdictWrapper" submissionId="40973559" submissionVerdict="OK" contestType="CF" partyMemberIds=";637962;"><span class='verdict-accepted'>Accepted</span></span>
+    </td>
+    <td class="time-consumed-cell">
+            46&nbsp;ms
+    </td>
+    <td class="memory-consumed-cell">
+            0&nbsp;KB
+    </td>
+</tr>
+            </table>
+            </div>
+        </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+                // Create new ':containsIgnoreCase' selector for search
+                jQuery.expr[':'].containsIgnoreCase = function(a, i, m) {
+                    return jQuery(a).text().toUpperCase()
+                            .indexOf(m[3].toUpperCase()) >= 0;
+                };
+
+                if (window.updateDatatableFilter == undefined) {
+                    window.updateDatatableFilter = function(i) {
+                        var parent = $(i).parent().parent().parent().parent();
+                        $("tr.no-items", parent).remove();
+                        $("tr", parent).hide().removeClass('visible');
+                        var text = $(i).val();
+                        if (text) {
+                            $("tr" + ":containsIgnoreCase('" + text + "')", parent).show().addClass('visible');
+                        } else {
+                            parent.find(".rowCount").text("");
+                            $("tr", parent).show().addClass('visible');
+                        }
+
+                        var found = false;
+                        var visibleRowCount = 0;
+                        $("tr", parent).each(function () {
+                            if (!found) {
+                                if ($(this).find("th").size() > 0) {
+                                    $(this).show().addClass('visible');
+                                    found = true;
+                                }
+                            }
+                            if ($(this).hasClass('visible')) {
+                                visibleRowCount++;
+                            }
+                        });
+                        if (text) {
+                            parent.find(".rowCount").text("Matches: " + (visibleRowCount - (found ? 1 : 0)));
+                        }
+                        if (visibleRowCount == (found ? 1 : 0)) {
+                            $("<tr class='no-items visible'><td style=\"text-align:left;\"colspan=\"32\">No items<\/td><\/tr>").appendTo($(parent).find('table'));
+                        }
+                        $(parent).find("tr td").removeClass("dark");
+                        $(parent).find("tr.visible:odd td").addClass("dark");
+                    }
+
+                    $(".datatable .closed").click(function () {
+                        var parent = $(this).parent();
+                        $(this).hide();
+                        $(".filter", parent).fadeIn(function () {
+                            $("input", parent).val("").focus().css("border", "1px solid #aaa");
+                        });
+                    });
+
+                    $(".datatable .opened").click(function () {
+                        var parent = $(this).parent().parent();
+                        $(".filter", parent).fadeOut(function () {
+                            $(".closed", parent).show();
+                            $("input", parent).val("").each(function () {
+                                window.updateDatatableFilter(this);
+                            });
+                        });
+                    });
+
+                    $(".datatable .filter input").keyup(function(e) {
+                        window.updateDatatableFilter(this);
+                        e.preventDefault();
+                        e.stopPropagation();
+                    });
+
+                    $(".datatable table").each(function () {
+                        var found = false;
+                        $("tr", this).each(function () {
+                            if (!found && $(this).find("th").size() == 0) {
+                                found = true;
+                            }
+                        });
+                        if (!found) {
+                            $("<tr class='no-items visible'><td style=\"text-align:left;\"colspan=\"32\">No items<\/td><\/tr>").appendTo(this);
+                        }
+                    });
+
+                    // Applies styles to datatables.
+                    $(".datatable").each(function () {
+                        $(this).find("tr:first th").addClass("top");
+                        $(this).find("tr:last td").addClass("bottom");
+                        $(this).find("tr:odd td").addClass("dark");
+                        $(this).find("tr td:first-child, tr th:first-child").addClass("left");
+                        $(this).find("tr td:last-child, tr th:last-child").addClass("right");
+                    });
+
+                    $(".datatable table.tablesorter").each(function () {
+                        $(this).bind("sortEnd", function () {
+                            $(".datatable").each(function () {
+                                $(this).find("th, td")
+                                    .removeClass("top").removeClass("bottom")
+                                    .removeClass("left").removeClass("right")
+                                    .removeClass("dark");
+                                $(this).find("tr:first th").addClass("top");
+                                $(this).find("tr:last td").addClass("bottom");
+                                $(this).find("tr:odd td").addClass("dark");
+                                $(this).find("tr td:first-child, tr th:first-child").addClass("left");
+                                $(this).find("tr td:last-child, tr th:last-child").addClass("right");
+                            });
+                        });
+                    });
+                }
+        });
+    </script>
+
+    <div class="information-box" style="display: none;">
+        <h5>Judgement protocol</h5>
+        <hr/>
+        <div class="protocol" style="font-size:1.0rem;margin:1em;width:50em;max-height:30em;overflow:auto;font-family:courier new,monospace;"><pre>&nbsp;</pre></div>
+    </div>
+
+<div class="test-for-popup-proto" style="display:none;">
+    <div class="test-header">
+        Test: #<span class="test">&nbsp;</span>,
+        time: <span class="time">&nbsp;</span> ms.,
+        memory: <span class="memory">&nbsp;</span> KB,
+        exit code: <span class="exitCode">&nbsp;</span>,
+        checker exit code: <span class="checkerExitCode">&nbsp;</span>,
+        verdict: <span class="verdict">&nbsp;</span>
+    </div>
+    <div style="font-size:1.1rem;">
+        <div class="popup-input-div">
+            <div>Input</div>
+            <pre class="input">&nbsp;</pre>
+        </div>
+        <div class="popup-output-div">
+            <div>Output</div>
+            <pre class="output">&nbsp;</pre>
+        </div>
+        <div class="popup-answer-div">
+            <div>Answer</div>
+            <pre class="answer">&nbsp;</pre>
+        </div>
+        <div>
+            <div>Checker Log</div>
+            <pre class="checker">&nbsp;</pre>
+        </div>
+        <div class="popup-diagnostics-div">
+            <div>Diagnostics</div>
+            <pre class="diagnostics">&nbsp;</pre>
+        </div>
+    </div>
+</div>
+<div class="pagination next-or-prev-prototype" style="float:left; display:none">
+    <a class="arrow prev">&larr;</a>
+    <a class="arrow next">&rarr;</a>
+</div>
+<div class="source-popup"  style="display:none;width:900px;height:500px;overflow:auto;padding:1em;margin:1em;font-size:1.2rem;">
+    <span class="source-popup-header" style="">&nbsp;</span>
+    <pre class="source prettyprint">
+        <img src="//st.codeforces.com/s/79846/images/indicator.gif"/>
+    </pre>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        showSubmissionSourceCode = function(submissionId) {
+            $.post("/data/submitSource", {submissionId: submissionId}, function(data) {
+                var nop = $(".next-or-prev-prototype").clone().removeClass("next-or-prev-prototype").addClass("next-or-prev").css("display", "block");
+                Codeforces.facebox(".source-popup:first", "//st.codeforces.com/s/79846");
+                var sourcePre = $("#facebox").find(".source:first");
+                if (data["prettifyClass"]) {
+                    sourcePre.addClass(data["prettifyClass"]);
+                }
+                sourcePre.text(data["source"]);
+
+                var header = "By " + data["partyName"]
+                    + ", contest: " + data["contestName"]
+                    + ", problem: " + data["problemName"]
+                    +", " + data["verdict"] + ", " + "<a title='Direct Link' href=\"" + data["href"] + "\">#</a>";
+                if (data["offerChallenge"] == "true") {
+                    header += ", <a href=\"" + data["challengeLink"] + "\">hack it!</a>";
+                }
+                header += "<hr/>";
+
+                $("#facebox").find(".source-popup-header").html(header);
+
+                if ($("#facebox").find(".footer .pagination").size() === 0) {
+                    $("#facebox").find(".footer").append(nop);
+                }
+                var p = $("#facebox").find(".footer .pagination");
+
+                if (data["prevId"]) {
+                    p.find(".prev").attr("href", "#").click(function () {
+                        showSubmissionSourceCode(data["prevId"]);
+                        return false;
+                    });
+                }
+                if (data["nextId"]) {
+                    p.find(".next").attr("href", "#").click(function () {
+                        showSubmissionSourceCode(data["nextId"]);
+                        return false;
+                    });
+                }
+
+                prettyPrint();
+
+                var testCount = data["testCount"] ? parseInt(data["testCount"]) : 0;
+                if (testCount > 0) {
+                    $("#facebox").find(".source-popup").append("<hr/><h4>&rarr;Judgement Protocol</h4>");
+                }
+                for (var i = 1; i <= testCount; i++) {
+                    if (data["verdict#" + i]) {
+                        var e = $("div.test-for-popup-proto").clone()
+                            .removeClass("test-for-popup-proto").addClass("test-for-popup")
+                            .css("display", "block");
+                        e.find(".test").text(i);
+                        e.find(".time").text(data["timeConsumed#" + i]);
+                        e.find(".memory").text(data["memoryConsumed#" + i] ? parseInt(data["memoryConsumed#" + i]) / 1024 : "");
+                        e.find(".exitCode").text(data["exitCode#" + i]);
+                        e.find(".checkerExitCode").text(data["checkerExitCode#" + i]);
+                        e.find(".verdict").text(data["verdict#" + i]);
+
+                        if (data["input#" + i]) {
+                            e.find(".input").text(data["input#" + i]);
+                        } else {
+                            e.find(".popup-input-div").hide();
+                        }
+
+                        if (data["output#" + i]) {
+                            e.find(".output").text(data["output#" + i]);
+                        } else {
+                            e.find(".popup-output-div").hide();
+                        }
+
+                        if (data["answer#" + i]) {
+                            e.find(".answer").text(data["answer#" + i]);
+                        } else {
+                            e.find(".popup-answer-div").hide();
+                        }
+
+                        e.find(".checker").text(data["checkerStdoutAndStderr#" + i] ? data["checkerStdoutAndStderr#" + i] : " ");
+
+                        if (data["diagnostics#" + i]) {
+                            e.find(".diagnostics").text(data["diagnostics#" + i]);
+                        } else {
+                            e.find(".popup-diagnostics-div").hide();
+                        }
+                        $("#facebox").find(".source-popup").append(e);
+                    }
+                }
+            }, "json");
+        };
+
+        $(".change-participant-type-link").click(function () {
+            var contestId = $(this).attr("data-contestId");
+            var targetParticipantId = $(this).attr("data-participantId");
+
+            var changeParticipantType = function () {
+                $.post("/data/changeParticipantType",
+                        { contestId: contestId, targetParticipantId: targetParticipantId },
+                        function(response) {
+                            if (response.success == "true") {
+                                Codeforces.reload();
+                            } else {
+                                Codeforces.showMessage("Changing participant type is failed");
+                            }
+                        },
+                        "json"
+                );
+            };
+
+            Codeforces.confirm(
+                    "Are you sure you want to change participant type from virtual to practice (this operation is not reversible and may take a few seconds)?", changeParticipantType, function () { }, "OK", "No"
+            );
+
+            return false;
+        });
+
+        $(".participant-devirtualize-link").click(function () {
+            var contestId = $(this).attr("data-contestId");
+            var targetParticipantId = $(this).attr("data-participantId");
+
+            var changeParticipantType = function () {
+                $.post("/data/changeParticipantType",
+                        { action: "devirtualize", contestId: contestId, targetParticipantId: targetParticipantId },
+                        function(response) {
+                            if (response.success == "true") {
+                                Codeforces.reload();
+                            } else {
+                                Codeforces.showMessage("Changing participant type is failed");
+                            }
+                        },
+                        "json"
+                );
+            };
+
+            Codeforces.confirm(
+                    "Are you sure you want to devirtualize this participant (this operation is not reversible)?", changeParticipantType, function () { }, "OK", "No"
+            );
+
+            return false;
+        });
+    });
+</script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+        $("a.information-box-link").click(function () {
+            var submissionId = $(this).attr("submissionId");
+            $.post("/data/judgeProtocol", {submissionId: submissionId}, function (data) {
+                if (data) {
+                    Codeforces.facebox(".information-box:first", "//st.codeforces.com/s/79846");
+                    $("#facebox .information-box .protocol pre").text(data);
+                }
+            }, "json");
+            return false;
+        });
+
+        function updateVerdictByKey(submission) {
+            if (submission.t != "s") {
+                return;
+            }
+                var mode = "PROBLEMSET";
+
+            //console.log(submission);
+
+            var a = submission.d[0];
+            var id = submission.d[1];
+            var contestId = submission.d[2];
+            var problemId = submission.d[3];
+            var testset = submission.d[4];
+            var points = submission.d[5];
+            var verdict = submission.d[6];
+            var passedTestCount = submission.d[7];
+            var judgedTestCount = submission.d[8];
+            var timeConsumed = submission.d[9];
+            var memoryConsumed = submission.d[10];
+            var participantId = submission.d[11];
+            var verdict = preparedVerdictFormats[submission.d[12]];
+            var enCreationTime = submission.d[13];
+            var ruCreationTime = submission.d[14];
+            var relativeTime = submission.d[15];
+            var lang = submission.d[16];
+            var creationTimeStr = ("en" == "en" ? enCreationTime : ruCreationTime);
+
+
+            var onlyContestId = -1;
+
+            /*
+            info("SubmissionEvent: " + creationTimeStr + " " + id + " " + submission.d[6] + " " + points + " "
+                    + passedTestCount + " " + judgedTestCount + " " + timeConsumed + " " + memoryConsumed);
+            */
+
+            if ($(".status-frame-datatable tr[data-submission-id=" + id + "]").length == 0
+                    && false
+                    && (onlyContestId < 0 || contestId == onlyContestId)) {
+                if (50 > 0 && (onlyContestId != -1 || !Codeforces.isGym(contestId))) {
+                    $.post("/data/contests", {action: "getProblemName", mode: mode, contestId: contestId, problemId: problemId, communityCode: ""}, function(result) {
+                        if (result["success"] == "true") {
+                            var problemName = result["problemName"];
+                            $.post("/data/contests", {action: "getPartyName", contestId: contestId, participantId: participantId}, function(result) {
+                                if (result["success"] == "true") {
+                                    var partyName = result["partyName"];
+
+                                    var tdSubmissionId = "<td>" + id + "</td>";
+                                    var tdCreationTime = "<td class='status-small'>" + creationTimeStr + "</td>";
+                                    var tdPartyName = "<td class='status-party-cell' data-participantId='" + participantId + "'>" + partyName + "</td>";
+                                    var tdProblemName = "<td class='status-small' data-problemId='" + problemId + "'>" + problemName + "</td>";
+                                    var tdLang = "<td>" + lang + "</td>";
+                                    var tdVerdict = "<td class='status-cell status-small status-verdict-cell' submissionId='" + id + "'>" + verdict + "</td>";
+                                    var tdTime = "<td class='time-consumed-cell'>" + timeConsumed + "&nbsp;ms</td>";
+                                    var tdMemory = "<td class='memory-consumed-cell'>" + Math.floor(memoryConsumed / 1024) + "&nbsp;KB</td>";
+
+                                    var tr = $("<tr data-submission-id='" + id + "' data-a='" + a + "'>"
+                                        + tdSubmissionId
+                                        + tdCreationTime
+                                        + tdPartyName
+                                        + tdProblemName
+                                        + tdLang
+                                        + tdVerdict
+                                        + tdTime
+                                        + tdMemory
+                                    + "</tr>");
+
+                                    if (judgedTestCount != null && judgedTestCount != undefined) {
+                                        tr.find(".verdict-format-judged").text(judgedTestCount);
+                                    }
+                                    if (passedTestCount != null && passedTestCount != undefined) {
+                                        tr.find(".verdict-format-passed").text(passedTestCount);
+                                    }
+                                    if (points != null && points != undefined) {
+                                        tr.find(".verdict-format-points").text(points);
+                                    }
+
+                                    tr.insertAfter($(".status-frame-datatable tr:first-child"));
+                                    $(".status-frame-datatable tr[data-submission-id=" + id + "]").slice(1).remove();
+                                    Codeforces.updateDatatables();
+
+                                    $(".datatable").each(function () {
+                                        while ($(this).find("tr").length > 50 + 1)
+                                            $(this).find("tr:last-child").remove();
+                                    });
+                                }
+                            }, "json");
+                        }
+                    }, "json");
+                }
+            } else {
+                $(".status-frame-datatable tr[data-submission-id=" + id + "]").each(function () {
+                    if ($(this).attr("data-a") == undefined || $(this).attr("data-a") < a) {
+                        var verdictTd = $(this).find("td.status-verdict-cell");
+
+                        verdictTd.html(verdict);
+                        if (judgedTestCount != null && judgedTestCount != undefined) {
+                            verdictTd.find(".verdict-format-judged").text(judgedTestCount);
+                        }
+                        if (passedTestCount != null && passedTestCount != undefined) {
+                            verdictTd.find(".verdict-format-passed").text(passedTestCount);
+                        }
+                        if (points != null && points != undefined) {
+                            verdictTd.find(".verdict-format-points").text(points);
+                        }
+
+                        if (timeConsumed != null && timeConsumed != undefined)
+                            verdictTd.parent().find(".time-consumed-cell").text(timeConsumed + " ms");
+                        else
+                            verdictTd.parent().find(".time-consumed-cell").text("");
+
+                        if (memoryConsumed != null && memoryConsumed != undefined)
+                            verdictTd.parent().find(".memory-consumed-cell").text(Math.floor(memoryConsumed / 1024) + " KB");
+                        else
+                            verdictTd.parent().find(".memory-consumed-cell").text("");
+
+                        verdictTd.parent().attr("data-a", a);
+                    } else {
+                        info("Skipped because of a=" + a + " <= " + $(this).attr("data-a"));
+                    }
+                });
+            }
+        }
+
+        $(".change-time-limit-link").click(function () {
+            var parent = $(this).parent();
+            var contestId = $(this).attr("data-contestId");
+            var problemId = $(this).attr("data-problemId");
+            var newTimeLimit = $(this).attr("data-newTimeLimit");
+
+            var changeTimeLimit = function () {
+                $.post("/data/changeTimeLimit",
+                    { contestId: contestId, problemId: problemId, newTimeLimit: newTimeLimit },
+                    function(response) {
+                        if (response.success == "true") {
+                            Codeforces.reload();
+                        } else {
+                            Codeforces.showMessage(response.message);
+                        }
+                    },
+                    "json"
+                );
+            };
+
+            Codeforces.confirm(
+                        "Are you sure you want to change time limit?",
+                        changeTimeLimit, function () { },
+                        "Yes", "No"
+            );
+
+            return false;
+        });
+
+        if (Codeforces.getParticipantChannel()) {
+            Codeforces.subscribe(Codeforces.getParticipantChannel(), function(json) {
+                updateVerdictByKey(json);
+            });
+        }
+
+        if (Codeforces.getContestChannel()) {
+            Codeforces.subscribe(Codeforces.getContestChannel(), function(json) {
+                updateVerdictByKey(json);
+            });
+        }
+
+        if (Codeforces.getGlobalChannel()) {
+            Codeforces.subscribe(Codeforces.getGlobalChannel(), function(json) {
+                updateVerdictByKey(json);
+            });
+        }
+        });
+    </script>
+    <script type="application/javascript">
+        $(function() {
+            var viewableSubmissionIds = [
+            ];
+
+            $(".hiddenSource").each(function() {
+                var tr = $(this).closest("tr");
+
+                var partyMemberIds = tr.attr("partyMemberIds");
+                var show = false;
+                var submissionId = tr.attr("data-submission-id");
+                if (partyMemberIds.indexOf(";109641;") >= 0 || 
+                        viewableSubmissionIds.indexOf(submissionId) != -1) {
+                    show = true;
+                }
+                if (show) {
+                    var p = $(this).parent();
+                    $(this).remove();
+                    p.append($("<a class=\"view-source\" title=\"Source\" href=\"#\" submissionId=\"" + submissionId + "\">" + submissionId + "</a>"));
+                }
+            });
+
+            $("a.view-source[submissionId]").each(function () {
+                var handled = $(this).attr("handled");
+                var e = $(this);
+                if (handled != "true") {
+                    var handler = function () {
+                        showSubmissionSourceCode(e.attr("submissionId"));
+                        return false;
+                    };
+                    $(this).bind("click", handler);
+                    $(this).attr("handled", "true");
+                }
+            });
+
+        });
+    </script>
+
+    <script type="text/javascript">
+        function getProblemId(verdictWrapper) {
+            var problemId = -1;
+
+            verdictWrapper.parent().parent().find("td").each(function () {
+                var currentProblemId = parseInt($(this).attr("data-problemId"));
+                if (!isNaN(currentProblemId)) {
+                    problemId = currentProblemId;
+                }
+            });
+
+            return problemId;
+        }
+
+        $(function () {
+            $(".submissionVerdictWrapper").each(function () {
+                var verdictWrapper = $(this);
+
+                var partyMemberIds = verdictWrapper.attr("partyMemberIds");
+                if (partyMemberIds.indexOf(";109641;") < 0) {
+                    return;
+                }
+
+                var submissionVerdict = verdictWrapper.attr("submissionVerdict");
+                if (submissionVerdict === "SUBMITTED") {
+                    return;
+                }
+
+                if (submissionVerdict === "COMPILATION_ERROR" || verdictWrapper.attr("contestType") === "IOI"
+                        || [7807, 57103, 176141, 101027, 53793, 201028, 53791, 62289, 50066].indexOf(getProblemId(verdictWrapper)) >= 0) {
+                    var submissionId = verdictWrapper.attr("submissionId");
+                    //noinspection StringLiteralBreaksHTMLJS
+                    verdictWrapper.wrap(
+                            '<a href="#" submissionId="' + submissionId + '" class="information-box-link new-link"></a>'
+                    );
+                }
+            });
+
+            $("a.information-box-link.new-link").click(function () {
+                var submissionId = $(this).attr("submissionId");
+                $.post("/data/judgeProtocol", {submissionId: submissionId}, function (data) {
+                    Codeforces.facebox(".information-box:first", "//st.codeforces.com/s/79846");
+                    $("#facebox").find(".information-box .protocol pre").text(data);
+                }, "json");
+                return false;
+            });
+
+            var updateCount = 0;
+
+            function updateVerdict(submissionId) {
+                    return false;
+                $.post("/data/submissionVerdict", {submissionId: submissionId}, function(data) {
+                    if (data["compilationError"] == "true") {
+                        Codeforces.reload();
+                    } else {
+                        var e = $("td[submissionId=" + submissionId + "]");
+                        var timeConsumedTd = e.parent().find("td.time-consumed-cell");
+                        var memoryConsumedTd = e.parent().find("td.memory-consumed-cell");
+
+                        e.html(data["verdict"]);
+                        timeConsumedTd.html(data["timeConsumed"]);
+                        memoryConsumedTd.html(data["memoryConsumed"]);
+
+                        if (data["waiting"] == "true") {
+                            e.append("<img style='margin-left:1em;position:relative;top:4px;' src='//st.codeforces.com/s/79846/images/ajax-jump-loader.gif'/>");
+                            window.setTimeout(function () {
+                                updateVerdict(submissionId)
+                            }, 5000);
+                        } else {
+                            // Codeforces.reload();
+                            updateCount--;
+                        }
+                    }
+                }, "json");
+            }
+
+
+        });
+    </script>
+
+
+    <div style="margin-top:1em;">
+
+<div class="pagination">
+    <ul>
+            <span class="inactive">&larr;</span>
+        <li>
+                <span class="page-index active" pageIndex="1"><a href="/problemset/status/page/1?order=BY_ARRIVED_DESC">1</a></span>
+        </li>
+        <li>
+                <span class="page-index" pageIndex="2"><a href="/problemset/status/page/2?order=BY_ARRIVED_DESC">2</a></span>
+        </li>
+        <li>
+                <span class="page-index" pageIndex="3"><a href="/problemset/status/page/3?order=BY_ARRIVED_DESC">3</a></span>
+        </li>
+        <li>
+                <span class="page-index" pageIndex="4"><a href="/problemset/status/page/4?order=BY_ARRIVED_DESC">4</a></span>
+        </li>
+        <li>
+                <span class="page-index" pageIndex="5"><a href="/problemset/status/page/5?order=BY_ARRIVED_DESC">5</a></span>
+        </li>
+            <li><a href="/problemset/status/page/2?order=BY_ARRIVED_DESC" class="arrow">&rarr;</a></li>
+    </ul>
+</div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+function handlePaginationKeyboardEvent(right) {
+    var pageIndex = parseInt($(".pagination").find("span.active").attr("pageIndex"));
+    if (right) {
+        pageIndex++;
+    } else {
+        pageIndex--;
+    }
+    $(".pagination").find("span[pageIndex=" + pageIndex + "]").each(function () {
+        Codeforces.redirect($(this).find("a").attr("href"));
+    });
+}
+$(document).keydown(function (e) {
+     var code = (e.keyCode ? e.keyCode : e.which);
+     if (e.ctrlKey) {
+        if (code == 37 || code == 39) {
+            handlePaginationKeyboardEvent(code == 39);
+        }
+     }
+});
+        });
+    </script>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+    $(".choose-order input").change(function () {
+        $(".choose-order").submit();
+    });
+
+    $(".reset-status-filter-link").click(function () {
+        $(this).parent().parent().submit();
+    });
+
+    $("input[name=friends]").click(function () {
+        $("form.friendsEnabledSwitch").find("input[name=csrf_token]").remove();
+        $("form.friendsEnabledSwitch").submit();
+    });
+        });
+    </script>
+                </div>
+        </div>
+            <br style="clear: both;"/>
+            <div id="footer">
+                <div><a href="http://codeforces.com/">Codeforces</a> (c) Copyright 2010-2018 Mike Mirzayanov</div>
+                <div>The only programming contests Web 2.0 platform</div>
+                    <div>Server time: <span class="format-timewithseconds" data-locale="en">Jul/30/2018 17:20:45</span> (d2).</div>
+                    <div>Desktop version, switch to <a rel="nofollow" class="switchToMobile" href="?mobile=true">mobile version</a>.</div>
+                <div class="smaller"><a href="/privacy">Privacy Policy</a></div>
+
+            </div>
+        <script type="text/javascript">
+            $(function() {
+                $(".switchToMobile").click(function() {
+                    Codeforces.redirect(Codeforces.updateUrlParameter(document.location.href, "mobile", "true"));
+                    return false;
+                });
+                $(".switchToDesktop").click(function() {
+                    Codeforces.redirect(Codeforces.updateUrlParameter(document.location.href, "mobile", "false"));
+                    return false;
+                });
+            });
+        </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ($(window).width() < 1600) {
+                $('.button-up').css('width', '30px').css('line-height', '30px').css('font-size', '20px');
+            }
+
+            if ($(window).width() >= 1200) {
+                $ (window).scroll (function () {
+                    if ($ (this).scrollTop () > 100) {
+                        $ ('.button-up').fadeIn();
+                    } else {
+                        $ ('.button-up').fadeOut();
+                    }
+                });
+
+                $('.button-up').click(function () {
+                    $('body,html').animate({
+                        scrollTop: 0
+                    }, 500);
+                    return false;
+                });
+
+                $('.button-up').hover(function () {
+                    $(this).animate({
+                        'opacity':'1'
+                    }).css({'background-color':'#e7ebf0','color':'#6a86a4'});
+                }, function () {
+                    $(this).animate({
+                        'opacity':'0.7'
+                    }).css({'background':'none','color':'#d3dbe4'});;
+                });
+            }
+            Codeforces.focusOnError();
+        });
+    </script>
+
+        <div class="userListsFacebox" style="display:none;">
+            <div style="padding: 0.5em; width: 600px; max-height: 200px; overflow-y: auto">
+<div class="datatable"
+     
+     style="background-color: #E1E1E1; padding-bottom: 3px;">
+            <div class="lt">&nbsp;</div>
+            <div class="rt">&nbsp;</div>
+            <div class="lb">&nbsp;</div>
+            <div class="rb">&nbsp;</div>
+
+            <div style="padding: 4px 0 0 6px;font-size:1.4rem;position:relative;">
+                User lists
+
+                <div style="position:absolute;right:0.25em;top:0.35em;">
+                    <span style="padding:0;position:relative;bottom:2px;" class="rowCount"></span>
+
+                    <img class="closed" src="//st.codeforces.com/s/79846/images/icons/control.png"/>
+
+                    <span class="filter" style="display:none;">
+                        <img class="opened" src="//st.codeforces.com/s/79846/images/icons/control-270.png"/>
+                        <input style="padding:0;position:relative;bottom:2px;border:1px solid #aaa;height:17px;font-size:1.3rem;"/>
+                    </span>
+                </div>
+            </div>
+            <div style="background-color: white;margin:0.3em 3px 0 3px;position:relative;">
+            <div class="ilt">&nbsp;</div>
+            <div class="irt">&nbsp;</div>
+            <table class="">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+            </table>
+            </div>
+        </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+                // Create new ':containsIgnoreCase' selector for search
+                jQuery.expr[':'].containsIgnoreCase = function(a, i, m) {
+                    return jQuery(a).text().toUpperCase()
+                            .indexOf(m[3].toUpperCase()) >= 0;
+                };
+
+                if (window.updateDatatableFilter == undefined) {
+                    window.updateDatatableFilter = function(i) {
+                        var parent = $(i).parent().parent().parent().parent();
+                        $("tr.no-items", parent).remove();
+                        $("tr", parent).hide().removeClass('visible');
+                        var text = $(i).val();
+                        if (text) {
+                            $("tr" + ":containsIgnoreCase('" + text + "')", parent).show().addClass('visible');
+                        } else {
+                            parent.find(".rowCount").text("");
+                            $("tr", parent).show().addClass('visible');
+                        }
+
+                        var found = false;
+                        var visibleRowCount = 0;
+                        $("tr", parent).each(function () {
+                            if (!found) {
+                                if ($(this).find("th").size() > 0) {
+                                    $(this).show().addClass('visible');
+                                    found = true;
+                                }
+                            }
+                            if ($(this).hasClass('visible')) {
+                                visibleRowCount++;
+                            }
+                        });
+                        if (text) {
+                            parent.find(".rowCount").text("Matches: " + (visibleRowCount - (found ? 1 : 0)));
+                        }
+                        if (visibleRowCount == (found ? 1 : 0)) {
+                            $("<tr class='no-items visible'><td style=\"text-align:left;\"colspan=\"32\">No items<\/td><\/tr>").appendTo($(parent).find('table'));
+                        }
+                        $(parent).find("tr td").removeClass("dark");
+                        $(parent).find("tr.visible:odd td").addClass("dark");
+                    }
+
+                    $(".datatable .closed").click(function () {
+                        var parent = $(this).parent();
+                        $(this).hide();
+                        $(".filter", parent).fadeIn(function () {
+                            $("input", parent).val("").focus().css("border", "1px solid #aaa");
+                        });
+                    });
+
+                    $(".datatable .opened").click(function () {
+                        var parent = $(this).parent().parent();
+                        $(".filter", parent).fadeOut(function () {
+                            $(".closed", parent).show();
+                            $("input", parent).val("").each(function () {
+                                window.updateDatatableFilter(this);
+                            });
+                        });
+                    });
+
+                    $(".datatable .filter input").keyup(function(e) {
+                        window.updateDatatableFilter(this);
+                        e.preventDefault();
+                        e.stopPropagation();
+                    });
+
+                    $(".datatable table").each(function () {
+                        var found = false;
+                        $("tr", this).each(function () {
+                            if (!found && $(this).find("th").size() == 0) {
+                                found = true;
+                            }
+                        });
+                        if (!found) {
+                            $("<tr class='no-items visible'><td style=\"text-align:left;\"colspan=\"32\">No items<\/td><\/tr>").appendTo(this);
+                        }
+                    });
+
+                    // Applies styles to datatables.
+                    $(".datatable").each(function () {
+                        $(this).find("tr:first th").addClass("top");
+                        $(this).find("tr:last td").addClass("bottom");
+                        $(this).find("tr:odd td").addClass("dark");
+                        $(this).find("tr td:first-child, tr th:first-child").addClass("left");
+                        $(this).find("tr td:last-child, tr th:last-child").addClass("right");
+                    });
+
+                    $(".datatable table.tablesorter").each(function () {
+                        $(this).bind("sortEnd", function () {
+                            $(".datatable").each(function () {
+                                $(this).find("th, td")
+                                    .removeClass("top").removeClass("bottom")
+                                    .removeClass("left").removeClass("right")
+                                    .removeClass("dark");
+                                $(this).find("tr:first th").addClass("top");
+                                $(this).find("tr:last td").addClass("bottom");
+                                $(this).find("tr:odd td").addClass("dark");
+                                $(this).find("tr td:first-child, tr th:first-child").addClass("left");
+                                $(this).find("tr td:last-child, tr th:last-child").addClass("right");
+                            });
+                        });
+                    });
+                }
+        });
+    </script>
+            </div>
+        </div>
+        <script type="application/javascript">
+            $(function() {
+                $(".userListMarker").click(function() {
+                    $.post("/data/lists", {action: "findTouched"}, function(json) {
+                        Codeforces.facebox(".userListsFacebox");
+                        var tbody = $("#facebox tbody");
+                        tbody.empty();
+                        for (var i in json) {
+                            tbody.append(
+                                    $("<tr></tr>").append(
+                                            $("<td></td>").attr("data-readKey", json[i].readKey).text(json[i].name)
+                                    )
+                            );
+                        }
+                        Codeforces.updateDatatables();
+                        tbody.find("td").css("cursor", "pointer").click(function() {
+                            document.location = Codeforces.updateUrlParameter(document.location.href, "list", $(this).attr("data-readKey"));
+                        });
+                    }, "json");
+                });
+            });
+        </script>
+</body>
+</html>
